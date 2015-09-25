@@ -11,7 +11,7 @@ LINDA will run and the results will be found in a folder named "linda" in the sa
 Example  
 10:42 Loading template...  
 10:42 Creating folder: /data/jag/dpustina/LINDAtest/linda  
-10:42 Loading file: ROBERTS_Ellen____301_T1W_3D_MPRAGE_SENSE.nii  
+10:42 Loading file: SybjectT1.nii  
 10:42 Skull stripping... (long process)  
 11:06 Saving skull stripped files  
 11:06 Loading LINDA model  
