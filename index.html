@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Linda : Lesion Identification with Neighborhood Data Analysis">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Linda</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/dorianps/LINDA">View on GitHub</a>
+
+          <h1 id="project_title">Linda</h1>
+          <h2 id="project_tagline">Lesion Identification with Neighborhood Data Analysis</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/dorianps/LINDA/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/dorianps/LINDA/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="linda" class="anchor" href="#linda" aria-hidden="true"><span class="octicon octicon-link"></span></a>LINDA</h1>
+
+<p>Lesion Identification with Neighborhood Data Analysis  </p>
+
+<hr>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements:</h2>
+
+<ul>
+<li>Linux or Mac (ANTsR cannot run in Windows yet)<br>
+</li>
+<li>
+<a href="http://www.r-project.org/">R</a> or, even better, <a href="http://www.rstudio.com/products/rstudio/download/">Rstudio</a> </li>
+<li>The <a href="http://stnava.github.io/ANTsR/">ANTsR</a> package installed in R</li>
+<li>A T1-weighted MRI of a patient with (left hemispheric) stroke</li>
+</ul>
+
+<hr>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>Download the <a href="https://github.com/dorianps/LINDA/releases/download/0.1/LINDA_v0.1.zip">latest release</a> and unzip in a local folder.  </p>
+
+<hr>
+
+<h2>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h2>
+
+<p>Open R and source the file linda_predict.R. I.e.:<br>
+<code>source('/data/myfolder/stroke/LINDA/linda_predict.R')</code><br>
+A file dialog will allow you to select the T1 nifti file of the patient with left hemispheric brain damage.<br>
+LINDA will run and you will see the timestamp of the various steps.<br>
+Results will be saved in a folder named "linda" in the same path where the T1 is located.  </p>
+
+<p>Note, LINDA will stop if you don't have <code>ANTsR</code> installed, and will automatically install the <code>randomForest</code> package.  </p>
+
+<hr>
+
+<h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<p><code>source('/data/myfolder/stroke/LINDA/linda_predict.R')</code>  </p>
+
+<blockquote>
+<p>10:42 Loading template...<br>
+10:42 Creating folder: /data/jag/myhome/LINDAtest/linda<br>
+10:42 Loading file: SybjectT1.nii<br>
+10:42 Skull stripping... (long process)<br>
+11:06 Saving skull stripped files<br>
+11:06 Loading LINDA model<br>
+11:06 Computing asymmetry mask...<br>
+11:09 Saving asymmetry mask...<br>
+11:09 Running 1st registration...<br>
+11:16 Feature calculation...<br>
+11:21 Running 1st prediction...<br>
+11:22 Saving 1st prediction...<br>
+11:22 Backprojecting 1st prediction...<br>
+11:22 Running 2nd registration...<br>
+11:29 Feature calculation...<br>
+11:33 Running 2nd prediction...<br>
+11:34 Saving 2nd prediction...<br>
+11:34 Backprojecting 1st prediction...<br>
+11:34 Running 3rd registration... (long process)<br>
+13:15 Saving 3rd registration results...<br>
+13:15 Feature calculation...<br>
+13:19 Running 3rd prediction...<br>
+13:20 Saving 3rd final prediction...<br>
+13:20 Saving 3rd final prediction in native space...<br>
+DONE  </p>
+</blockquote>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Linda maintained by <a href="https://github.com/dorianps">dorianps</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
