@@ -26,7 +26,7 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
   
   
 ## Available prediction models:  
-_Currently a model from 60 patients from Penn is used. The model works at a maximum resolution of 2mm and contains three hierarchical steps (6mm, 4mm, 2mm). Other models might be available in the future._  
+_Currently a model trained on 60 patients from Penn is used. The model works at a maximum resolution of 2mm and contains three hierarchical steps (6mm, 4mm, 2mm). Other models might be available in the future._  
   
 *****  
 ## Example:  
