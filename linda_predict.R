@@ -167,7 +167,7 @@ cat(paste(format(Sys.time(), "%H:%M") , "Saving 2nd prediction... \n"))
 antsImageWrite(mmseg2$seg[[1]], file.path(lindadir,'Prediction2.nii.gz'))
 
 # backproject
-cat(paste(format(Sys.time(), "%H:%M") , "Backprojecting 1st prediction... \n"))
+cat(paste(format(Sys.time(), "%H:%M") , "Backprojecting 2nd prediction... \n"))
 seg = resampleImage(mmseg2$seg[[1]], dim(tempbrain), useVoxels = 1, interpType = 1)
 seg[seg!=4]=0
 seg[seg==4]=1
