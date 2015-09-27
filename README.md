@@ -25,7 +25,7 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
  _Note, LINDA will stop if you don't have `ANTsR` installed, and will automatically install the `randomForest` package._  
   
   
-* Available prediction models:*  
+*Available prediction models:*  
 _Currently a model trained on 60 patients from Penn is used. The model works at a maximum resolution of 2mm and contains three hierarchical steps (6mm, 4mm, 2mm). Other models might be available in the future._  
   
 *****  
