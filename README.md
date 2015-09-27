@@ -33,7 +33,7 @@ _Currently a model trained on 60 patients from Penn is used. The model works at 
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
 >  12:09 Loading file: TMT_MPRAGE.nii  
 12:09 Creating folder: /data/jag/dp/LINDAtest/TMT/linda  
-12:08 Loading template...  
+12:09 Loading template...  
 12:09 Skull stripping... (long process)  
 12:34 Saving skull stripped files  
 12:34 Loading LINDA model  
