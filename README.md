@@ -7,14 +7,14 @@ Lesion Identification with Neighborhood Data Analysis
 * The [ANTsR](http://stnava.github.io/ANTsR/) package installed in R
 * A T1-weighted MRI of a patient with (left hemispheric) stroke
  
-***** 
-## Install  
+*****  
+## Install:  
 Download the [latest release](https://github.com/dorianps/LINDA/releases/download/0.1/LINDA_v0.1.zip) and unzip in a local folder.  
   
 _IMPORTANT: Do not use the Github download buttons. They provide only the files of the main repository, without the large files containing the trained prediction models. The above link points to a full release that contains also the prediction models._  
   
-*****    
-## Run   
+*****  
+## Run:  
 Open R and source the file linda_predict.R. I.e.:  
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
 A file dialog will allow you to select the T1 nifti file of the patient with left hemispheric brain damage.  
