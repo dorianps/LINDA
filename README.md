@@ -24,7 +24,7 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
  _Note, LINDA will stop if you don't have `ANTsR` installed, and will automatically install the `randomForest` package._  
   
 *****  
-## Example  
+## Example:  
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
 >  10:42 Loading template...  
 10:42 Creating folder: /data/jag/myhome/LINDAtest/linda  
