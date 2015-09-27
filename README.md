@@ -15,13 +15,18 @@ _IMPORTANT: Do not use the Github download buttons. They provide only the files 
   
 *****  
 ## Run:  
-Open R and source the file linda_predict.R. I.e.:  
+Open R and source the file linda_predict.R
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
 A file dialog will allow you to select the T1 nifti file of the patient with left hemispheric brain damage.  
 LINDA will run and you will see the timestamp of the various steps.  
 Results will be saved in a folder named "linda" in the same path where the T1 is located.  
+
   
  _Note, LINDA will stop if you don't have `ANTsR` installed, and will automatically install the `randomForest` package._  
+  
+  
+## Available prediction models:  
+_Currently a model from 60 patients from Penn is used. The model works at a maximum resolution of 2mm and contains three hierarchical steps (6mm, 4mm, 2mm). Other models might be available in the future._  
   
 *****  
 ## Example:  
