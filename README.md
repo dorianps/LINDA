@@ -56,6 +56,7 @@ _Currently a model trained on 60 patients from Penn is used. The model works at 
 15:02 Saving 3rd final prediction...  
 15:02 Saving 3rd final prediction in native space...  
 DONE  
-*****  
+
+
 For a complete set of examples check the PDFs of our [main](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_UPenn_Dataset.pdf) and [complementary](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_Georgetown_Dataset.pdf) datasets
 
