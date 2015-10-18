@@ -1,5 +1,5 @@
 ## What is LINDA?  
-Is a toolkit for automatic segmentation of lesions in _chronic_ stroke patients.   
+Is a toolkit for automatic segmentation of lesions in __chronic__ stroke patients.   
 *****  
 ##  Requirements:  
 * Linux or Mac (ANTsR cannot run in Windows yet)  
