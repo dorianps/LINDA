@@ -73,7 +73,14 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 <p><em>Note, LINDA will stop if you don't have <code>ANTsR</code> installed, and will automatically install the <code>randomForest</code> package.</em>  </p>
 
 <p><strong>Available prediction models:</strong><br>
-<em>Currently a model trained on 60 patients from Penn is used. The model works at a maximum resolution of 2mm and contains three hierarchical steps (6mm, 4mm, 2mm). Other models might be available in the future.</em>  </p>
+<em>Currently a model trained on 60 patients from Penn is used. The internal prediction engine works with 2mm voxel resolution. This does not mean your images need to be 2mm, any resolution should work.</em>  </p>
+
+<hr>
+
+<h2>
+<a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support:</h2>
+
+<p>The best way to keep track of bugs or failures is to open a <a href="https://github.com/dorianps/LINDA/issues">New Issue</a> on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds flowlessly but the automatic segmentation is erronous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying <code>Mask.lesion*.nii.gz</code> files on the T1 to check whether the brain mask is wrong somewhere.  </p>
 
 <hr>
 
