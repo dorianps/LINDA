@@ -26,8 +26,11 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
   
   
 **Available prediction models:**  
-_Currently a model trained on 60 patients from Penn is used. The model works at a maximum resolution of 2mm and contains three hierarchical steps (6mm, 4mm, 2mm). Other models might be available in the future._  
+_Currently a model trained on 60 patients from Penn is used. The internal prediction engine works with 2mm voxel resolution. This does not mean your images need to be 2mm, any resolution should work._  
   
+*****  
+## Support:  
+Best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the automatic segmentation is produced by is erronous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space.  
 *****  
 ## Example:  
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
