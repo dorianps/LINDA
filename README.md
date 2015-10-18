@@ -58,5 +58,5 @@ _Currently a model trained on 60 patients from Penn is used. The model works at 
 DONE  
 
 
-A series of individual predictions are available for visual inspection from our  [main](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_UPenn_Dataset.pdf) and [complementary](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_Georgetown_Dataset.pdf) datasets.
+To form an idea of the prediction accuracy check individual samples from our  [main](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_UPenn_Dataset.pdf) and [complementary](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_Georgetown_Dataset.pdf) datasets.
 
