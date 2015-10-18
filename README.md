@@ -1,5 +1,5 @@
 ## What is LINDA?  
-Is a toolkit for automatic segmentation of lesions in stroke patients.   
+Is a toolkit for automatic segmentation of lesions in *chronic* stroke patients.   
 *****  
 ##  Requirements:  
 * Linux or Mac (ANTsR cannot run in Windows yet)  
@@ -9,7 +9,7 @@ Is a toolkit for automatic segmentation of lesions in stroke patients.
  
 *****  
 ## Install:  
-Download the [latest release](https://github.com/dorianps/LINDA/releases/download/0.1/LINDA_v0.1.zip) and unzip in a local folder.  
+Download the [latest release](https://github.com/dorianps/LINDA/releases/download/0.1/LINDA_v0.1.zip) (v0.1) and unzip in a local folder.  
   
 _IMPORTANT: Do not use the Github download buttons. They provide only the files of the main repository, without the large files containing the trained prediction models. The above link points to a full release that contains also the prediction models._  
   
