@@ -34,7 +34,7 @@ The best way to keep track of bugs or failures is to open a [New Issue](https://
   
 ## Frequently Asked Questions
 __- What file formats are accepted__?  
-Nifti images (.nii and .nii.gz) are accepted. Many other formats are likely to work, but we have limited the script to accept only Nifti until we test other formats. If you have the chance to test other formats, please send us feedback so we can remove the Nifti restriction.  
+Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti until we test other formats. If you have the chance to test other formats, please send us feedback so we can remove the Nifti restriction.  
 __- Can I use it with right hemispheric lesions?__  
 Yes, but you need to flip the L-R orientation before. Right now the script is only searching on the left side. We might simply things in the future to integrate right hemispheric lesions without any need to flip.  
 __- Can I use this for acute and subacute stroke lesions?__  
