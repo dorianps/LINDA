@@ -36,7 +36,7 @@ The best way to keep track of bugs or failures is to open a [New Issue](https://
 __- What file formats are accepted__?  
 Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti until we test other formats. If you have the chance to test other formats, please send us feedback so we can remove the Nifti restriction.  
 __- Can I use it with right hemispheric lesions?__  
-Yes, but you need to flip the L-R orientation before. Right now the script is only searching on the left side. We might simply things in the future to integrate right hemispheric lesions without any need to flip.  
+Yes, but you need to flip the L-R orientation before. Right now the script is only searching on the left side. We might simplify things in the future to integrate right hemispheric lesions without the need to flip.  
 __- Can I use this for acute and subacute stroke lesions?__  
 No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
 __- Can I use other images: FLAIR, T2, DWI?__  
