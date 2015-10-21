@@ -80,7 +80,15 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 <h2>
 <a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support:</h2>
 
-<p>The best way to keep track of bugs or failures is to open a <a href="https://github.com/dorianps/LINDA/issues">New Issue</a> on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds flowlessly but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying <code>Mask.lesion*.nii.gz</code> files on the T1 to check whether the brain mask is wrong somewhere.  </p>
+<p>The best way to keep track of bugs or failures is to open a <a href="https://github.com/dorianps/LINDA/issues">New Issue</a> on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying <code>Mask.lesion*.nii.gz</code> files on the T1 to check whether the brain mask is wrong somewhere.  </p>
+
+<h2>
+<a id="frequently-asked-questions" class="anchor" href="#frequently-asked-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frequently Asked Questions</h2>
+
+<p><strong>Can I use this for acute and subacute stroke lesions?</strong><br>
+No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).<br>
+<strong>Can I use other images: FLAIR, T2, DWI?</strong><br>
+The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   </p>
 
 <hr>
 
