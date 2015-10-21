@@ -31,6 +31,13 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 *****  
 ## Support:  
 The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
+  
+## Frequently Asked Questions
+__Can I use this for acute and subacute stroke lesions?__
+No, that will not work with the currectly trained models. The models are trained only on chronic stroke patients. There is a possibility to use it for earlier stages if we train a model with data from earlier stages, but we don't have the data for that purpose.  
+__Can I use other images (FLAIR, T2, DWI) to improve segmentation?__
+The current version utilizes only a T1, but the method can easily adapt to using multimodal images. If you like to collaborate and provide the multimodal data, we can train a model for you. Alternatively you can train the model yourself (script will be published online), but note that there are several options to consider (i.e., do you use deviances from controls, what strategy to use for coregistration, skull stripping, etc.). We think 30 subjects is a minimal number to train a robust model fur future use.  
+  
 *****  
 ## Example:  
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
