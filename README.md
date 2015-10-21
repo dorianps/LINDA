@@ -37,6 +37,8 @@ __Can I use this for acute and subacute stroke lesions?__
 No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
 __Can I use other images: FLAIR, T2, DWI?__  
 The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
+__Can I use it with right hemispheric lesions?__  
+Yes, but you need to flip the L-R orientation before. Right now the script is only searching on the left side. We might simply things in the future to integrate right hemispheric lesions without any need to flip.  
   
 *****  
 ## Example:  
