@@ -3,7 +3,7 @@ Is a toolkit for automatic segmentation of lesions in __chronic__ stroke patient
 *****  
 ##  Requirements:  
 * Linux or Mac (ANTsR cannot run in Windows yet)  
-* [R (3.0 or above)](http://www.r-project.org/) 
+* [R v3.0 or above](http://www.r-project.org/) 
 * The [ANTsR](http://stnava.github.io/ANTsR/) package installed in R
 * A T1-weighted MRI of a patient with (left hemispheric) stroke
  
