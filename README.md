@@ -34,9 +34,9 @@ The best way to keep track of bugs or failures is to open a [New Issue](https://
   
 ## Frequently Asked Questions
 __Can I use this for acute and subacute stroke lesions?__  
-No, that will not work with the currectly trained models. The models are trained only on chronic stroke patients. There is a possibility to use it for earlier stages if the model is trained with data from earlier stages, but we don't have those data for at the moment.  
-__Can I use other images (FLAIR, T2, DWI) to improve segmentation?__  
-The current version utilizes only a T1, but the method can easily adapt to using multimodal images. If you like to collaborate and provide the multimodal data, we can train a model for you (and hopefully make it publicly available for other groups). Alternatively we can provide a preliminary script to allow you to build predictive models with your own data, but note that there are several options to consider (i.e., do you use deviances from controls, what strategy to use for coregistration, skull stripping, etc.). We think 30 subjects is a minimal number to train a robust model fur future use.  
+No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
+__Can I use other images: FLAIR, T2, DWI?__  
+The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
   
 *****  
 ## Example:  
