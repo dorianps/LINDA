@@ -33,12 +33,14 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
   
 ## Frequently Asked Questions
-__Can I use this for acute and subacute stroke lesions?__  
-No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
-__Can I use other images: FLAIR, T2, DWI?__  
-The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
-__Can I use it with right hemispheric lesions?__  
+__- What file formats are accepted__?  
+Nifti images (.nii and .nii.gz) are accepted. Many other formats are likely to work, but we have limited the script to accept only Nifti until we test other formats. If you have the chance to test other formats, please send us feedback so we can remove the Nifti restriction.  
+__- Can I use it with right hemispheric lesions?__  
 Yes, but you need to flip the L-R orientation before. Right now the script is only searching on the left side. We might simply things in the future to integrate right hemispheric lesions without any need to flip.  
+__- Can I use this for acute and subacute stroke lesions?__  
+No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
+__- Can I use other images: FLAIR, T2, DWI?__  
+The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
   
 *****  
 ## Example:  
