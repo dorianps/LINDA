@@ -57,7 +57,7 @@
 
 <p>Download the <a href="https://github.com/dorianps/LINDA/releases/download/0.1/LINDA_v0.1.zip">latest release</a> (v0.1) and unzip in a local folder.  </p>
 
-<p><em>IMPORTANT: Do not use the Github download buttons. They provide only the files of the main repository, without the large files containing the trained prediction models. The above link points to a full release that contains also the prediction models.</em>  </p>
+<p><em>IMPORTANT: Use the above link for downloading. The Github download does not contain the large files with trained prediction models.</em>  </p>
 
 <hr>
 
@@ -85,9 +85,13 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 <h2>
 <a id="frequently-asked-questions" class="anchor" href="#frequently-asked-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frequently Asked Questions</h2>
 
-<p><strong>Can I use this for acute and subacute stroke lesions?</strong><br>
+<p><strong>- What file formats are accepted</strong>?<br>
+Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti to avoid confusion with some formats, such as Analyze, in knowing the left-right orientation.<br>
+<strong>- Can I use it with right hemispheric lesions?</strong><br>
+Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well. We plan to extend the script in the future for seemlessly integrate left or right lesions.<br>
+<strong>- Can I use this for acute and subacute stroke lesions?</strong><br>
 No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).<br>
-<strong>Can I use other images: FLAIR, T2, DWI?</strong><br>
+<strong>- Can I use other images: FLAIR, T2, DWI?</strong><br>
 The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   </p>
 
 <hr>
