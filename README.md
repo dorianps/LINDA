@@ -58,7 +58,7 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 DONE  
   
   
-Wonder what to expect? Check individual results from our  [60 patients Penn dataset](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_UPenn_Dataset.pdf) and [45 patients Georgetown dataset](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_Georgetown_Dataset.pdf).  
+Wonder what to expect? Check individual results from our  [60 patients Penn dataset](https://drive.google.com/file/d/0BxHeqEv37qqDT085MHAyMzFJcVk) and [45 patients Georgetown dataset](https://drive.google.com/open?id=0BxHeqEv37qqDY1psaC14QXZSOXc).  
   
 *****  
 ## Support:  
