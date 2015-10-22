@@ -66,7 +66,7 @@ The best way to keep track of bugs or failures is to open a [New Issue](https://
   
 ## Frequently Asked Questions
 __- What file formats are accepted__?  
-Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti to avoid confusion with some formats, such as Analyze, in knowing the left-right orientation.  
+Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti in order to avoid confusion with some formats (i.e., Analyze) that have unclear left-right orientation.  
 __- Can I use it with right hemispheric lesions?__  
 Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well. We plan to extend the script in the future for use in both left and right lesions.  
 __- Can I use this for acute and subacute stroke lesions?__  
