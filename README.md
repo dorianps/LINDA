@@ -29,20 +29,6 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 _Currently a model trained on 60 patients from Penn is used. The internal prediction engine works with 2mm voxel resolution. This does not mean your images need to be 2mm, any resolution should work._  
   
 *****  
-## Support:  
-The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
-  
-## Frequently Asked Questions
-__- What file formats are accepted__?  
-Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti to avoid confusion with some formats, such as Analyze, in knowing the left-right orientation.  
-__- Can I use it with right hemispheric lesions?__  
-Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well. We plan to extend the script in the future for use in both left and right lesions.  
-__- Can I use this for acute and subacute stroke lesions?__  
-No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
-__- Can I use other images: FLAIR, T2, DWI?__  
-The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
-  
-*****  
 ## Example:  
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
 >  12:09 Loading file: TMT_MPRAGE.nii  
@@ -70,7 +56,21 @@ The existing model uses only a T1, but we can adapt it with additional T2, FLAIR
 15:02 Saving 3rd final prediction...  
 15:02 Saving 3rd final prediction in native space...  
 DONE  
-
-
-To form an idea of the prediction accuracy, check individual samples from our  [main](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_UPenn_Dataset.pdf) and [complementary](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_Georgetown_Dataset.pdf) datasets.
-
+  
+  
+Wonder what to expect? Check individual results from our  [60 patients Penn dataset](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_UPenn_Dataset.pdf) and [45 patients Georgetown dataset](https://github.com/dorianps/LINDA/blob/master/Individual_Predictions_Georgetown_Dataset.pdf).  
+  
+*****  
+## Support:  
+The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
+  
+## Frequently Asked Questions
+__- What file formats are accepted__?  
+Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti to avoid confusion with some formats, such as Analyze, in knowing the left-right orientation.  
+__- Can I use it with right hemispheric lesions?__  
+Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well. We plan to extend the script in the future for use in both left and right lesions.  
+__- Can I use this for acute and subacute stroke lesions?__  
+No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
+__- Can I use other images: FLAIR, T2, DWI?__  
+The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
+  
