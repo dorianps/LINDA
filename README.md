@@ -72,7 +72,7 @@ __Prediction3_template.nii.gz__ - final prediction (template space)
 __Prediction3_native.nii.gz__ - final prediction (native space)  
 __Prediction3_probability_template__ - final graded probability (template space)  
 __Prediction3_probability_native__ - final graded probability (native space)  
-__Reg3_sub_to_template_(affine)(warp)__ - transformations matrices to register subject to template  
+__Reg3_sub_to_template_(affine)(warp)__ - transformation matrices to register subject to template  
 __Reg3_template_to_sub_(affine)(warp)__ - transformation matrices to backproject template to subject  
   
 *****  
