@@ -1,37 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
 <html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Linda : Lesion Identification with Neighborhood Data Analysis">
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/github-dark.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <title>Linda</title>
+  <meta name="description" content="Lesion Identification with Neighborhood Data Analysis">
 
-    <title>Linda</title>
-  </head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <body>
+</head>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/dorianps/LINDA">View on GitHub</a>
+<body>
 
-          <h1 id="project_title">Linda</h1>
-          <h2 id="project_tagline">Lesion Identification with Neighborhood Data Analysis</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/dorianps/LINDA/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/dorianps/LINDA/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h2>
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Linda</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Lesion Identification with Neighborhood Data Analysis</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/dorianps/LINDA/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/dorianps/LINDA/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/dorianps/LINDA" class="code">View Linda on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h2>
 <a id="what-is-linda" class="anchor" href="#what-is-linda" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is LINDA?</h2>
 
 <p>Is a toolkit for automatic segmentation of lesions in <strong>chronic</strong> stroke patients.   </p>
@@ -122,7 +127,7 @@ DONE  </p>
 <strong>N4corrected_Brain.nii.gz</strong> - Bias corrected, brain only (native space)<br>
 <strong>N4corrected_Brain_LRflipped.nii.gz</strong> - Flipped image used to compute asymmetry mask (native space)<br>
 <strong>Mask.lesion(1)(2)(3).nii.gz</strong> - masks used for registrations (native space)<br>
-<strong>Prediction(1)(2)(3).nii.gz</strong> - lesion predictions after each iterations (template space, 2mm)<br>
+<strong>Prediction(1)(2)(3).nii.gz</strong> - lesion predictions after each iteration (template space, but 2mm)<br>
 <strong>Prediction3_template.nii.gz</strong> - final prediction (template space)<br>
 <strong>Prediction3_native.nii.gz</strong> - final prediction (native space)<br>
 <strong>Prediction3_probability_template</strong> - final graded probability (template space)<br>
@@ -150,18 +155,26 @@ The existing model uses only a T1, but we can adapt it with additional T2, FLAIR
 <a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support:</h2>
 
 <p>The best way to keep track of bugs or failures is to open a <a href="https://github.com/dorianps/LINDA/issues">New Issue</a> on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying <code>Mask.lesion*.nii.gz</code> files on the T1 to check whether the brain mask is wrong somewhere.  </p>
-      </section>
+        </article>
+      </div>
     </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/dorianps" class="avatar"><img src="https://avatars2.githubusercontent.com/u/9083517?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/dorianps">dorianps</a> maintains <a href="https://github.com/dorianps/LINDA">Linda</a></p>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Linda maintained by <a href="https://github.com/dorianps">dorianps</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
 
-    
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/dorianps/LINDA/tarball/master" class="tar">tar</a><a href="https://github.com/dorianps/LINDA/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
 
-  </body>
+  
+</body>
 </html>
