@@ -11,7 +11,7 @@ Is a neuroimaging toolkit for automatic segmentation of  __chronic__ stroke lesi
 ## Install:  
 Download the [latest release](https://github.com/dorianps/LINDA/releases/download/0.2.0/LINDA_v0.2.0.zip) (v0.2.0) and unzip in a local folder.  
   
-_IMPORTANT: Use the above link for downloading. The Github download does not contain the large files with trained prediction models._  
+_IMPORTANT: Do not use the DOWNLOAD button you see on this page, it does not contain the full release (files are too large to put in Github repositories)._  
   
 *****  
 ## Run:  
