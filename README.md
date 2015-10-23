@@ -60,6 +60,21 @@ DONE
   
 Wonder what to expect? Check individual results from our  [60 patients Penn dataset](https://drive.google.com/file/d/0BxHeqEv37qqDT085MHAyMzFJcVk) and [45 patients Georgetown dataset](https://drive.google.com/open?id=0BxHeqEv37qqDY1psaC14QXZSOXc).  
   
+*****
+## OUTPUT files:
+__BrainMask.nii.gz__ - Brain mask used to skull strip (native space)
+N4corrected.nii.gz - Bias corrected, full image (native space)
+N4corrected_Brain.nii.gz - Bias corrected, brain only (native space)
+N4corrected_Brain_LRflipped.nii.gz - Flipped image used to compute asymmetry mask (native space)
+Mask.lesion(1)(2)(3).nii.gz - masks used for registrations (native space)
+Prediction(1)(2)(3).nii.gz - lesion predictions after each iterations (template space, 2mm)
+Prediction3_template.nii.gz - final prediction (template space)
+Prediction3_native.nii.gz - final prediction (native space)
+Prediction3_probability_template - final graded probability (template space)
+Prediction3_probability_native - final graded probability (native space)
+Reg3_sub_to_template_(affine)(warp) - transformations matrices to register subject to template
+Reg3_template_to_sub_(affine)(warp) - transformation matrices to backproject template to subject
+  
 *****  
 ## Frequently Asked Questions
 __- What file formats are accepted__?  
