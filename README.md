@@ -32,6 +32,7 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 ## Example:  
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
 >  12:09 Loading file: TMT_MPRAGE.nii  
+12:09 Starting LINDA v0.2.0 ...  
 12:09 Creating folder: /data/jag/dp/LINDAtest/TMT/linda  
 12:09 Loading template...  
 12:09 Skull stripping... (long process)  
@@ -54,7 +55,10 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 14:56 Feature calculation...  
 15:01 Running 3rd prediction...  
 15:02 Saving 3rd final prediction...  
+15:02 Saving 3rd final prediction in template space...  
 15:02 Saving 3rd final prediction in native space...  
+15:02 Saving probabilistic prediction in template space...  
+15:02 Saving probabilistic prediction in native space...  
 DONE  
   
   
@@ -70,8 +74,9 @@ __Mask.lesion(1)(2)(3).nii.gz__ - masks used for registrations (native space)
 __Prediction(1)(2)(3).nii.gz__ - lesion predictions after each iteration (template space, but 2mm)  
 __Prediction3_template.nii.gz__ - final prediction (template space)  
 __Prediction3_native.nii.gz__ - final prediction (native space)  
-__Prediction3_probability_template__ - final graded probability (template space)  
-__Prediction3_probability_native__ - final graded probability (native space)  
+__Prediction3_probability_template.nii.gz__ - final graded probability (template space)  
+__Prediction3_probability_native.nii.gz__ - final graded probability (native space)  
+__Reg3_registered_to_template.nii.gz__ - Subject's MRI, skull stripped, bias corrected, registered te template (template space)
 __Reg3_sub_to_template_(affine)(warp)__ - transformation matrices to register subject to template  
 __Reg3_template_to_sub_(affine)(warp)__ - transformation matrices to backproject template to subject  
   
