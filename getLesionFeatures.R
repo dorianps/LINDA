@@ -1,4 +1,4 @@
-getLesionFeatures = function(img, template, featdir) {
+getLesionFeatures = function(img, template, featdir, bmask) {
   # function to compute features for MRV-NRF
   
   if ( any(dim(img) != dim(template)) ) {
@@ -12,7 +12,7 @@ getLesionFeatures = function(img, template, featdir) {
   
   # FEAT 1: kmean difference from controls
   conavg = antsImageRead(file.path(featdir,'sumkmean.nii.gz'))
-  kmean = kmeansSegmentation(img,3)$segmentation
+  kmean = kmeansSegmentation(img,3,bmask)$segmentation
   feats[[1]] = (conavg - kmean) %>% iMath('Normalize')
   
   # FEAT 2: gradient magnitude

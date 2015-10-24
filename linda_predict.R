@@ -1,3 +1,6 @@
+ver = 'v0.2.0'
+cat(paste(format(Sys.time(), "%H:%M") , 'Starting LINDA', ver, "...\n"))
+
 # check for necessary packages and load them
 if (! is.element("ANTsR", installed.packages()[,1])) {
   stop("Required ANTsR package cannot be found.
@@ -9,6 +12,7 @@ if (! is.element("ANTsR", installed.packages()[,1])) {
 if (! is.element("randomForest", installed.packages()[,1])) {
   print("Installing missing `randomForest` package")
   install.packages("randomForest")
+  library(randomForest)
 } else { 
   library(randomForest)
 }
@@ -118,10 +122,11 @@ reg1=antsRegistration(fixed=simg,moving=tempbrain,typeofTransform = 'SyN',mask=m
 reg1$warpedfixout = reg1$warpedfixout %>% 
   iMath('TruncateIntensity',0.01,0.99) %>% 
   iMath('Normalize')
+tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg1$invtransforms, interpolator = 'NearestNeighbor')
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg1$warpedfixout, tempbrain, scriptdir)
+features = getLesionFeatures(reg1$warpedfixout, tempbrain, scriptdir,tempmask)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -156,10 +161,11 @@ reg2=antsRegistration(fixed=simg,moving=tempbrain,typeofTransform = 'SyN',mask=m
 reg2$warpedfixout = reg2$warpedfixout %>% 
   iMath('TruncateIntensity',0.01,0.99) %>% 
   iMath('Normalize')
+tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg2$invtransforms, interpolator = 'NearestNeighbor')
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg2$warpedfixout, tempbrain, scriptdir)
+features = getLesionFeatures(reg2$warpedfixout, tempbrain, scriptdir, tempmask)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -193,7 +199,7 @@ cat(paste(format(Sys.time(), "%H:%M") , "Running 3rd registration... (long proce
 reg3=antsRegistration(fixed=simg,moving=tempbrain,typeofTransform = 'SyNCC',mask=mask.lesion3)
 # save reg3 results
 cat(paste(format(Sys.time(), "%H:%M") , "Saving 3rd registration results... \n"))
-antsImageWrite(reg3$warpedfixout, file.path(lindadir,'Reg3_registered.nii.gz'))
+antsImageWrite(reg3$warpedfixout, file.path(lindadir,'Reg3_registered_to_template.nii.gz'))
 file.copy(reg3$fwdtransforms[1], file.path(lindadir , 'Reg3_template_to_sub_warp.nii.gz'))
 file.copy(reg3$fwdtransforms[2], file.path(lindadir , 'Reg3_template_to_sub_affine.mat'))
 file.copy(reg3$invtransforms[1], file.path(lindadir , 'Reg3_sub_to_template_affine.mat'))
@@ -202,10 +208,11 @@ file.copy(reg3$invtransforms[2], file.path(lindadir , 'Reg3_sub_to_template_warp
 reg3$warpedfixout = reg3$warpedfixout %>% 
   iMath('TruncateIntensity',0.01,0.99) %>% 
   iMath('Normalize')
+tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg3$invtransforms, interpolator = 'NearestNeighbor')
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg3$warpedfixout, tempbrain, scriptdir)
+features = getLesionFeatures(reg3$warpedfixout, tempbrain, scriptdir, tempmask)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -228,6 +235,19 @@ seg[seg!=4]=0
 seg[seg==4]=1
 segnative = antsApplyTransforms(fixed = simg, moving = seg, 
                                 transformlist = reg3$fwdtransforms, interpolator = 'NearestNeighbor')
+cat(paste(format(Sys.time(), "%H:%M") , "Saving 3rd final prediction in template space... \n"))
+antsImageWrite(seg, file.path(lindadir,'Prediction3_template.nii.gz'))
 cat(paste(format(Sys.time(), "%H:%M") , "Saving 3rd final prediction in native space... \n"))
 antsImageWrite(segnative, file.path(lindadir,'Prediction3_native.nii.gz'))
+
+# save graded map
+probles = resampleImage(mmseg3$probs[[1]][[4]], dim(tempbrain), useVoxels = 1, interpType = 0)
+problesnative = antsApplyTransforms(fixed = simg, moving = probles, 
+                                transformlist = reg3$fwdtransforms, interpolator = 'Linear')
+cat(paste(format(Sys.time(), "%H:%M") , "Saving probabilistic prediction in template space... \n"))
+antsImageWrite(probles, file.path(lindadir,'Prediction3_probability_template.nii.gz'))
+cat(paste(format(Sys.time(), "%H:%M") , "Saving probabilistic prediction in native space... \n"))
+antsImageWrite(problesnative, file.path(lindadir,'Prediction3_probability_native.nii.gz'))
+
+
 cat('DONE')
