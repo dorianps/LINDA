@@ -88,7 +88,8 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 <p><code>source('/data/myfolder/stroke/LINDA/linda_predict.R')</code>  </p>
 
 <blockquote>
-<p>12:09 Loading file: TMT_MPRAGE.nii<br>
+<p>12:09 Starting LINDA v0.2.0 ...<br>
+12:09 Loading file: TMT_MPRAGE.nii<br>
 12:09 Creating folder: /data/jag/dp/LINDAtest/TMT/linda<br>
 12:09 Loading template...<br>
 12:09 Skull stripping... (long process)<br>
@@ -111,7 +112,10 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 14:56 Feature calculation...<br>
 15:01 Running 3rd prediction...<br>
 15:02 Saving 3rd final prediction...<br>
+15:02 Saving 3rd final prediction in template space...<br>
 15:02 Saving 3rd final prediction in native space...<br>
+15:02 Saving probabilistic prediction in template space...<br>
+15:02 Saving probabilistic prediction in native space...<br>
 DONE  </p>
 </blockquote>
 
@@ -130,8 +134,9 @@ DONE  </p>
 <strong>Prediction(1)(2)(3).nii.gz</strong> - lesion predictions after each iteration (template space, but 2mm)<br>
 <strong>Prediction3_template.nii.gz</strong> - final prediction (template space)<br>
 <strong>Prediction3_native.nii.gz</strong> - final prediction (native space)<br>
-<strong>Prediction3_probability_template</strong> - final graded probability (template space)<br>
-<strong>Prediction3_probability_native</strong> - final graded probability (native space)<br>
+<strong>Prediction3_probability_template.nii.gz</strong> - final graded probability (template space)<br>
+<strong>Prediction3_probability_native.nii.gz</strong> - final graded probability (native space)<br>
+<strong>Reg3_registered_to_template.nii.gz</strong> - Subject's MRI, skull stripped, bias corrected, registered to template (template space)<br>
 <strong>Reg3_sub_to_template_(affine)(warp)</strong> - transformation matrices to register subject to template<br>
 <strong>Reg3_template_to_sub_(affine)(warp)</strong> - transformation matrices to backproject template to subject  </p>
 
