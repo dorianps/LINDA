@@ -92,6 +92,8 @@ __- Can I use it to segment acute and subacute stroke lesions?__
 No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
 __- Can I use other images: FLAIR, T2, DWI?__  
 The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
+__- Can I train a model with my own data?__  
+This is perfectly doable, but we haven't made available the script online yet (needs little work to adapt it for widepsread use). If you are in a hurry, contact us and we will send the current version of the training script.  
   
 ## Support:  
 The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
