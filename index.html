@@ -60,7 +60,7 @@
 <h2>
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install:</h2>
 
-<p>Download the <a href="https://github.com/dorianps/LINDA/releases/download/0.2.0/LINDA_v0.2.0.zip">latest release</a> (v0.2.0) and unzip in a local folder.  </p>
+<p>Download the <a href="https://github.com/dorianps/LINDA/releases/download/0.2.1/LINDA_v0.2.1.zip">latest release</a> (v0.2.1, 580Mb) and unzip in a local folder.  </p>
 
 <p><em>IMPORTANT: Do not use the DOWNLOAD button you see on this page, it does not contain the full release (files are too large to put in Github repositories).</em>  </p>
 
@@ -116,6 +116,8 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 15:02 Saving 3rd final prediction in native space...<br>
 15:02 Saving probabilistic prediction in template space...<br>
 15:02 Saving probabilistic prediction in native space...<br>
+15:02 Saving subject in MNI space...<br>
+15:02 Saving lesion in MNI space...<br>
 DONE  </p>
 </blockquote>
 
@@ -138,7 +140,9 @@ DONE  </p>
 <strong>Prediction3_probability_native.nii.gz</strong> - final graded probability (native space)<br>
 <strong>Reg3_registered_to_template.nii.gz</strong> - Subject's MRI, skull stripped, bias corrected, registered to template (template space)<br>
 <strong>Reg3_sub_to_template_(affine)(warp)</strong> - transformation matrices to register subject to template<br>
-<strong>Reg3_template_to_sub_(affine)(warp)</strong> - transformation matrices to backproject template to subject  </p>
+<strong>Reg3_template_to_sub_(affine)(warp)</strong> - transformation matrices to backproject template to subject<br>
+<strong>Subject_in_MNI.nii.gz</strong> - Subject's MRI, skull stripped, bias corrected, transformed in MNI space<br>
+<strong>Lesion_in_MNI.nii.gz</strong> - Lesion mask in MNI space  </p>
 
 <hr>
 
