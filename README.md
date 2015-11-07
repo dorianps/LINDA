@@ -9,7 +9,7 @@ Is a neuroimaging toolkit for automatic segmentation of  __chronic__ stroke lesi
  
 *****  
 ## Install:  
-Download the [latest release](https://github.com/dorianps/LINDA/releases/download/0.2.0/LINDA_v0.2.0.zip) (v0.2.0) and unzip in a local folder.  
+Download the [latest release](https://github.com/dorianps/LINDA/releases/download/0.2.1/LINDA_v0.2.1.zip) (v0.2.1, 580Mb) and unzip in a local folder.  
   
 _IMPORTANT: Do not use the DOWNLOAD button you see on this page, it does not contain the full release (files are too large to put in Github repositories)._  
   
@@ -59,6 +59,8 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 15:02 Saving 3rd final prediction in native space...  
 15:02 Saving probabilistic prediction in template space...  
 15:02 Saving probabilistic prediction in native space...  
+15:02 Saving subject in MNI space...  
+15:02 Saving lesion in MNI space...  
 DONE  
   
   
@@ -79,6 +81,8 @@ __Prediction3_probability_native.nii.gz__ - final graded probability (native spa
 __Reg3_registered_to_template.nii.gz__ - Subject's MRI, skull stripped, bias corrected, registered to template (template space)  
 __Reg3_sub_to_template_(affine)(warp)__ - transformation matrices to register subject to template  
 __Reg3_template_to_sub_(affine)(warp)__ - transformation matrices to backproject template to subject  
+__Subject_in_MNI.nii.gz__ - Subject's MRI, skull stripped, bias corrected, transformed in MNI space  
+__Lesion_in_MNI.nii.gz__ - Lesion mask in MNI space  
   
 *****  
 ## Frequently Asked Questions
