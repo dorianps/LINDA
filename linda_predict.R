@@ -1,5 +1,11 @@
-ver = 'v0.2.0'
+ver = 'v0.2.1'
 cat(paste(format(Sys.time(), "%H:%M") , 'Starting LINDA', ver, "...\n"))
+# Version History
+# 0.1   - first published LINDA
+# 0.2.0 - added native space output, added probability map output
+# 0.2.1 - fixed TruncateIntensity issue in old ANTsR
+#       - added MNI output
+
 
 # check for necessary packages and load them
 if (! is.element("ANTsR", installed.packages()[,1])) {
@@ -54,6 +60,13 @@ lindadir = file.path(dirname(t1), 'linda')
 cat(paste(format(Sys.time(), "%H:%M") , 'Creating folder:', lindadir, "\n"))
 dir.create(lindadir, showWarnings = F, recursive = T)
 
+
+# fix TruncateIntensity incompatibility with old ANTsR binaries
+if ( length( grep('TruncateIntensity' ,iMath(20,'GetOperations'))) != 0 ) {
+  truncate = 'TruncateIntensity'
+} else {
+  truncate = 'TruncateImageIntensity'
+}
 
 
 # load other functions
@@ -120,13 +133,13 @@ rm(emptyimg)
 cat(paste(format(Sys.time(), "%H:%M") , "Running 1st registration... \n"))
 reg1=antsRegistration(fixed=simg,moving=tempbrain,typeofTransform = 'SyN',mask=mask.lesion1)
 reg1$warpedfixout = reg1$warpedfixout %>% 
-  iMath('TruncateIntensity',0.01,0.99) %>% 
+  iMath(truncate,0.01,0.99) %>% 
   iMath('Normalize')
 tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg1$invtransforms, interpolator = 'NearestNeighbor')
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg1$warpedfixout, tempbrain, scriptdir,tempmask)
+features = getLesionFeatures(reg1$warpedfixout, tempbrain, scriptdir,tempmask,truncate)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -159,13 +172,13 @@ antsImageWrite(mask.lesion2, file.path(lindadir,'Mask.lesion2.nii.gz'))
 cat(paste(format(Sys.time(), "%H:%M") , "Running 2nd registration... \n"))
 reg2=antsRegistration(fixed=simg,moving=tempbrain,typeofTransform = 'SyN',mask=mask.lesion2)
 reg2$warpedfixout = reg2$warpedfixout %>% 
-  iMath('TruncateIntensity',0.01,0.99) %>% 
+  iMath(truncate,0.01,0.99) %>% 
   iMath('Normalize')
 tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg2$invtransforms, interpolator = 'NearestNeighbor')
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg2$warpedfixout, tempbrain, scriptdir, tempmask)
+features = getLesionFeatures(reg2$warpedfixout, tempbrain, scriptdir, tempmask,truncate)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -206,13 +219,13 @@ file.copy(reg3$invtransforms[1], file.path(lindadir , 'Reg3_sub_to_template_affi
 file.copy(reg3$invtransforms[2], file.path(lindadir , 'Reg3_sub_to_template_warp.nii.gz'))
 
 reg3$warpedfixout = reg3$warpedfixout %>% 
-  iMath('TruncateIntensity',0.01,0.99) %>% 
+  iMath(truncate,0.01,0.99) %>% 
   iMath('Normalize')
 tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg3$invtransforms, interpolator = 'NearestNeighbor')
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg3$warpedfixout, tempbrain, scriptdir, tempmask)
+features = getLesionFeatures(reg3$warpedfixout, tempbrain, scriptdir, tempmask,truncate)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -248,6 +261,25 @@ cat(paste(format(Sys.time(), "%H:%M") , "Saving probabilistic prediction in temp
 antsImageWrite(probles, file.path(lindadir,'Prediction3_probability_template.nii.gz'))
 cat(paste(format(Sys.time(), "%H:%M") , "Saving probabilistic prediction in native space... \n"))
 antsImageWrite(problesnative, file.path(lindadir,'Prediction3_probability_native.nii.gz'))
+
+# save in MNI coordinates
+cat(paste(format(Sys.time(), "%H:%M") , "Transferring data in MNI space... \n"))
+warppenn = file.path(lindadir , 'Reg3_sub_to_template_warp.nii.gz')
+affpenn = file.path(lindadir , 'Reg3_sub_to_template_affine.mat')
+warpmni = file.path(scriptdir,'pennTemplate','templateToCh2_1Warp.nii.gz')
+affmni = file.path(scriptdir,'pennTemplate','templateToCh2_0GenericAffine.mat')
+mni = antsImageRead(
+    file.path(scriptdir,'pennTemplate','ch2.nii.gz')
+  )
+matrices = c(warpmni,affmni,affpenn,warppenn)
+
+submni=antsApplyTransforms(moving=simg, fixed=mni,transformlist = matrices, interpolator = 'Linear', whichtoinvert = c(0,0,1,0))
+lesmni=antsApplyTransforms(moving=segnative, fixed=mni,transformlist = matrices, interpolator = 'NearestNeighbor', whichtoinvert = c(0,0,1,0))
+
+cat(paste(format(Sys.time(), "%H:%M") , "Saving subject in MNI space... \n"))
+antsImageWrite(submni, file.path(lindadir,'Subject_in_MNI.nii.gz'))
+cat(paste(format(Sys.time(), "%H:%M") , "Saving lesion in MNI space... \n"))
+antsImageWrite(lesmni, file.path(lindadir,'Lesion_in_MNI.nii.gz'))
 
 
 cat('DONE')

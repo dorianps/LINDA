@@ -1,4 +1,4 @@
-getLesionFeatures = function(img, template, featdir, bmask) {
+getLesionFeatures = function(img, template, featdir, bmask, truncate) {
   # function to compute features for MRV-NRF
   
   if ( any(dim(img) != dim(template)) ) {
@@ -21,10 +21,10 @@ getLesionFeatures = function(img, template, featdir, bmask) {
   # FEAT 3: t1 difference from controls
   conavg = antsImageRead(file.path(featdir,'N4ControlAvgerage.nii.gz'))
   temp = img %>% smoothImage(2) %>%
-    iMath('TruncateIntensity', 0.001, 0.999) %>% 
+    iMath(truncate, 0.001, 0.999) %>% 
     iMath('Normalize')
   feats[[3]] = (conavg - temp) %>% 
-    iMath('TruncateIntensity', 0.01, 0.99) %>%
+    iMath(truncate, 0.01, 0.99) %>%
     iMath('Normalize')
   
   # FEAT 4: kmean
@@ -33,7 +33,7 @@ getLesionFeatures = function(img, template, featdir, bmask) {
   # FEAT 5: reflection difference from controls
   conavg = antsImageRead(file.path(featdir,'ControlAverageReflected.nii.gz'))
   reflimg = reflectImage(img, axis=1, tx='Affine')
-  temp = iMath(reflimg$warpedmovout-img, 'TruncateIntensity', 0.01, 0.99) %>% iMath('Normalize')
+  temp = iMath(reflimg$warpedmovout-img, truncate, 0.01, 0.99) %>% iMath('Normalize')
   feats[[5]] = (temp - conavg) %>% iMath('Normalize')
   
   # FEAT 6: t1 itself
