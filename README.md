@@ -1,4 +1,4 @@
-###### Jan 19 - We are working on the next version of LINDA with slightly improved accuracy. Please register to our mailing list to receive notifications of new releases, by sending an email to LINDA-tools+subscribe@googlegroups.com .  
+###### Please send an email tp LINDA-tools+subscribe@googlegroups.com to register to our mailing list and receive notifications of new releases.  
   
 ## What is LINDA?  
 Is a neuroimaging toolkit for automatic segmentation of  __chronic__ stroke lesions.   
