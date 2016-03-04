@@ -37,17 +37,17 @@
         </div>
         <article class="markdown-body">
           <h6>
-<a id="jan-19---we-are-working-on-the-next-version-of-linda-with-slightly-improved-accuracy-please-register-to-our-mailing-list-to-receive-notifications-of-new-releases-by-sending-an-email-to-linda-toolssubscribegooglegroupscom-" class="anchor" href="#jan-19---we-are-working-on-the-next-version-of-linda-with-slightly-improved-accuracy-please-register-to-our-mailing-list-to-receive-notifications-of-new-releases-by-sending-an-email-to-linda-toolssubscribegooglegroupscom-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jan 19 - We are working on the next version of LINDA with slightly improved accuracy. Please register to our mailing list to receive notifications of new releases, by sending an email to <a href="mailto:LINDA-tools+subscribe@googlegroups.com">LINDA-tools+subscribe@googlegroups.com</a> .</h6>
+<a id="please-send-an-email-tp-linda-toolssubscribegooglegroupscom-to-register-to-our-mailing-list-and-receive-notifications-of-new-releases" class="anchor" href="#please-send-an-email-tp-linda-toolssubscribegooglegroupscom-to-register-to-our-mailing-list-and-receive-notifications-of-new-releases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Please send an email tp <a href="mailto:LINDA-tools+subscribe@googlegroups.com">LINDA-tools+subscribe@googlegroups.com</a> to register to our mailing list and receive notifications of new releases.</h6>
 
 <h2>
-<a id="what-is-linda" class="anchor" href="#what-is-linda" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is LINDA?</h2>
+<a id="what-is-linda" class="anchor" href="#what-is-linda" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is LINDA?</h2>
 
 <p>Is a neuroimaging toolkit for automatic segmentation of  <strong>chronic</strong> stroke lesions.   </p>
 
 <hr>
 
 <h2>
-<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements:</h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements:</h2>
 
 <ul>
 <li>Linux or Mac (ANTsR cannot run in Windows yet)<br>
@@ -61,16 +61,16 @@
 <hr>
 
 <h2>
-<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install:</h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install:</h2>
 
-<p>Download the <a href="https://github.com/dorianps/LINDA/releases/download/0.2.2/LINDA_v0.2.2.zip">latest release</a> (v0.2.2, 580Mb) and unzip in a local folder.  </p>
+<p>Download the <a href="https://github.com/dorianps/LINDA/releases/download/0.2.3/LINDA_v0.2.3.zip">latest release</a> (v0.2.3, 580Mb) and unzip in a local folder.  </p>
 
 <p><em>IMPORTANT: Only the above link contains the full release with trained models, templates, etc. Do not use the "Download" button at it contains only smaller scripts without trained models, etc.</em>  </p>
 
 <hr>
 
 <h2>
-<a id="run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run:</h2>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run:</h2>
 
 <p>Open R and source the file linda_predict.R
 <code>source('/data/myfolder/stroke/LINDA/linda_predict.R')</code><br>
@@ -86,7 +86,7 @@ Results will be saved in a folder named "linda" in the same path where the T1 is
 <hr>
 
 <h2>
-<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example:</h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example:</h2>
 
 <p><code>source('/data/myfolder/stroke/LINDA/linda_predict.R')</code>  </p>
 
@@ -130,7 +130,7 @@ DONE  </p>
 <hr>
 
 <h2>
-<a id="output-files" class="anchor" href="#output-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>OUTPUT files:</h2>
+<a id="output-files" class="anchor" href="#output-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>OUTPUT files:</h2>
 
 <p><strong>BrainMask.nii.gz</strong> - Brain mask used to skull strip (native space)<br>
 <strong>N4corrected.nii.gz</strong> - Bias corrected, full image (native space)<br>
@@ -151,7 +151,7 @@ DONE  </p>
 <hr>
 
 <h2>
-<a id="frequently-asked-questions" class="anchor" href="#frequently-asked-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frequently Asked Questions</h2>
+<a id="frequently-asked-questions" class="anchor" href="#frequently-asked-questions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Frequently Asked Questions</h2>
 
 <p><strong>- What file formats are accepted</strong>?<br>
 Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti in order to avoid confusion with some formats (i.e., Analyze) that have unclear left-right orientation.<br>
@@ -169,7 +169,7 @@ This is perfectly doable, but we haven't made available the script online yet (n
 The transfer in MNI is obtained by concatenating transformations "Subject" -&gt; "Penn Template" -&gt; "ch2 MNI template". Thus there are two sources of potential error. The second source of error is fixed for all subjects because our template has always the same registration on MNI. However, a fixed error is always an error. If you really want precise registration on MNI, we advise to register directly the subject to an MNI template (possibly using a group MNI template rather than the ch2).  </p>
 
 <h2>
-<a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support:</h2>
+<a id="support" class="anchor" href="#support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support:</h2>
 
 <p>The best way to keep track of bugs or failures is to open a <a href="https://github.com/dorianps/LINDA/issues">New Issue</a> on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying <code>Mask.lesion*.nii.gz</code> files on the T1 to check whether the brain mask is wrong somewhere.  </p>
         </article>
