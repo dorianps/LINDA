@@ -1,11 +1,13 @@
-ver = 'v0.2.1'
+ver = 'v0.2.4'
 cat(paste(format(Sys.time(), "%H:%M") , 'Starting LINDA', ver, "...\n"))
 # Version History
 # 0.1   - first published LINDA
 # 0.2.0 - added native space output, added probability map output
 # 0.2.1 - fixed TruncateIntensity issue in old ANTsR
 #       - added MNI output
-
+# 0.2.2 - fix axis for left-right refelction
+# 0.2.3 - fix bug in 'relfaxis'
+# 0.2.4 - switching mask.lesion1 from graded to binary
 
 # check for necessary packages and load them
 if (! is.element("ANTsR", installed.packages()[,1])) {
@@ -104,19 +106,15 @@ load(file.path(scriptdir, 'PublishablePennModel_2mm_mr321_rad1.Rdata'))
 
 # compute asymmetry mask
 cat(paste(format(Sys.time(), "%H:%M") , "Computing asymmetry mask... \n"))
-if (sum( abs(diag(antsGetDirection(simg))) ) == 3) {
-  reflaxis = 1
-} else {
-  reflaxis = 0
-}
+reflaxis = which.max(abs(antsGetDirection(simg)[,1]))-1
+
 asymmetry = reflectImage(simg,axis=reflaxis, tx='Affine'); Sys.sleep(2)
 antsImageWrite(asymmetry$warpedmovout, file.path(lindadir,'N4corrected_Brain_LRflipped.nii.gz'))
 reflect = smoothImage(asymmetry$warpedmovout, 2) - smoothImage(simg, 2)
 reflect[reflect<0]=0
 reflect = iMath(reflect,'Normalize')
 mask.lesion1 = submask - reflect
-mask.lesion1 [mask.lesion1<0.2] = 0
-mask.lesion1[submask==0] = 0
+mask.lesion1 = thresholdImage(mask.lesion1,0.6,Inf) * submask
 cat(paste(format(Sys.time(), "%H:%M") , "Saving asymmetry mask... \n"))
 antsImageWrite(mask.lesion1, file.path(lindadir,'Mask.lesion1_asym.nii.gz'))
 
@@ -139,7 +137,7 @@ tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg1$warpedfixout, tempbrain, scriptdir,tempmask,truncate)
+features = getLesionFeatures(reg1$warpedfixout, tempbrain, scriptdir,tempmask,truncate,reflaxis)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -178,7 +176,7 @@ tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg2$warpedfixout, tempbrain, scriptdir, tempmask,truncate)
+features = getLesionFeatures(reg2$warpedfixout, tempbrain, scriptdir, tempmask,truncate,reflaxis)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
@@ -225,7 +223,7 @@ tempmask=antsApplyTransforms(moving=submask, fixed=tempbrain,transformlist = reg
 
 # prepare features
 cat(paste(format(Sys.time(), "%H:%M") , "Feature calculation... \n"))
-features = getLesionFeatures(reg3$warpedfixout, tempbrain, scriptdir, tempmask,truncate)
+features = getLesionFeatures(reg3$warpedfixout, tempbrain, scriptdir, tempmask,truncate,reflaxis)
 for (i in 1:length(features)) features[[i]] = resampleImage(features[[i]], resamplevox, 
                                                             useVoxels = 0, interpType = 0) * brainmaskleftbrain
 
