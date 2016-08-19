@@ -1,7 +1,7 @@
 ###### Please send an email tp LINDA-tools+subscribe@googlegroups.com to register to our mailing list and receive notifications of new releases.  
   
 ## What is LINDA?  
-Is a neuroimaging toolkit for automatic segmentation of  __chronic__ stroke lesions. (see [Hum Brain Mapp. 2016 Apr;37(4):1405-21] (http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract))   
+Is a neuroimaging toolkit for automatic segmentation of  __chronic__ stroke lesions. The method is described in [Hum Brain Mapp. 2016 Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract)   
 *****  
 ##  Requirements:  
 * Linux or Mac (ANTsR cannot run in Windows yet)  
