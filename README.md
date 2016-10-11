@@ -4,7 +4,7 @@
 Is a neuroimaging toolkit for automatic segmentation of  __chronic__ stroke lesions. The method is described in [Hum Brain Mapp. 2016 Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract).   
 *****  
 ##  Requirements:  
-* Linux or Mac (ANTsR cannot run in Windows yet)  
+* Linux or Mac (since Oct 2016 ANTsR [can run in Windows 10](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).))  
 * [R v3.0 or above](http://www.r-project.org/) 
 * The [ANTsR](http://stnava.github.io/ANTsR/) package installed in R
 * A T1-weighted MRI of a patient with (left hemispheric) stroke
