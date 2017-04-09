@@ -90,7 +90,7 @@ __Lesion_in_MNI.nii.gz__ - Lesion mask in MNI space
 *****  
 
 **Important Note**  
-MNI is a space, not a template. There are many templates in MNI space, most of which do not have the same gyri or sulci at the same coordinates. LINDA uses the CH2 MNI template. If you use another template to overlay results, or to make other  comparisons, the results will be wrong. You have to use the CH2 template to see LINDA results. You can move results from CH2 to another template in MNI space (i.e., ICBM 2009a) by running a registration between templates.   
+MNI is a space, not a template. There are many templates in MNI space, most of which do not have the same gyri or sulci at the same coordinates. LINDA uses the CH2 template. If you use another template to overlay results, or to make other  comparisons, the results will be wrong, even though both might be in MNI space. You have to use the CH2 template to see LINDA results. Or you can register the CH2 template to another template (i.e., ICBM 2009a) and than move back and forth as necessary.   
   
 ******
 ## Frequently Asked Questions
