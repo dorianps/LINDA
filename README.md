@@ -37,7 +37,7 @@ _Currently a model trained on 60 patients from Penn is used. The internal predic
 randomForest 4.6-12  
 Type rfNews() to see new features/changes/bug fixes.  
 14:47 Loading file: subjA_T1.nii   
-14:47 Creating folder: /mnt/c/Users/fajtori/Desktop/Kaori_LINDA/linda   
+14:47 Creating folder: /mnt/c/Users/TESTsubject/linda   
 14:47 Loading template...   
 14:47 Skull stripping... (long process)   
 14:54 Saving skull stripped files   
