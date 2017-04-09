@@ -88,6 +88,11 @@ __Subject_in_MNI.nii.gz__ - Subject's MRI, skull stripped, bias corrected, trans
 __Lesion_in_MNI.nii.gz__ - Lesion mask in MNI space  
   
 *****  
+
+**Important Note**  
+MNI is a space, not a template. There are many templates in MNI space, most of which do not have the same gyri or sulci at the same coordinates. LINDA uses the CH2 MNI template. If you use another template to overlay results, or to make other  comparisons, the results will be wrong. You have to use the CH2 template to see LINDA results. You can move results from CH2 to another template in MNI space (i.e., ICBM 2009a) by running a registration between templates.   
+  
+******
 ## Frequently Asked Questions
 __- What file formats are accepted__?  
 Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti in order to avoid confusion with some formats (i.e., Analyze) that have unclear left-right orientation.  
