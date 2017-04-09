@@ -308,7 +308,7 @@ mrvnrfs.predict_chunks <- function( rflist, x, labelmask, rad=NA,
       } else { chnxt=sum(submask>0) }
       
       # create mask for this chunk
-      temp=which(submask>0, arr.ind=T)[chunk.seq[ch]:chnxt]
+      temp=which(submask>0)[chunk.seq[ch]:chnxt]
       nnz = submask>0 ; nnz[-temp]=F
       cropmask = submask+0
       cropmask[nnz==F] = 0

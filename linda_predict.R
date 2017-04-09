@@ -1,13 +1,17 @@
-ver = 'v0.2.4'
+ver = 'v0.2.6'
 cat(paste(format(Sys.time(), "%H:%M") , 'Starting LINDA', ver, "...\n"))
-# Version History
-# 0.1   - first published LINDA
-# 0.2.0 - added native space output, added probability map output
-# 0.2.1 - fixed TruncateIntensity issue in old ANTsR
-#       - added MNI output
-# 0.2.2 - fix axis for left-right refelction
-# 0.2.3 - fix bug in 'relfaxis'
-# 0.2.4 - switching mask.lesion1 from graded to binary
+#' Version History
+#' 0.1   - first published LINDA
+#' 0.2.0 - added native space output, added probability map output
+#' 0.2.1 - fixed TruncateIntensity issue in old ANTsR
+#'       - added MNI output
+#' 0.2.2 - fix axis for left-right refelction
+#' 0.2.3 - fix bug in 'relfaxis'
+#' 0.2.4 - switching mask.lesion1 from graded to binary
+#' 0.2.5 - fixed scriptdir to allow command line call
+#' 0.2.6 - fixed bug in mrvnrfs_chunks.predict after dimfix 
+#'         from @jeffduda in ANTsR (03/02/2017)
+#'         removed dynamic set of reflaxis, all = 0 now
 
 # check for necessary packages and load them
 if (! is.element("ANTsR", installed.packages()[,1])) {
@@ -72,7 +76,7 @@ if ( length( grep('TruncateIntensity' ,iMath(20,'GetOperations'))) != 0 ) {
 
 
 # load other functions
-scriptdir = dirname(sys.frame(1)$ofile)
+if (!exists('scriptdir'))  scriptdir = dirname(sys.frame(1)$ofile)
 source(file.path(scriptdir, 'getLesionFeatures.R'), echo=F)
 source(file.path(scriptdir, 'mrvnrfs_chunks.R'), echo=F)
 
@@ -106,7 +110,7 @@ load(file.path(scriptdir, 'PublishablePennModel_2mm_mr321_rad1.Rdata'))
 
 # compute asymmetry mask
 cat(paste(format(Sys.time(), "%H:%M") , "Computing asymmetry mask... \n"))
-reflaxis = which.max(abs(antsGetDirection(simg)[,1]))-1
+reflaxis = 0 # which.max(abs(antsGetDirection(simg)[,1]))-1
 
 asymmetry = reflectImage(simg,axis=reflaxis, tx='Affine'); Sys.sleep(2)
 antsImageWrite(asymmetry$warpedmovout, file.path(lindadir,'N4corrected_Brain_LRflipped.nii.gz'))
@@ -261,7 +265,7 @@ cat(paste(format(Sys.time(), "%H:%M") , "Saving probabilistic prediction in nati
 antsImageWrite(problesnative, file.path(lindadir,'Prediction3_probability_native.nii.gz'))
 
 # save in MNI coordinates
-cat(paste(format(Sys.time(), "%H:%M") , "Transferring data in MNI space... \n"))
+cat(paste(format(Sys.time(), "%H:%M") , "Transferring data in MNI (ch2) space... \n"))
 warppenn = file.path(lindadir , 'Reg3_sub_to_template_warp.nii.gz')
 affpenn = file.path(lindadir , 'Reg3_sub_to_template_affine.mat')
 warpmni = file.path(scriptdir,'pennTemplate','templateToCh2_1Warp.nii.gz')
@@ -274,9 +278,9 @@ matrices = c(warpmni,affmni,affpenn,warppenn)
 submni=antsApplyTransforms(moving=simg, fixed=mni,transformlist = matrices, interpolator = 'Linear', whichtoinvert = c(0,0,1,0))
 lesmni=antsApplyTransforms(moving=segnative, fixed=mni,transformlist = matrices, interpolator = 'NearestNeighbor', whichtoinvert = c(0,0,1,0))
 
-cat(paste(format(Sys.time(), "%H:%M") , "Saving subject in MNI space... \n"))
+cat(paste(format(Sys.time(), "%H:%M") , "Saving subject in MNI (ch2) space... \n"))
 antsImageWrite(submni, file.path(lindadir,'Subject_in_MNI.nii.gz'))
-cat(paste(format(Sys.time(), "%H:%M") , "Saving lesion in MNI space... \n"))
+cat(paste(format(Sys.time(), "%H:%M") , "Saving lesion in MNI (ch2) space... \n"))
 antsImageWrite(lesmni, file.path(lindadir,'Lesion_in_MNI.nii.gz'))
 
 
