@@ -70,6 +70,7 @@ DONE
   
   
 Wonder what to expect? Check individual results from our  [60 patients Penn dataset](https://drive.google.com/file/d/0BxHeqEv37qqDT085MHAyMzFJcVk) and [45 patients Georgetown dataset](https://drive.google.com/open?id=0BxHeqEv37qqDY1psaC14QXZSOXc).  
+Our users have reported quite good lesion segmentations for typical large stroke lesions, but less accurate segmentations with tiny lesions.  
   
 *****
 ## OUTPUT files:  
