@@ -301,17 +301,23 @@ mrvnrfs.predict_chunks <- function( rflist, x, labelmask, rad=NA,
       }
     } # end creating masterprobs
     
-    for (ch in 1:length(chunk.seq)) {
+    
+    chunkmask = splitMask(submask, voxchunk = voxchunk)
+    
+    
+    for (ch in 1:max(chunkmask)) {
       
-      # set end of this chunk
-      if (ch < length(chunk.seq)) { chnxt=chunk.seq[ch+1]-1 
-      } else { chnxt=sum(submask>0) }
+      # # set end of this chunk # removed block after ANTsR reconfig in July 2017
+      # if (ch < length(chunk.seq)) { chnxt=chunk.seq[ch+1]-1 
+      # } else { chnxt=sum(submask>0) }
+      # 
+      # # create mask for this chunk
+      # temp=which(submask>0)[chunk.seq[ch]:chnxt]
+      # nnz = submask>0 ; nnz[-temp]=F
+      # cropmask = submask+0
+      # cropmask[nnz==F] = 0
       
-      # create mask for this chunk
-      temp=which(submask>0)[chunk.seq[ch]:chnxt]
-      nnz = submask>0 ; nnz[-temp]=F
-      cropmask = submask+0
-      cropmask[nnz==F] = 0
+      cropmask = thresholdImage(chunkmask, ch, ch)
       
       # start filling fm
       testmat<-t(getNeighborhoodInMask( cropmask, cropmask,

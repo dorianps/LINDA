@@ -1,4 +1,4 @@
-ver = 'v0.2.6'
+ver = 'v0.2.7'
 cat(paste(format(Sys.time(), "%H:%M") , 'Starting LINDA', ver, "...\n"))
 #' Version History
 #' 0.1   - first published LINDA
@@ -12,6 +12,8 @@ cat(paste(format(Sys.time(), "%H:%M") , 'Starting LINDA', ver, "...\n"))
 #' 0.2.6 - fixed bug in mrvnrfs_chunks.predict after dimfix 
 #'         from @jeffduda in ANTsR (03/02/2017)
 #'         removed dynamic set of reflaxis, all = 0 now
+#' 0.2.7 - using splitMask for compatibility with new ANTsR
+#'         reconfiguration of June 2017.
 
 # check for necessary packages and load them
 if (! is.element("ANTsR", installed.packages()[,1])) {
