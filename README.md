@@ -104,14 +104,16 @@ Yes, but you need to flip the L-R orientation before. After that, the prediction
 __- Can I use it with bilateral lesions?__  
 It will likely be less accurate. One of the features we use is related to the left-right signal asymmetry  
 __- Can I use it to segment acute and subacute stroke lesions?__  
-No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data (let us know if you want to contribute with those data).  
+No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data.  
 __- Can I use other images: FLAIR, T2, DWI?__  
-The existing model uses only a T1, but we can adapt it with additional T2, FLAIR, DWI. We are open to collaborations with groups that have multimodal data and want to train LINDA with those. Having ~30 subjects is a good start.   
+No, the existing model accepts only a T1w. Additional models can be built that use multiple modalities (T2, FLAIR, DWI).   
 __- Can I train a model with my own data?__  
-This is perfectly doable, but we haven't made available the script online yet (needs some work to adapt it for widepsread use). If you are in a hurry, contact us and we will send the current version of the training script.  
+This is perfectly doable, but the training script is not available online (needs some work to adapt it for widepsread use). If you want the example script used for the current model, I can send it easily, just contact me.  
 __- Can I use LINDA to obtain registrations in MNI?__  
 The transfer in MNI is obtained by concatenating transformations "Subject" -> "Penn Template" -> "ch2 MNI template". Thus there are two sources of potential error. The second source of error is fixed for all subjects because our template has always the same registration on MNI. However, a fixed error is always an error. If you really want precise registration on MNI, we advise to register directly the subject to an MNI template (possibly using a group MNI template rather than the ch2).  
-  
+__- Will you maintain this package and publish new models?__  
+There is no plan, time, or funding to do this currently. If other researchers want to contribute, this can be done easily because this is an open source tool (training data are not open source though).
+
 ## Support:  
 The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
   
