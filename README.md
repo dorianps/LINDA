@@ -98,22 +98,24 @@ MNI is a space, not a template. There are many templates in MNI space, most of w
 ******
 ## Frequently Asked Questions
 __- What file formats are accepted__?  
-Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti in order to avoid confusion with some formats (i.e., Analyze) that have unclear left-right orientation.  
+Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but the is limtied script to Nifti in order to avoid confusion with some formats (i.e., Analyze) that have unclear left-right orientation.  
 __- Can I use it with right hemispheric lesions?__  
 Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well.  
 __- Can I use it with bilateral lesions?__  
-It will likely be less accurate. One of the features we use is related to the left-right signal asymmetry  
+It will likely be less accurate. One of the features LINDA uses is the left-right signal asymmetry.  
 __- Can I use it to segment acute and subacute stroke lesions?__  
 No, the current model is trained only on chronic stroke patients. It might be possible to segment acute stroke with models trained on acute data.  
 __- Can I use other images: FLAIR, T2, DWI?__  
-No, the existing model accepts only a T1w. Additional models can be built that use multiple modalities (T2, FLAIR, DWI).   
+No, the existing model accepts only T1w. In principle, additional models can be built from other modalities (T2, FLAIR, DWI).   
 __- Can I train a model with my own data?__  
 This is perfectly doable, but the training script is not available online (needs some work to adapt it for widepsread use). If you want the example script used for the current model, I can send it easily, just contact me.  
 __- Can I use LINDA to obtain registrations in MNI?__  
-The transfer in MNI is obtained by concatenating transformations "Subject" -> "Penn Template" -> "ch2 MNI template". Thus there are two sources of potential error. The second source of error is fixed for all subjects because our template has always the same registration on MNI. However, a fixed error is always an error. If you really want precise registration on MNI, we advise to register directly the subject to an MNI template (possibly using a group MNI template rather than the ch2).  
-__- Will you maintain this package and publish new models?__  
-There is no plan, time, or funding to do this currently. If other researchers want to contribute, this can be done easily because this is an open source tool (training data are not open source though).
+The transfer in MNI is obtained by concatenating transformations "Subject" -> "Penn Template" -> "ch2 MNI template". Thus there are two sources of potential error. The second source of error is fixed for all subjects because our template has always the same registration on MNI. However, a fixed error is always an error. If you really want precise registration on MNI, I advise to register directly the subject to an MNI template (possibly using a group MNI template rather than the ch2).  
+__- Will you maintain LINDA and publish new models in the future?__  
+There is no plan, time, or funding to do this at this time. If other researchers want to contribute, this can be done easily because LINDA is open source.  
 
 ## Support:  
 The best way to keep track of bugs or failures is to open a [New Issue](https://github.com/dorianps/LINDA/issues) on the Github system. You can also contact the author via email: dorian dot pustina at uphs dot upenn dot edu (translate from english). If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
   
+## Other software for lesion studies
+Check out the LESYMAP package for lesion to symptom mapping: https://github.com/dorianps/LESYMAP.
