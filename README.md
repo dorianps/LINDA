@@ -100,7 +100,7 @@ MNI is a space, not a template. There are many templates in MNI space, most of w
 __- What file formats are accepted__?  
 Nifti images (.nii and .nii.gz) are accepted. The platform can read many other formats, but we have limited the script to Nifti in order to avoid confusion with some formats (i.e., Analyze) that have unclear left-right orientation.  
 __- Can I use it with right hemispheric lesions?__  
-Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well. We plan to extend the script in the future for use in both left and right lesions.  
+Yes, but you need to flip the L-R orientation before. After that, the prediction will work just as well.  
 __- Can I use it with bilateral lesions?__  
 It will likely be less accurate. One of the features we use is related to the left-right signal asymmetry  
 __- Can I use it to segment acute and subacute stroke lesions?__  
