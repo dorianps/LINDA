@@ -27,6 +27,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
+Remotes: 
+    ANTsX/ANTsRCore,
+    ANTsX/ANTsR
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
