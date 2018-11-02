@@ -80,7 +80,7 @@ run_prediction = function(
   predlabel.sub[features[[4]] == 0] = 0
   mmseg <- suppressMessages(
     ANTsR::mrvnrfs(
-      rflist
+      rflist,
       list(features),
       predlabel.sub,
       rad = rad,
