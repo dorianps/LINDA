@@ -14,7 +14,7 @@
 #'
 #' @importFrom ANTsRCore iMath antsImageRead antsImageWrite antsRegistration
 #' @importFrom ANTsRCore resampleImage smoothImage thresholdImage antsImageClone
-#' @importFrom ANTsRCore antsApplyTransforms
+#' @importFrom ANTsRCore antsApplyTransforms is.antsImage
 #' @importFrom ANTsR abpN4 abpBrainExtraction reflectImage
 #' @importFrom ANTsR composeTransformsToField
 #' @importFrom magrittr %>%
@@ -32,13 +32,9 @@ linda_predict = function(
   if (is.null(outdir)) {
     outdir = file.path(dirname(file), "linda")
   }
-  if (verbose) {
-    msg = paste(format(Sys.time(), "%H:%M") ,
-                'Creating folder:',
-                outdir,
-                "\n")
-    message(msg)
-  }
+  print_msg(paste(
+    'Creating folder:',
+    outdir), verbose = verbose)
   dir.create(outdir, showWarnings = FALSE, recursive = TRUE)
 
   template = system.file("extdata", "pennTemplate", "template.nii.gz",
@@ -70,14 +66,6 @@ linda_predict = function(
   antsImageWrite(n4, file.path(outdir, 'N4corrected.nii.gz'))
   antsImageWrite(submask, file.path(outdir, 'BrainMask.nii.gz'))
   antsImageWrite(simg, file.path(outdir, 'N4corrected_Brain.nii.gz'))
-
-
-
-  # fix TruncateIntensity incompatibility with old ANTsR binaries
-  ops = iMath(20, 'GetOperations')
-  ops = grepl('TruncateIntensity', ops)
-  truncate =  ifelse(any(ops), 'TruncateIntensity', 'TruncateImageIntensity')
-
 
   # load other functions
   print_msg("Loading LINDA model", verbose = verbose)

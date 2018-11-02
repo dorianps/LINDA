@@ -33,6 +33,12 @@ run_prediction = function(
   template_half_mask = resampleImage(brainmask * emptyimg, voxel_resampling, 0, 1)
   rm(emptyimg)
 
+  # fix TruncateIntensity incompatibility with old ANTsR binaries
+  ops = iMath(20, 'GetOperations')
+  ops = grepl('TruncateIntensity', ops)
+  truncate =  ifelse(any(ops), 'TruncateIntensity', 'TruncateImageIntensity')
+
+
 
   print_msg("Running registration...", verbose = verbose)
   reg = antsRegistration(
@@ -56,8 +62,7 @@ run_prediction = function(
   features = getLesionFeatures(
     reg$warpedfixout,
     template_brain,
-    tempmask,
-    truncate)
+    tempmask)
   for (i in 1:length(features)) {
     features[[i]] = resampleImage(
       features[[i]],
@@ -90,12 +95,7 @@ run_prediction = function(
   )
   prediction = mmseg$seg[[1]]
   # backproject
-  if (verbose) {
-    cat(paste(
-      format(Sys.time(), "%H:%M") ,
-      "Backprojecting 1st prediction... \n"
-    ))
-  }
+  print_msg("Backprojecting 1st prediction...", verbose = verbose)
   seg = resampleImage(prediction,
                       dim(template_brain),
                       useVoxels = 1,

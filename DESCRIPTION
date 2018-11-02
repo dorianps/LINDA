@@ -1,7 +1,7 @@
 Type: Package
 Package: LINDA
 Title: Lesion Identification with Neighborhood Data Analysis
-Version: 0.2.8
+Version: 0.3.0
 Authors@R: 
     c(
     person(given = "Dorian",
@@ -19,6 +19,7 @@ Description: A neuroimaging toolkit for automatic segmentation
 License: GPL-3
 Imports:
     ANTsR,
+    ANTsRCore (>= 0.6.0),
     randomForest,
     magrittr
 Suggests: 

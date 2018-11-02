@@ -1,7 +1,13 @@
 #' @importFrom ANTsRCore kmeansSegmentation
-getLesionFeatures = function(img, template, bmask, truncate) {
-  # function to compute features for MRV-NRF
+getLesionFeatures = function(img, template, bmask) {
+  # fix TruncateIntensity incompatibility with old ANTsR binaries
+  ops = iMath(20, 'GetOperations')
+  ops = grepl('TruncateIntensity', ops)
+  truncate =  ifelse(any(ops), 'TruncateIntensity', 'TruncateImageIntensity')
 
+
+
+  # function to compute features for MRV-NRF
   if ( any(dim(img) != dim(template)) ) {
     stop(paste('Image - template dimension mismatch',
                 paste(dim(img),collapse='x'), 'vs.',
