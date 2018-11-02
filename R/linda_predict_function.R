@@ -16,6 +16,7 @@
 #' @importFrom ANTsRCore resampleImage smoothImage thresholdImage antsImageClone
 #' @importFrom ANTsRCore antsApplyTransforms
 #' @importFrom ANTsR abpN4 abpBrainExtraction reflectImage
+#' @importFrom ANTsR composeTransformsToField
 #' @importFrom magrittr %>%
 linda_predict = function(
   file,
@@ -79,7 +80,7 @@ linda_predict = function(
 
 
   # load other functions
-   print_msg("Loading LINDA model", verbose = verbose)
+  print_msg("Loading LINDA model", verbose = verbose)
 
   # load(file.path(scriptdir, 'PublishablePennModel_2mm_mr321_rad1.Rdata'))
 
@@ -219,24 +220,43 @@ linda_predict = function(
   print_msg("Transferring data in MNI (ch2) space...",
             verbose = verbose)
 
-  warppenn = file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
-  affpenn = file.path(outdir , 'Reg3_sub_to_template_affine.mat')
+  warppenn = file.path(outdir, 'Reg3_sub_to_template_warp.nii.gz')
+  affpenn = file.path(outdir, 'Reg3_sub_to_template_affine.mat')
 
-  warpmni = system.file("extdata", "pennTemplate",
-                        "templateToCh2_1Warp.nii.gz",
-                        package = "LINDA",
-                        mustWork = TRUE)
-  affmni = system.file("extdata",
-                       "pennTemplate",
-                       "templateToCh2_0GenericAffine.mat",
-                       package = "LINDA",
-                       mustWork = TRUE)
+
   mni = system.file("extdata", "pennTemplate", "ch2.nii.gz",
                     package = "LINDA",
                     mustWork = TRUE)
 
   mni = antsImageRead(mni)
-  matrices = c(warpmni, affmni, affpenn, warppenn)
+
+  print_msg("Transferring data in MNI (ch2) space...",
+            verbose = verbose)
+
+
+
+  warpmni = system.file("extdata", "pennTemplate",
+                        "templateToCh2_1Warp.nii.gz",
+                        package = "LINDA",
+                        mustWork = FALSE)
+
+  affmni = system.file("extdata",
+                       "pennTemplate",
+                       "templateToCh2_0GenericAffine.mat",
+                       package = "LINDA",
+                       mustWork = FALSE)
+
+  if (!all(file.exists(warpmni, affmni))) {
+    print_msg(paste0("Registering Template to MNI (ch2) space" ,
+                     " (not subject specific)..."),
+              verbose = verbose)
+    temp_to_ch2 = antsRegistration(
+      fixed = mni, moving = temp,
+      typeofTransform = "SyN")
+    matrices = c(temp_to_ch2$fwdtransforms, affpenn, warppenn)
+  } else {
+    matrices = c(warpmni, affmni, affpenn, warppenn)
+  }
 
   submni = antsApplyTransforms(
     moving = simg,
