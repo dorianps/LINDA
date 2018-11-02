@@ -39,7 +39,6 @@ run_prediction = function(
   truncate =  ifelse(any(ops), 'TruncateIntensity', 'TruncateImageIntensity')
 
 
-
   print_msg("Running registration...", verbose = verbose)
   reg = antsRegistration(
     fixed = img,
@@ -62,7 +61,8 @@ run_prediction = function(
   features = getLesionFeatures(
     reg$warpedfixout,
     template_brain,
-    tempmask)
+    tempmask,
+    sigma = sigma)
   for (i in 1:length(features)) {
     features[[i]] = resampleImage(
       features[[i]],
@@ -79,7 +79,9 @@ run_prediction = function(
   rad = c(1,1,1)
   mr = c(3, 2, 1)
 
-  rflist = list(rf_model1, rf_model2, rf_model3)
+  rflist = list(LINDA::rf_model1,
+                LINDA::rf_model2,
+                LINDA::rf_model3)
   # rfm$rflist
 
   predlabel.sub[features[[4]] == 0] = 0

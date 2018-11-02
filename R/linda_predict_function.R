@@ -1,5 +1,3 @@
-
-
 #' Run Lesion Prediction from LINDA
 #'
 #' @param file Filename of T1 image
@@ -8,6 +6,9 @@
 #' @param outdir Output directory
 #' @param voxel_resampling Resampling resolution of voxesl
 #' @param reflaxis Reflection axis
+#' @param sigma Smoothing factor, passed to
+#' \code{\link{asymmetry_mask}} and
+#' \code{\link{smoothImage}}
 #'
 #' @return A list of things
 #' @export
@@ -24,6 +25,7 @@ linda_predict = function(
   verbose = TRUE,
   outdir = NULL,
   voxel_resampling = c(2, 2, 2),
+  sigma = 2,
   reflaxis = 0) {
 
   stopifnot(is.character(file))
@@ -37,22 +39,26 @@ linda_predict = function(
     outdir), verbose = verbose)
   dir.create(outdir, showWarnings = FALSE, recursive = TRUE)
 
-  template = system.file("extdata", "pennTemplate", "template.nii.gz",
-                         package = "LINDA",
-                         mustWork = TRUE)
-  template_brain = system.file("extdata", "pennTemplate", "templateBrain.nii.gz",
-                               package = "LINDA",
-                               mustWork = TRUE)
-  template_mask = system.file("extdata", "pennTemplate", "templateBrainMask.nii.gz",
-                              package = "LINDA",
-                              mustWork = TRUE)
+  template = system.file(
+    "extdata", "pennTemplate", "template.nii.gz",
+    package = "LINDA",
+    mustWork = TRUE)
+  template_brain = system.file(
+    "extdata", "pennTemplate", "templateBrain.nii.gz",
+    package = "LINDA",
+    mustWork = TRUE)
+  template_mask = system.file(
+    "extdata", "pennTemplate", "templateBrainMask.nii.gz",
+    package = "LINDA",
+    mustWork = TRUE)
 
-  ss = n4_skull_strip(file = file,
-                      n_iter = n_skull_iter,
-                      template = template,
-                      template_brain = template_brain,
-                      template_mask = template_mask,
-                      verbose = verbose)
+  ss = n4_skull_strip(
+    file = file,
+    n_iter = n_skull_iter,
+    template = template,
+    template_brain = template_brain,
+    template_mask = template_mask,
+    verbose = verbose)
   n4 = ss$n4
   submask = ss$brain_mask
   simg = ss$n4_brain
@@ -70,12 +76,13 @@ linda_predict = function(
   # load other functions
   print_msg("Loading LINDA model", verbose = verbose)
 
-  # load(file.path(scriptdir, 'PublishablePennModel_2mm_mr321_rad1.Rdata'))
 
   # compute asymmetry mask
   asymmetry = asymmetry_mask(
     img = simg,
+    brain_mask = submask,
     reflaxis = reflaxis,
+    sigma = sigma,
     verbose = verbose)
   mask.lesion1 = asymmetry$mask
   asymmetry = asymmetry$reflection
@@ -119,6 +126,7 @@ linda_predict = function(
     lesion_mask = mask.lesion2,
     reflaxis = reflaxis,
     verbose = verbose)
+
   prediction2 = out2$prediction
   antsImageWrite(prediction2, file.path(outdir,
                                         'Prediction2.nii.gz'))
@@ -139,6 +147,7 @@ linda_predict = function(
     lesion_mask = mask.lesion3,
     reflaxis = reflaxis,
     verbose = verbose)
+
   prediction3 = out3$prediction
   antsImageWrite(prediction3, file.path(outdir,
                                         'Prediction3.nii.gz'))

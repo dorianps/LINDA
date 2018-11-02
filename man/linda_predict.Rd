@@ -5,7 +5,7 @@
 \title{Run Lesion Prediction from LINDA}
 \usage{
 linda_predict(file, n_skull_iter = 2, verbose = TRUE, outdir = NULL,
-  voxel_resampling = c(2, 2, 2), reflaxis = 0)
+  voxel_resampling = c(2, 2, 2), sigma = 2, reflaxis = 0)
 }
 \arguments{
 \item{file}{Filename of T1 image}
@@ -17,6 +17,10 @@ linda_predict(file, n_skull_iter = 2, verbose = TRUE, outdir = NULL,
 \item{outdir}{Output directory}
 
 \item{voxel_resampling}{Resampling resolution of voxesl}
+
+\item{sigma}{Smoothing factor, passed to
+\code{\link{asymmetry_mask}} and
+\code{\link{smoothImage}}}
 
 \item{reflaxis}{Reflection axis}
 }

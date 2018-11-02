@@ -30,7 +30,6 @@ n4_skull_strip = function(
   tempbrain = reader(template_brain)
   tempmask =  reader(template_mask)
 
-
   # two rounds of N4-BrainExtract to skull strip
   print_msg("Skull stripping... (long process)", verbose = verbose)
   for (i in 1:n_iter) {

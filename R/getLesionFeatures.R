@@ -1,5 +1,8 @@
 #' @importFrom ANTsRCore kmeansSegmentation
-getLesionFeatures = function(img, template, bmask) {
+getLesionFeatures = function(
+  img, template, bmask,
+  sigma = 2) {
+
   # fix TruncateIntensity incompatibility with old ANTsR binaries
   ops = iMath(20, 'GetOperations')
   ops = grepl('TruncateIntensity', ops)
@@ -8,31 +11,38 @@ getLesionFeatures = function(img, template, bmask) {
 
 
   # function to compute features for MRV-NRF
-  if ( any(dim(img) != dim(template)) ) {
-    stop(paste('Image - template dimension mismatch',
-                paste(dim(img),collapse='x'), 'vs.',
-                paste(dim(template),collapse='x'))  )
+  if (any(dim(img) != dim(template))) {
+    stop(paste(
+      'Image - template dimension mismatch',
+      paste(dim(img), collapse = 'x'),
+      'vs.',
+      paste(dim(template), collapse = 'x')
+    ))
   }
 
   # # #  START FILLING FEATURES
   feats = list()
 
   # FEAT 1: kmean difference from controls
-  con_avg_file = system.file("extdata", "sumkmean.nii.gz")
+  con_avg_file = system.file("extdata", "sumkmean.nii.gz",
+                             package = "LINDA")
   conavg = antsImageRead(con_avg_file)
-  kmean = kmeansSegmentation(img,3,bmask)$segmentation
+  kmean = kmeansSegmentation(img, k = 3,
+                             kmask = bmask)$segmentation
   feats[[1]] = (conavg - kmean) %>% iMath('Normalize')
 
   # FEAT 2: gradient magnitude
   feats[[2]] = img %>% iMath('Grad') %>% iMath('Normalize')
 
-  n4_con_avg_file = system.file("extdata", "N4ControlAvgerage.nii.gz")
+  n4_con_avg_file = system.file("extdata", "N4ControlAvgerage.nii.gz",
+                                package = "LINDA")
 
   # FEAT 3: t1 difference from controls
   conavg = antsImageRead(n4_con_avg_file)
-  temp = img %>% smoothImage(2) %>%
+  temp = img %>% smoothImage(sigma = sigma) %>%
     iMath(truncate, 0.001, 0.999) %>%
     iMath('Normalize')
+
   feats[[3]] = (conavg - temp) %>%
     iMath(truncate, 0.01, 0.99) %>%
     iMath('Normalize')
@@ -40,12 +50,14 @@ getLesionFeatures = function(img, template, bmask) {
   # FEAT 4: kmean
   feats[[4]] = antsImageClone(kmean)
 
-  ref_con_avg_file = system.file("extdata", "ControlAverageReflected.nii.gz")
+  ref_con_avg_file = system.file("extdata",
+                                 "ControlAverageReflected.nii.gz",
+                                 package = "LINDA")
 
   # FEAT 5: reflection difference from controls
   conavg = antsImageRead(ref_con_avg_file)
-  reflimg = reflectImage(img, axis=1, tx='Affine')
-  temp = iMath(reflimg$warpedmovout-img, truncate, 0.01, 0.99) %>% iMath('Normalize')
+  reflimg = reflectImage(img, axis = 1, tx = 'Affine')
+  temp = iMath(reflimg$warpedmovout - img, truncate, 0.01, 0.99) %>% iMath('Normalize')
   feats[[5]] = (temp - conavg) %>% iMath('Normalize')
 
   # FEAT 6: t1 itself
