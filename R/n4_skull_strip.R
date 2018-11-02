@@ -34,6 +34,9 @@ n4_skull_strip = function(
   # two rounds of N4-BrainExtract to skull strip
   print_msg("Skull stripping... (long process)", verbose = verbose)
   for (i in 1:n_iter) {
+  	print_msg(
+  		paste0("Running iteration ", i),
+  		verbose = verbose)
     n4 = abpN4(
       img = subimg,
       mask = submask)
