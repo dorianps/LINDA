@@ -1,0 +1,10 @@
+^original$
+^linda_predict\.R$
+^codecov\.yml$
+^\.travis\.yml$
+^appveyor\.yml$
+^README\.Rmd$
+^LICENSE\.md$
+^LINDA\.Rproj$
+^\.Rproj\.user$
+^.*\.Rproj$

@@ -1,0 +1,123 @@
+#' Run LINDA Iteration Prediction
+#'
+#' @param img image of T1
+#' @param brain_mask image of brain mask
+#' @param verbose Print diagnostic messages
+#' @param template_brain image of template brain
+#' @param template_mask image of template brain mask
+#' @param typeofTransform type of transformation to perform
+#' @param lesion_mask image of lesion mask from previous iteration
+#' @param reflaxis Reflection axis
+#' @param voxel_resampling Resampling resolution of voxesl
+#'
+#' @return A list of stuff
+#' @export
+#'
+#' @importFrom ANTsR mrvnrfs
+run_prediction = function(
+  img,
+  brain_mask,
+  template_brain,
+  template_mask,
+  typeofTransform = "SyN",
+  lesion_mask,
+  reflaxis = 0,
+  voxel_resampling = c(2,2,2),
+  verbose = TRUE) {
+
+  # half brain mask
+  brainmask = iMath(template_mask, 'MD', 1)
+  emptyimg = brainmask * 1
+  emptyimg = as.array(emptyimg)
+  emptyimg[1:91 , , ] = 0
+  template_half_mask = resampleImage(brainmask * emptyimg, voxel_resampling, 0, 1)
+  rm(emptyimg)
+
+
+  print_msg("Running registration...", verbose = verbose)
+  reg = antsRegistration(
+    fixed = img,
+    moving = template_brain,
+    typeofTransform = typeofTransform,
+    mask = lesion_mask
+  )
+  reg$warpedfixout = reg$warpedfixout %>%
+    iMath(truncate, 0.01, 0.99) %>%
+    iMath('Normalize')
+  tempmask = antsApplyTransforms(
+    moving = brain_mask,
+    fixed = template_brain,
+    transformlist = reg$invtransforms,
+    interpolator = 'NearestNeighbor'
+  )
+
+  # prepare features
+  print_msg("Feature calculation... ", verbose = verbose)
+  features = getLesionFeatures(
+    reg$warpedfixout,
+    template_brain,
+    tempmask,
+    truncate)
+  for (i in 1:length(features)) {
+    features[[i]] = resampleImage(
+      features[[i]],
+      voxel_resampling,
+      useVoxels = 0,
+      interpType = 0) * template_half_mask
+  }
+
+  # 1st prediction
+  print_msg("Running prediction...", verbose = verbose)
+
+  predlabel.sub = template_half_mask * 1
+
+  rad = c(1,1,1)
+  mr = c(3, 2, 1)
+
+  rflist = list(rf_model1, rf_model2, rf_model3)
+  # rfm$rflist
+
+  predlabel.sub[features[[4]] == 0] = 0
+  mmseg <- suppressMessages(
+    ANTsR::mrvnrfs(
+      rflist
+      list(features),
+      predlabel.sub,
+      rad = rad,
+      multiResSchedule = mr,
+      voxchunk = 5000
+    )
+  )
+  prediction = mmseg$seg[[1]]
+  # backproject
+  if (verbose) {
+    cat(paste(
+      format(Sys.time(), "%H:%M") ,
+      "Backprojecting 1st prediction... \n"
+    ))
+  }
+  seg = resampleImage(prediction,
+                      dim(template_brain),
+                      useVoxels = 1,
+                      interpType = 1)
+  seg[seg != 4] = 0
+  seg[seg == 4] = 1
+  segnative = antsApplyTransforms(
+    fixed = img,
+    moving = seg,
+    transformlist = reg$fwdtransforms,
+    interpolator = 'NearestNeighbor'
+  )
+  mask.lesion2 = brain_mask * 1
+  mask.lesion2[segnative == 1] = 0
+
+  L = list(registration = reg,
+           segmentation = seg,
+           segmentation_native = segnative,
+           prediction = prediction,
+           lesion_mask = mask.lesion2,
+           multi_res_seg = mmseg)
+  return(L)
+}
+
+
