@@ -25,7 +25,8 @@ getLesionFeatures = function(
 
   # FEAT 1: kmean difference from controls
   con_avg_file = system.file("extdata", "sumkmean.nii.gz",
-                             package = "LINDA")
+                             package = "LINDA",
+                             mustwork = TRUE)
   conavg = antsImageRead(con_avg_file)
   kmean = kmeansSegmentation(img, k = 3,
                              kmask = bmask)$segmentation
@@ -35,7 +36,8 @@ getLesionFeatures = function(
   feats[[2]] = img %>% iMath('Grad') %>% iMath('Normalize')
 
   n4_con_avg_file = system.file("extdata", "N4ControlAvgerage.nii.gz",
-                                package = "LINDA")
+                                package = "LINDA",
+                                mustwork = TRUE)
 
   # FEAT 3: t1 difference from controls
   conavg = antsImageRead(n4_con_avg_file)
@@ -52,7 +54,8 @@ getLesionFeatures = function(
 
   ref_con_avg_file = system.file("extdata",
                                  "ControlAverageReflected.nii.gz",
-                                 package = "LINDA")
+                                 package = "LINDA",
+                                 mustWork = TRUE)
 
   # FEAT 5: reflection difference from controls
   conavg = antsImageRead(ref_con_avg_file)

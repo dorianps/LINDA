@@ -5,7 +5,8 @@
 \title{Run Lesion Prediction from LINDA}
 \usage{
 linda_predict(file, n_skull_iter = 2, verbose = TRUE, outdir = NULL,
-  voxel_resampling = c(2, 2, 2), sigma = 2, reflaxis = 0)
+  voxel_resampling = c(2, 2, 2), sigma = 2, reflaxis = 0,
+  cache = TRUE)
 }
 \arguments{
 \item{file}{Filename of T1 image}
@@ -23,6 +24,8 @@ linda_predict(file, n_skull_iter = 2, verbose = TRUE, outdir = NULL,
 \code{\link{smoothImage}}}
 
 \item{reflaxis}{Reflection axis}
+
+\item{cache}{Should files be just read in if they already exist?}
 }
 \value{
 A list of things

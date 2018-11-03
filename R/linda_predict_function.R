@@ -9,6 +9,7 @@
 #' @param sigma Smoothing factor, passed to
 #' \code{\link{asymmetry_mask}} and
 #' \code{\link{smoothImage}}
+#' @param cache Should files be just read in if they already exist?
 #'
 #' @return A list of things
 #' @export
@@ -26,7 +27,8 @@ linda_predict = function(
   outdir = NULL,
   voxel_resampling = c(2, 2, 2),
   sigma = 2,
-  reflaxis = 0) {
+  reflaxis = 0,
+  cache = TRUE) {
 
   stopifnot(is.character(file))
 
@@ -52,90 +54,146 @@ linda_predict = function(
     package = "LINDA",
     mustWork = TRUE)
 
-  ss = n4_skull_strip(
-    file = file,
-    n_iter = n_skull_iter,
-    template = template,
-    template_brain = template_brain,
-    template_mask = template_mask,
-    verbose = verbose)
-  n4 = ss$n4
-  submask = ss$brain_mask
-  simg = ss$n4_brain
+  ss_files = c(
+    n4 = file.path(outdir, 'N4corrected.nii.gz'),
+    brain_mask = file.path(outdir, 'BrainMask.nii.gz'),
+    n4_brain = file.path(outdir, 'N4corrected_Brain.nii.gz')
+  )
+  if (all(file.exists(ss_files)) & cache) {
+    ss = lapply(ss_files, antsImageRead)
+    n4 = ss$n4
+    submask = ss$brain_mask
+    simg = ss$n4_brain
+  } else {
+    ss = n4_skull_strip(
+      file = file,
+      n_iter = n_skull_iter,
+      template = template,
+      template_brain = template_brain,
+      template_mask = template_mask,
+      verbose = verbose)
+    n4 = ss$n4
+    submask = ss$brain_mask
+    simg = ss$n4_brain
+
+    print_msg("Saving skull stripped files", verbose = verbose)
+
+    antsImageWrite(n4, ss_files["n4"])
+    antsImageWrite(submask, ss_files["brain_mask"])
+    antsImageWrite(simg, ss_files["n4_brain"])
+  }
 
   temp = antsImageRead(template)
   tempbrain = antsImageRead(template_brain)
   tempmask = antsImageRead(template_mask)
 
-  print_msg("Saving skull stripped files", verbose = verbose)
-
-  antsImageWrite(n4, file.path(outdir, 'N4corrected.nii.gz'))
-  antsImageWrite(submask, file.path(outdir, 'BrainMask.nii.gz'))
-  antsImageWrite(simg, file.path(outdir, 'N4corrected_Brain.nii.gz'))
-
   # load other functions
   print_msg("Loading LINDA model", verbose = verbose)
 
-
-  # compute asymmetry mask
-  asymmetry = asymmetry_mask(
-    img = simg,
-    brain_mask = submask,
-    reflaxis = reflaxis,
-    sigma = sigma,
-    verbose = verbose)
-  mask.lesion1 = asymmetry$mask
-  asymmetry = asymmetry$reflection
-
-  antsImageWrite(
-    asymmetry$warpedmovout,
-    file.path(outdir, 'N4corrected_Brain_LRflipped.nii.gz')
+  outfiles = c(
+    flipped = file.path(outdir, 'N4corrected_Brain_LRflipped.nii.gz'),
+    lesion_mask = file.path(outdir, 'Mask.lesion1_asym.nii.gz')
   )
 
-  print_msg("Saving asymmetry mask...", verbose = verbose)
-  antsImageWrite(mask.lesion1,
-                 file.path(outdir, 'Mask.lesion1_asym.nii.gz'))
+  if (all(file.exists(outfiles)) & cache) {
+    asymmetry = lapply(outfiles, antsImageRead)
+    mask.lesion1 = asymmetry$lesion_mask
+  } else {
+    # compute asymmetry mask
+    asymmetry = asymmetry_mask(
+      img = simg,
+      brain_mask = submask,
+      reflaxis = reflaxis,
+      sigma = sigma,
+      verbose = verbose)
+    mask.lesion1 = asymmetry$mask
+    asymmetry = asymmetry$reflection
 
-  out1 = run_prediction(
-    img = simg,
-    brain_mask = submask,
-    template_mask = tempmask,
-    voxel_resampling = voxel_resampling,
-    template_brain = tempbrain,
-    typeofTransform = "SyN",
-    lesion_mask = mask.lesion1,
-    reflaxis = reflaxis,
-    verbose = verbose)
-  prediction = out1$prediction
-  print_msg("Saving prediction...", verbose = verbose)
-  antsImageWrite(prediction, file.path(outdir,
-                                       'Prediction1.nii.gz'))
+    antsImageWrite(
+      asymmetry$warpedmovout,
+      outfiles["flipped"]
+    )
 
-  mask.lesion2 = out1$lesion_mask
+    print_msg("Saving asymmetry mask...", verbose = verbose)
+    antsImageWrite(mask.lesion1,
+                   outfiles["lesion_mask"])
+  }
 
-  antsImageWrite(mask.lesion2,
-                 file.path(outdir, 'Mask.lesion2.nii.gz'))
+  outfiles = c(
+    prediction = file.path(outdir,
+                           'Prediction1.nii.gz'),
+    lesion_mask = file.path(outdir, 'Mask.lesion2.nii.gz')
+  )
 
-  out2 = run_prediction(
-    img = simg,
-    brain_mask = submask,
-    template_mask = tempmask,
-    voxel_resampling = voxel_resampling,
-    template_brain = tempbrain,
-    typeofTransform = "SyN",
-    lesion_mask = mask.lesion2,
-    reflaxis = reflaxis,
-    verbose = verbose)
+  if (all(file.exists(outfiles)) & cache) {
+    out1 = lapply(outfiles, antsImageRead)
+    mask.lesion2 = out1$lesion_mask
+    prediction = out1$prediction
+  } else {
+    out1 = run_prediction(
+      img = simg,
+      brain_mask = submask,
+      template_mask = tempmask,
+      voxel_resampling = voxel_resampling,
+      template_brain = tempbrain,
+      typeofTransform = "SyN",
+      lesion_mask = mask.lesion1,
+      reflaxis = reflaxis,
+      verbose = verbose)
+    prediction = out1$prediction
+    print_msg("Saving prediction...", verbose = verbose)
+    antsImageWrite(prediction, outfiles["prediction"])
 
-  prediction2 = out2$prediction
-  antsImageWrite(prediction2, file.path(outdir,
-                                        'Prediction2.nii.gz'))
+    mask.lesion2 = out1$lesion_mask
 
-  mask.lesion3 = out2$lesion_mask
+    antsImageWrite(mask.lesion2,
+                   outfiles["lesion_mask"])
+  }
 
-  antsImageWrite(mask.lesion3,
-                 file.path(outdir, 'Mask.lesion3.nii.gz'))
 
+  outfiles = c(
+    prediction = file.path(outdir,
+                           'Prediction2.nii.gz'),
+    lesion_mask = file.path(outdir, 'Mask.lesion3.nii.gz')
+  )
+
+  if (all(file.exists(outfiles)) & cache) {
+    out2 = lapply(outfiles, antsImageRead)
+    mask.lesion3 = out2$lesion_mask
+    prediction2 = out2$prediction
+  } else {
+
+    out2 = run_prediction(
+      img = simg,
+      brain_mask = submask,
+      template_mask = tempmask,
+      voxel_resampling = voxel_resampling,
+      template_brain = tempbrain,
+      typeofTransform = "SyN",
+      lesion_mask = mask.lesion2,
+      reflaxis = reflaxis,
+      verbose = verbose)
+
+    prediction2 = out2$prediction
+    antsImageWrite(prediction2, outfiles["prediction"])
+
+    mask.lesion3 = out2$lesion_mask
+
+    antsImageWrite(mask.lesion3, outfiles["lesion_mask"])
+  }
+
+
+  outfiles = c(
+    prediction = file.path(outdir,
+                           'Prediction2.nii.gz'),
+    lesion_mask = file.path(outdir, 'Mask.lesion4.nii.gz')
+  )
+
+  # if (all(file.exists(outfiles)) & cache) {
+  #   out3 = lapply(outfiles, antsImageRead)
+  #   mask.lesion4 = out3$lesion_mask
+  #   prediction3 = out3$prediction
+  # } else {
 
   out3 = run_prediction(
     img = simg,
@@ -149,13 +207,11 @@ linda_predict = function(
     verbose = verbose)
 
   prediction3 = out3$prediction
-  antsImageWrite(prediction3, file.path(outdir,
-                                        'Prediction3.nii.gz'))
+  antsImageWrite(prediction3, outfiles["prediction"])
 
   mask.lesion4 = out3$lesion_mask
 
-  antsImageWrite(mask.lesion4,
-                 file.path(outdir, 'Mask.lesion3.nii.gz'))
+  antsImageWrite(mask.lesion4, outfiles["lesion_mask"])
 
   reg3 = out3$registration
   antsImageWrite(
@@ -164,7 +220,7 @@ linda_predict = function(
   )
   file.copy(
     reg3$fwdtransforms[1],
-    file.path(outdir , 'Reg3_template_to_sub_warp.nii.gz')
+    file.path(outdir, 'Reg3_template_to_sub_warp.nii.gz')
   )
   file.copy(reg3$fwdtransforms[2],
             file.path(outdir , 'Reg3_template_to_sub_affine.mat'))
