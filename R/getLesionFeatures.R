@@ -26,7 +26,7 @@ getLesionFeatures = function(
   # FEAT 1: kmean difference from controls
   con_avg_file = system.file("extdata", "sumkmean.nii.gz",
                              package = "LINDA",
-                             mustwork = TRUE)
+                             mustWork = TRUE)
   conavg = antsImageRead(con_avg_file)
   kmean = kmeansSegmentation(img, k = 3,
                              kmask = bmask)$segmentation
@@ -37,7 +37,7 @@ getLesionFeatures = function(
 
   n4_con_avg_file = system.file("extdata", "N4ControlAvgerage.nii.gz",
                                 package = "LINDA",
-                                mustwork = TRUE)
+                                mustWork = TRUE)
 
   # FEAT 3: t1 difference from controls
   conavg = antsImageRead(n4_con_avg_file)

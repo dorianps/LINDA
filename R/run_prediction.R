@@ -44,7 +44,8 @@ run_prediction = function(
     fixed = img,
     moving = template_brain,
     typeofTransform = typeofTransform,
-    mask = lesion_mask
+    mask = lesion_mask,
+    verbose = verbose > 1
   )
   reg$warpedfixout = reg$warpedfixout %>%
     iMath(truncate, 0.01, 0.99) %>%
@@ -53,7 +54,8 @@ run_prediction = function(
     moving = brain_mask,
     fixed = template_brain,
     transformlist = reg$invtransforms,
-    interpolator = 'NearestNeighbor'
+    interpolator = 'NearestNeighbor',
+    verbose = verbose > 1
   )
 
   # prepare features
