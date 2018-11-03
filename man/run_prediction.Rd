@@ -6,7 +6,7 @@
 \usage{
 run_prediction(img, brain_mask, template_brain, template_mask,
   typeofTransform = "SyN", lesion_mask, reflaxis = 0,
-  voxel_resampling = c(2, 2, 2), verbose = TRUE)
+  voxel_resampling = c(2, 2, 2), sigma = 2, verbose = TRUE)
 }
 \arguments{
 \item{img}{image of T1}
@@ -24,6 +24,10 @@ run_prediction(img, brain_mask, template_brain, template_mask,
 \item{reflaxis}{Reflection axis}
 
 \item{voxel_resampling}{Resampling resolution of voxesl}
+
+\item{sigma}{Smoothing factor, passed to
+\code{\link{asymmetry_mask}} and
+\code{\link{smoothImage}}}
 
 \item{verbose}{Print diagnostic messages}
 }

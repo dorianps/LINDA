@@ -139,6 +139,7 @@ linda_predict = function(
       typeofTransform = "SyN",
       lesion_mask = mask.lesion1,
       reflaxis = reflaxis,
+      sigma = sigma,
       verbose = verbose)
     prediction = out1$prediction
     print_msg("Saving prediction...", verbose = verbose)
@@ -172,6 +173,7 @@ linda_predict = function(
       typeofTransform = "SyN",
       lesion_mask = mask.lesion2,
       reflaxis = reflaxis,
+      sigma = sigma,
       verbose = verbose)
 
     prediction2 = out2$prediction
@@ -204,6 +206,7 @@ linda_predict = function(
     typeofTransform = "SyN",
     lesion_mask = mask.lesion3,
     reflaxis = reflaxis,
+    sigma = sigma,
     verbose = verbose)
 
   prediction3 = out3$prediction

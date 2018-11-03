@@ -9,6 +9,9 @@
 #' @param lesion_mask image of lesion mask from previous iteration
 #' @param reflaxis Reflection axis
 #' @param voxel_resampling Resampling resolution of voxesl
+#' @param sigma Smoothing factor, passed to
+#' \code{\link{asymmetry_mask}} and
+#' \code{\link{smoothImage}}
 #'
 #' @return A list of stuff
 #' @export
@@ -23,6 +26,7 @@ run_prediction = function(
   lesion_mask,
   reflaxis = 0,
   voxel_resampling = c(2,2,2),
+  sigma = 2,
   verbose = TRUE) {
 
   # half brain mask
