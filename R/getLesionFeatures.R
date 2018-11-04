@@ -1,7 +1,8 @@
 #' @importFrom ANTsRCore kmeansSegmentation
 getLesionFeatures = function(
   img, template, bmask,
-  sigma = 2) {
+  sigma = 2,
+  verbose = TRUE) {
 
   # fix TruncateIntensity incompatibility with old ANTsR binaries
   ops = iMath(20, 'GetOperations')
@@ -28,8 +29,10 @@ getLesionFeatures = function(
                              package = "LINDA",
                              mustWork = TRUE)
   conavg = antsImageRead(con_avg_file)
-  kmean = kmeansSegmentation(img, k = 3,
-                             kmask = bmask)$segmentation
+  kmean = kmeansSegmentation(
+    img, k = 3,
+    kmask = bmask,
+    verbose = verbose)$segmentation
   feats[[1]] = (conavg - kmean) %>% iMath('Normalize')
 
   # FEAT 2: gradient magnitude

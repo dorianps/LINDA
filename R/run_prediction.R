@@ -68,7 +68,8 @@ run_prediction = function(
     reg$warpedfixout,
     template_brain,
     tempmask,
-    sigma = sigma)
+    sigma = sigma,
+    verbose = verbose > 1)
   for (i in 1:length(features)) {
     features[[i]] = resampleImage(
       features[[i]],
@@ -114,7 +115,8 @@ run_prediction = function(
     fixed = img,
     moving = seg,
     transformlist = reg$fwdtransforms,
-    interpolator = 'NearestNeighbor'
+    interpolator = 'NearestNeighbor',
+    verbose = verbose
   )
   mask.lesion2 = brain_mask * 1
   mask.lesion2[segnative == 1] = 0

@@ -256,7 +256,8 @@ linda_predict = function(
     fixed = simg,
     moving = probles,
     transformlist = reg3$fwdtransforms,
-    interpolator = 'Linear'
+    interpolator = 'Linear',
+    verbose = verbose > 1
   )
   print_msg("Saving probabilistic prediction in template space...",
             verbose = verbose)
@@ -308,7 +309,8 @@ linda_predict = function(
               verbose = verbose)
     temp_to_ch2 = antsRegistration(
       fixed = mni, moving = temp,
-      typeofTransform = "SyN")
+      typeofTransform = "SyN",
+      verbose = verbose > 1)
     matrices = c(temp_to_ch2$fwdtransforms, affpenn, warppenn)
   } else {
     matrices = c(warpmni, affmni, affpenn, warppenn)
@@ -319,14 +321,16 @@ linda_predict = function(
     fixed = mni,
     transformlist = matrices,
     interpolator = 'Linear',
-    whichtoinvert = c(0, 0, 1, 0)
+    whichtoinvert = c(0, 0, 1, 0),
+    verbose = verbose > 1
   )
   lesmni = antsApplyTransforms(
     moving = segnative,
     fixed = mni,
     transformlist = matrices,
     interpolator = 'NearestNeighbor',
-    whichtoinvert = c(0, 0, 1, 0)
+    whichtoinvert = c(0, 0, 1, 0),
+    verbose = verbose > 1
   )
 
   print_msg("Saving subject in MNI (ch2) space...",
