@@ -56,6 +56,7 @@ n4_skull_strip = function(
       img = subimg,
       tem = temp,
       temmask = tempmask)
+    rm(submask)
     submask = bextract$bmask * 1
     print_msg(
       paste0("SubMask number of voxels ", sum(submask)),

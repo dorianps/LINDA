@@ -29,10 +29,18 @@ getLesionFeatures = function(
                              package = "LINDA",
                              mustWork = TRUE)
   conavg = antsImageRead(con_avg_file)
-  kmean = kmeansSegmentation(
-    img, k = 3,
-    kmask = bmask,
-    verbose = verbose)$segmentation
+  kmeans_args = list(    img, k = 3,
+                         kmask = bmask,
+                         verbose = verbose)
+  if (!"verbose" %in% formalArgs(kmeansSegmentation)) {
+    kmeans_args$verbose = NULL
+  }
+  kmean = do.call(kmeansSegmentation, args = kmeans_args)
+  kmean = kmean$segmentation
+  # kmean = kmeansSegmentation(
+  #   img, k = 3,
+  #   kmask = bmask,
+  #   verbose = verbose)$segmentation
   feats[[1]] = (conavg - kmean) %>% iMath('Normalize')
 
   # FEAT 2: gradient magnitude
