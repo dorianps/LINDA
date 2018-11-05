@@ -19,7 +19,7 @@ Description: A neuroimaging toolkit for automatic segmentation
 License: GPL-3
 Imports:
     ANTsR,
-    ANTsRCore (>= 0.6.0),
+    ANTsRCore (>= 0.6.0.1),
     randomForest,
     magrittr
 Suggests: 
