@@ -12,11 +12,11 @@ status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](
 The goal of `LINDA` is to provide a neuroimaging toolkit for automatic
 segmentation of chronic stroke lesions.
 
-## Installation
+~~## Installation
 
-You can install `LINDA` from GitHub with:
+~~You can install `LINDA` from GitHub with:
 
-``` r
+~~``` r
 # install.packages("remotes")
 remotes::install_github("muschellij2/LINDA")
 ```
