@@ -59,6 +59,7 @@ linda_predict = function(
     brain_mask = file.path(outdir, 'BrainMask.nii.gz'),
     n4_brain = file.path(outdir, 'N4corrected_Brain.nii.gz')
   )
+  L = as.list(ss_files)
   if (all(file.exists(ss_files)) & cache) {
     ss = lapply(ss_files, antsImageRead)
     n4 = ss$n4
@@ -94,6 +95,7 @@ linda_predict = function(
     flipped = file.path(outdir, 'N4corrected_Brain_LRflipped.nii.gz'),
     lesion_mask = file.path(outdir, 'Mask.lesion1_asym.nii.gz')
   )
+  L = c(L, as.list(outfiles))
 
   if (all(file.exists(outfiles)) & cache) {
     asymmetry = lapply(outfiles, antsImageRead)
@@ -124,6 +126,10 @@ linda_predict = function(
                            'Prediction1.nii.gz'),
     lesion_mask = file.path(outdir, 'Mask.lesion2.nii.gz')
   )
+  o = as.list(outfiles)
+  names(o) = paste0(names(o), "_1")
+  L = c(L, as.list(o))
+
 
   if (all(file.exists(outfiles)) & cache) {
     out1 = lapply(outfiles, antsImageRead)
@@ -157,6 +163,9 @@ linda_predict = function(
                            'Prediction2.nii.gz'),
     lesion_mask = file.path(outdir, 'Mask.lesion3.nii.gz')
   )
+  o = as.list(outfiles)
+  names(o) = paste0(names(o), "_2")
+  L = c(L, as.list(o))
 
   if (all(file.exists(outfiles)) & cache) {
     out2 = lapply(outfiles, antsImageRead)
@@ -190,6 +199,9 @@ linda_predict = function(
                            'Prediction2.nii.gz'),
     lesion_mask = file.path(outdir, 'Mask.lesion4.nii.gz')
   )
+  o = as.list(outfiles)
+  names(o) = paste0(names(o), "_3")
+  L = c(L, as.list(o))
 
   # if (all(file.exists(outfiles)) & cache) {
   #   out3 = lapply(outfiles, antsImageRead)
@@ -217,24 +229,45 @@ linda_predict = function(
   antsImageWrite(mask.lesion4, outfiles["lesion_mask"])
 
   reg3 = out3$registration
+  reg_to_template = file.path(outdir, 'Reg3_registered_to_template.nii.gz')
   antsImageWrite(
     reg3$warpedfixout,
-    file.path(outdir, 'Reg3_registered_to_template.nii.gz')
+    reg_to_template
   )
+
+  L$reg_to_template = reg_to_template
+
+  reg_to_sub_warp = file.path(outdir, 'Reg3_template_to_sub_warp.nii.gz')
   file.copy(
     reg3$fwdtransforms[1],
-    file.path(outdir, 'Reg3_template_to_sub_warp.nii.gz')
+    reg_to_sub_warp
   )
+  L$reg_to_sub_warp = reg_to_sub_warp
+
+  reg_to_sub_aff = file.path(outdir , 'Reg3_template_to_sub_affine.mat')
   file.copy(reg3$fwdtransforms[2],
-            file.path(outdir , 'Reg3_template_to_sub_affine.mat'))
+            reg_to_sub_aff
+            )
+
+  L$reg_to_sub_aff = reg_to_sub_aff
+
+  reg_to_temp_aff = file.path(outdir , 'Reg3_sub_to_template_affine.mat')
+  L$reg_to_temp_aff = reg_to_temp_aff
+
   file.copy(reg3$invtransforms[1],
-            file.path(outdir , 'Reg3_sub_to_template_affine.mat'))
+            reg_to_temp_aff
+            )
+
+  reg_to_temp_warp = file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
+  L$reg_to_temp_warp = reg_to_temp_warp
   file.copy(
     reg3$invtransforms[2],
-    file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
+    reg_to_temp_warp
   )
 
   seg = out3$segmentation
+
+  L$segmentation = seg
 
   antsImageWrite(seg, file.path(outdir, 'Prediction3_template.nii.gz'))
 

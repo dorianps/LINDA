@@ -1,3 +1,16 @@
+#' Skull Strip image
+#'
+#' @param file Filename of T1 image
+#' @param template Template full image
+#' @param template_brain Template brain image
+#' @param template_mask Template brain mask
+#' @param verbose print diagnostic messages
+#' @param n_iter Number of iterations undergone with \code{\link{abpN4}}
+#' and
+#' \code{\link{abpBrainExtraction}}
+#'
+#' @return A list of output images, brain and corrected
+#' @export
 n4_skull_strip = function(
   file,
   template = system.file("extdata", "pennTemplate", "template.nii.gz",
@@ -33,9 +46,9 @@ n4_skull_strip = function(
   # two rounds of N4-BrainExtract to skull strip
   print_msg("Skull stripping... (long process)", verbose = verbose)
   for (i in 1:n_iter) {
-  	print_msg(
-  		paste0("Running iteration ", i),
-  		verbose = verbose)
+    print_msg(
+      paste0("Running iteration ", i),
+      verbose = verbose)
     n4 = abpN4(
       img = subimg,
       mask = submask)
@@ -44,6 +57,9 @@ n4_skull_strip = function(
       tem = temp,
       temmask = tempmask)
     submask = bextract$bmask * 1
+    print_msg(
+      paste0("SubMask number of voxels ", sum(submask)),
+      verbose = verbose)
   }
   simg = n4 * submask
 
