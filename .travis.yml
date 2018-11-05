@@ -1,0 +1,26 @@
+language: R
+sudo: no
+cache: packages
+after_success: if [ "$TRAVIS_OS_NAME" == "linux" ]; then Rscript -e 'covr::codecov(type
+  = "all")'; fi
+warnings_are_errors: yes
+before_deploy: if [ "$TRAVIS_OS_NAME" == "osx" ]; then rm -f *.tar.gz; fi
+r_check_args: --as-cran --install-args=--build
+
+before_install:
+  - Rscript -e "install.packages(c('Rcpp', 'RcppEigen'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
+  - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
+  - chmod +x antsr_travis.sh
+  - . ./antsr_travis.sh
+  - rm antsr_travis.sh
+  - cat DESCRIPTION
+
+deploy:
+  provider: releases
+  skip_cleanup: yes
+  file_glob: yes
+  file: LINDA*.t*gz
+  'on':
+    tags: yes
+    repo: muschellij2/LINDA
+
