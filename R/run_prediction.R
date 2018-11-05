@@ -93,9 +93,11 @@ run_prediction = function(
 
   predlabel.sub[features[[4]] == 0] = 0
   mmseg <- suppressMessages(
-    ANTsR::mrvnrfs(
+    # ANTsR::mrvnrfs.predict(
+    linda_mrvnrfs.predict_chunks(
       rflist,
       list(features),
+      # features,
       predlabel.sub,
       rad = rad,
       multiResSchedule = mr,
