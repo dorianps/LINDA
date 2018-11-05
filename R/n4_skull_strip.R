@@ -49,13 +49,25 @@ n4_skull_strip = function(
     print_msg(
       paste0("Running iteration ", i),
       verbose = verbose)
-    n4 = abpN4(
+    args = list(
       img = subimg,
-      mask = submask)
-    bextract = abpBrainExtraction(
+      mask = submask,
+      verbose = verbose > 1)
+    if (!"..." %in% formalArgs(abpN4)) {
+      args$verbose = NULL
+    }
+    n4 = do.call(abpN4, args = args)
+
+    args = list(
       img = subimg,
       tem = temp,
-      temmask = tempmask)
+      temmask = tempmask,
+      verbose = verbose > 1)
+    if (!"verbose" %in% formalArgs(abpBrainExtraction)) {
+      args$verbose = NULL
+    }
+    n4 = do.call(abpN4, args = args)
+    bextract = do.call(abpBrainExtraction, args = args)
     rm(submask)
     submask = bextract$bmask * 1
     print_msg(
