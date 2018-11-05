@@ -4,12 +4,15 @@
 \alias{linda_predict}
 \title{Run Lesion Prediction from LINDA}
 \usage{
-linda_predict(file, n_skull_iter = 2, verbose = TRUE, outdir = NULL,
-  voxel_resampling = c(2, 2, 2), sigma = 2, reflaxis = 0,
-  cache = TRUE)
+linda_predict(file, brain_mask = NULL, n_skull_iter = 2,
+  verbose = TRUE, outdir = NULL, voxel_resampling = c(2, 2, 2),
+  sigma = 2, reflaxis = 0, cache = TRUE)
 }
 \arguments{
 \item{file}{Filename of T1 image}
+
+\item{brain_mask}{A filename or \code{antsImage} object.
+If this is passed in, then skull stripping is not done}
 
 \item{n_skull_iter}{Number of skull stripping iterations}
 

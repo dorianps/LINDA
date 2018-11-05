@@ -1,6 +1,8 @@
 #' Run Lesion Prediction from LINDA
 #'
 #' @param file Filename of T1 image
+#' @param brain_mask A filename or \code{antsImage} object.
+#' If this is passed in, then skull stripping is not done
 #' @param n_skull_iter Number of skull stripping iterations
 #' @param verbose Print diagnostic messages
 #' @param outdir Output directory
@@ -22,6 +24,7 @@
 #' @importFrom magrittr %>%
 linda_predict = function(
   file,
+  brain_mask = NULL,
   n_skull_iter = 2,
   verbose = TRUE,
   outdir = NULL,
@@ -54,34 +57,54 @@ linda_predict = function(
     package = "LINDA",
     mustWork = TRUE)
 
-  ss_files = c(
-    n4 = file.path(outdir, 'N4corrected.nii.gz'),
-    brain_mask = file.path(outdir, 'BrainMask.nii.gz'),
-    n4_brain = file.path(outdir, 'N4corrected_Brain.nii.gz')
-  )
-  L = as.list(ss_files)
-  if (all(file.exists(ss_files)) & cache) {
-    ss = lapply(ss_files, antsImageRead)
-    n4 = ss$n4
-    submask = ss$brain_mask
-    simg = ss$n4_brain
+  reader = function(x) {
+    if (!is.antsImage(x)) {
+      y = antsImageRead(x)
+    } else {
+      y = antsImageClone(x)
+    }
+    return(y)
+  }
+
+  if (is.null(brain_mask)) {
+    ss_files = c(
+      n4 = file.path(outdir, 'N4corrected.nii.gz'),
+      brain_mask = file.path(outdir, 'BrainMask.nii.gz'),
+      n4_brain = file.path(outdir, 'N4corrected_Brain.nii.gz')
+    )
+    L = as.list(ss_files)
+    if (all(file.exists(ss_files)) & cache) {
+      ss = lapply(ss_files, antsImageRead)
+      n4 = ss$n4
+      submask = ss$brain_mask
+      simg = ss$n4_brain
+    } else {
+      ss = n4_skull_strip(
+        file = file,
+        n_iter = n_skull_iter,
+        template = template,
+        template_brain = template_brain,
+        template_mask = template_mask,
+        verbose = verbose)
+      n4 = ss$n4
+      submask = ss$brain_mask
+      simg = ss$n4_brain
+
+      print_msg("Saving skull stripped files", verbose = verbose)
+
+      antsImageWrite(n4, ss_files["n4"])
+      antsImageWrite(submask, ss_files["brain_mask"])
+      antsImageWrite(simg, ss_files["n4_brain"])
+    }
   } else {
-    ss = n4_skull_strip(
-      file = file,
-      n_iter = n_skull_iter,
-      template = template,
-      template_brain = template_brain,
-      template_mask = template_mask,
-      verbose = verbose)
-    n4 = ss$n4
-    submask = ss$brain_mask
-    simg = ss$n4_brain
+    brain_mask = reader(brain_mask)
+    brain_mask_file = file.path(outdir, 'BrainMask.nii.gz')
+    antsImageWrite(brain_mask, brain_mask_file)
+    L = list(brain_mask = brain_mask_file)
 
-    print_msg("Saving skull stripped files", verbose = verbose)
-
-    antsImageWrite(n4, ss_files["n4"])
-    antsImageWrite(submask, ss_files["brain_mask"])
-    antsImageWrite(simg, ss_files["n4_brain"])
+    simg = reader(file)
+    submask = brain_mask
+    simg = simg * submask
   }
 
   temp = antsImageRead(template)
@@ -247,7 +270,7 @@ linda_predict = function(
   reg_to_sub_aff = file.path(outdir , 'Reg3_template_to_sub_affine.mat')
   file.copy(reg3$fwdtransforms[2],
             reg_to_sub_aff
-            )
+  )
 
   L$reg_to_sub_aff = reg_to_sub_aff
 
@@ -256,7 +279,7 @@ linda_predict = function(
 
   file.copy(reg3$invtransforms[1],
             reg_to_temp_aff
-            )
+  )
 
   reg_to_temp_warp = file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
   L$reg_to_temp_warp = reg_to_temp_warp
