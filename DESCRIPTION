@@ -1,7 +1,7 @@
 Type: Package
 Package: LINDA
 Title: Lesion Identification with Neighborhood Data Analysis
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: 
     c(
     person(given = "Dorian",
