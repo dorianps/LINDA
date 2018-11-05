@@ -18,7 +18,7 @@ Description: A neuroimaging toolkit for automatic segmentation
     of chronic stroke lesions.
 License: GPL-3
 Imports:
-    ANTsR (>= 0.4.7),
+    ANTsR (>= 0.4.6),
     ANTsRCore (>= 0.6.0.1),
     randomForest,
     magrittr
