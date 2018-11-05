@@ -9,17 +9,8 @@ status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](
 
 # LINDA Package:
 
-The goal of `LINDA` is to provide a neuroimaging toolkit for automatic
+Th e goal of `LINDA` is to provide a neuroimaging toolkit for automatic
 segmentation of chronic stroke lesions.
-
-## Installation
-
-You can install `LINDA` from GitHub with:
-
-``` r
-# install.packages("remotes")
-remotes::install_github("muschellij2/LINDA")
-```
 
 ## Install:
 
@@ -42,8 +33,8 @@ stroke lesions. The method is described in [Hum Brain Mapp. 2016
 Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract).  
 \*\*\*\*\*  
 \#\# Requirements:  
-\* Linux or Mac (since Oct 2016 ANTsR [can run in
-Windows 10](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-\(along-with-FSL,-Rstudio,-Freesurfer,-etc\).))  
+\* Linux or Mac (since Oct 2016 ANTsR [can run in Windows
+10](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-\(along-with-FSL,-Rstudio,-Freesurfer,-etc\).))  
 \* [R v3.0 or above](http://www.r-project.org/) \* The
 [ANTsR](http://stnava.github.io/ANTsR/) package installed in R \* A
 T1-weighted MRI of a patient with (left hemispheric) stroke
@@ -216,3 +207,12 @@ check whether the brain mask is wrong somewhere.
 
 Check out the LESYMAP package for lesion to symptom mapping:
 <https://github.com/dorianps/LESYMAP>.
+
+## Installation of Development Branchgh
+
+You can install `LINDA` from GitHub with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("muschellij2/LINDA")
+```
