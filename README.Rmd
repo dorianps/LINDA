@@ -2,17 +2,14 @@
   output: github_document
 ---
 
-[![Travis build
-status](https://travis-ci.com/muschellij2/LINDA.svg?branch=master)](https://travis-ci.com/muschellij2/LINDA)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/LINDA?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/LINDA)
-[![Coverage
-status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/LINDA)
+[![Travis build status](https://travis-ci.com/muschellij2/LINDA.svg?branch=master)](https://travis-ci.com/muschellij2/LINDA)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/LINDA?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/LINDA)
+[![Coverage status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/LINDA)
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # LINDA Package: 
-Th
-e goal of `LINDA` is to provide a neuroimaging toolkit for automatic segmentation of chronic stroke lesions.
+
+The goal of `LINDA` is to provide a neuroimaging toolkit for automatic segmentation of chronic stroke lesions.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(

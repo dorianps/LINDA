@@ -9,7 +9,7 @@ status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](
 
 # LINDA Package:
 
-Th e goal of `LINDA` is to provide a neuroimaging toolkit for automatic
+The goal of `LINDA` is to provide a neuroimaging toolkit for automatic
 segmentation of chronic stroke lesions.
 
 ## Install:
