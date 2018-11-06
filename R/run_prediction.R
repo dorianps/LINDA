@@ -34,7 +34,11 @@ run_prediction = function(
   emptyimg = brainmask * 1
   emptyimg = as.array(emptyimg)
   emptyimg[1:91 , , ] = 0
-  template_half_mask = resampleImage(brainmask * emptyimg, voxel_resampling, 0, 1)
+  template_half_mask = resampleImage(
+    brainmask * emptyimg,
+    voxel_resampling,
+    0,
+    1)
   rm(emptyimg)
 
   # fix TruncateIntensity incompatibility with old ANTsR binaries
@@ -71,11 +75,15 @@ run_prediction = function(
     sigma = sigma,
     verbose = verbose > 1)
   for (i in 1:length(features)) {
-    features[[i]] = resampleImage(
-      features[[i]],
-      voxel_resampling,
-      useVoxels = 0,
-      interpType = 0) * template_half_mask
+    # features[[i]] = resampleImage(
+    #   features[[i]],
+    #   voxel_resampling,
+    #   useVoxels = 0,
+    #   interpType = 0) * template_half_mask
+    features[[i]] = resampleImageToTarget(
+      image = features[[i]],
+      target = template_half_mask,
+      interpType = "nearestNeighbor") * template_half_mask
   }
 
   # 1st prediction
@@ -107,10 +115,15 @@ run_prediction = function(
   prediction = mmseg$seg[[1]]
   # backproject
   print_msg("Backprojecting 1st prediction...", verbose = verbose)
-  seg = resampleImage(prediction,
-                      dim(template_brain),
-                      useVoxels = 1,
-                      interpType = 1)
+  # seg = resampleImage(prediction,
+  #                     dim(template_brain),
+  #                     useVoxels = 1,
+  #                     interpType = 1)
+  seg = resampleImageToTarget(
+    image = prediction,
+    target = template_brain,
+    interpType = "nearestNeighbor")
+
   seg[seg != 4] = 0
   seg[seg == 4] = 1
   segnative = antsApplyTransforms(

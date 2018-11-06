@@ -30,6 +30,8 @@ linda_mrvnrfs.predict_chunks <- function(
   voxchunk=1000,
   verbose = TRUE) {
   rfct<-1
+  newprobs = NULL
+
   for ( mr in multiResSchedule )
   {
     subdim<-round( dim( labelmask ) / mr )
@@ -51,12 +53,20 @@ linda_mrvnrfs.predict_chunks <- function(
     # just resample xsub
     for ( i in 1:(length(xsub)) )
     {
-      xsub[[i]][[1]]<-resampleImage( xsub[[i]][[1]], subdim, useVoxels=1, 0 )
+      # xsub[[i]][[1]]<-resampleImage( xsub[[i]][[1]], subdim, useVoxels=1, 0 )
+      xsub[[i]][[1]] = resampleImageToTarget(
+        image = xsub[[i]][[1]],
+        target = submask,
+        interpType = "linear")
       if ( nfeats > 1 )
         for ( k in 2:nfeats )
         {
-          xsub[[i]][[k]]<-resampleImage( xsub[[i]][[k]], subdim,
-                                         useVoxels=1, 0 )
+          # xsub[[i]][[k]]<-resampleImage( xsub[[i]][[k]], subdim,
+          #                                useVoxels=1, 0 )
+          xsub[[i]][[k]] = resampleImageToTarget(
+            image = xsub[[i]][[k]],
+            target = submask,
+            interpType = "linear")
         }
     }
 
@@ -115,13 +125,17 @@ linda_mrvnrfs.predict_chunks <- function(
       seqby<-seq.int( 1, hdsz*length(xsub)+1, by=hdsz )
       for ( i in 1:(length(xsub)) )
       {
-        m1<-t(getNeighborhoodInMask( xsub[[i]][[1]], cropmask,
-                                     rad, spatial.info=F, boundary.condition='image' ))
+        m1<-t(getNeighborhoodInMask(
+          xsub[[i]][[1]], cropmask,
+          rad, spatial.info=FALSE,
+          boundary.condition='image' ))
         if ( nfeats > 1 )
           for ( k in 2:nfeats )
           {
-            m2<-t(getNeighborhoodInMask( xsub[[i]][[k]], cropmask,
-                                         rad, spatial.info=F, boundary.condition='image' ))
+            m2<-t(getNeighborhoodInMask(
+              xsub[[i]][[k]], cropmask,
+              rad, spatial.info=FALSE,
+              boundary.condition='image' ))
             m1<-cbind( m1, m2 )
           }
         nxt<-seqby[ i + 1 ]-1
@@ -153,8 +167,13 @@ linda_mrvnrfs.predict_chunks <- function(
       {
         for ( tt1 in 1:length(masterprobs) ) for (tt2 in 1:length(masterprobs[[tt1]]))
         {
-          newprobs[[tt1]][[tt2]]<-resampleImage( masterprobs[[tt1]][[tt2]], dim(labelmask),
-                                                 useVoxels=1, 0 )
+          # newprobs[[tt1]][[tt2]]<-resampleImage(
+          #   masterprobs[[tt1]][[tt2]], dim(labelmask),
+          #   useVoxels=1, 0 )
+          newprobs[[tt1]][[tt2]] = resampleImageToTarget(
+            masterprobs[[tt1]][[tt2]],
+            target = labelmask,
+            interpType = "linear")
         }
       }
       if (verbose) {
