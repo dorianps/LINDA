@@ -309,14 +309,14 @@ linda_predict = function(
   antsImageWrite(graded_map, grad_file)
 
   # save graded map
-  # probles = resampleImage(graded_map,
-  #                         dim(tempbrain),
-  #                         useVoxels = 1,
-  #                         interpType = 0)
-  probles = resampleImageToTarget(
-    image = graded_map,
-    target = tempbrain,
-    interpType = "nearestNeighbor")
+  probles = resampleImage(graded_map,
+                          dim(tempbrain),
+                          useVoxels = 1,
+                          interpType = 0)
+  # probles = resampleImageToTarget(
+  #   image = graded_map,
+  #   target = tempbrain,
+  #   interpType = "nearestNeighbor")
 
 
 

@@ -53,20 +53,20 @@ linda_mrvnrfs.predict_chunks <- function(
     # just resample xsub
     for ( i in 1:(length(xsub)) )
     {
-      # xsub[[i]][[1]]<-resampleImage( xsub[[i]][[1]], subdim, useVoxels=1, 0 )
-      xsub[[i]][[1]] = resampleImageToTarget(
-        image = xsub[[i]][[1]],
-        target = submask,
-        interpType = "linear")
+      xsub[[i]][[1]]<-resampleImage( xsub[[i]][[1]], subdim, useVoxels=1, 0 )
+      # xsub[[i]][[1]] = resampleImageToTarget(
+      #   image = xsub[[i]][[1]],
+      #   target = submask,
+      #   interpType = "linear")
       if ( nfeats > 1 )
         for ( k in 2:nfeats )
         {
-          # xsub[[i]][[k]]<-resampleImage( xsub[[i]][[k]], subdim,
-          #                                useVoxels=1, 0 )
-          xsub[[i]][[k]] = resampleImageToTarget(
-            image = xsub[[i]][[k]],
-            target = submask,
-            interpType = "linear")
+          xsub[[i]][[k]]<-resampleImage( xsub[[i]][[k]], subdim,
+                                         useVoxels=1, 0 )
+          # xsub[[i]][[k]] = resampleImageToTarget(
+          #   image = xsub[[i]][[k]],
+          #   target = submask,
+          #   interpType = "linear")
         }
     }
 
@@ -167,13 +167,13 @@ linda_mrvnrfs.predict_chunks <- function(
       {
         for ( tt1 in 1:length(masterprobs) ) for (tt2 in 1:length(masterprobs[[tt1]]))
         {
-          # newprobs[[tt1]][[tt2]]<-resampleImage(
-          #   masterprobs[[tt1]][[tt2]], dim(labelmask),
-          #   useVoxels=1, 0 )
-          newprobs[[tt1]][[tt2]] = resampleImageToTarget(
-            masterprobs[[tt1]][[tt2]],
-            target = labelmask,
-            interpType = "linear")
+          newprobs[[tt1]][[tt2]]<-resampleImage(
+            masterprobs[[tt1]][[tt2]], dim(labelmask),
+            useVoxels=1, 0 )
+          # newprobs[[tt1]][[tt2]] = resampleImageToTarget(
+          #   masterprobs[[tt1]][[tt2]],
+          #   target = labelmask,
+          #   interpType = "linear")
         }
       }
       if (verbose) {
