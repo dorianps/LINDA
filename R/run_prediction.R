@@ -16,7 +16,6 @@
 #' @return A list of stuff
 #' @export
 #'
-#' @importFrom ANTsR mrvnrfs
 run_prediction = function(
   img,
   brain_mask,
@@ -90,6 +89,7 @@ run_prediction = function(
   print_msg("Running prediction...", verbose = verbose)
 
   predlabel.sub = template_half_mask * 1
+  predlabel.sub[features[[4]] == 0] = 0
 
   rad = c(1,1,1)
   mr = c(3, 2, 1)
@@ -97,9 +97,9 @@ run_prediction = function(
   rflist = list(LINDA::rf_model1,
                 LINDA::rf_model2,
                 LINDA::rf_model3)
-  # rfm$rflist
+  # rfm = list(rflist = rflist) # need to keep this for some bad coding in mrvnrfs_chunks
 
-  predlabel.sub[features[[4]] == 0] = 0
+
   mmseg <- suppressMessages(
     # ANTsR::mrvnrfs.predict(
     linda_mrvnrfs.predict_chunks(
@@ -131,7 +131,7 @@ run_prediction = function(
     moving = seg,
     transformlist = reg$fwdtransforms,
     interpolator = 'NearestNeighbor',
-    verbose = verbose
+    verbose = FALSE
   )
   mask.lesion2 = brain_mask * 1
   mask.lesion2[segnative == 1] = 0
