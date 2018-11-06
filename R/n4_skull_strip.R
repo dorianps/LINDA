@@ -68,7 +68,6 @@ n4_skull_strip = function(
     if (!"verbose" %in% formalArgs(abpBrainExtraction)) {
       args$verbose = NULL
     }
-    n4 = do.call(abpN4, args = args)
     bextract = do.call(abpBrainExtraction, args = args)
     rm(submask)
     submask = bextract$bmask * 1
