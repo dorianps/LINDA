@@ -20,7 +20,7 @@
 #' @importFrom ANTsRCore resampleImage smoothImage thresholdImage antsImageClone
 #' @importFrom ANTsRCore antsApplyTransforms is.antsImage
 #' @importFrom ANTsR abpN4 abpBrainExtraction reflectImage
-#' @importFrom ANTsR composeTransformsToField
+#' @importFrom ANTsR composeTransformsToField splitMask
 #' @importFrom magrittr %>%
 linda_predict = function(
   file,
