@@ -1,7 +1,7 @@
 #' Asymmetry Mask
 #'
-#' @param img an \code{\link{antsImage}} of T1 image
-#' @param brain_mask an \code{\link{antsImage}} of brain mask
+#' @param img an \code{antsImage} of T1 image
+#' @param brain_mask an \code{antsImage} of brain mask
 #' @param reflaxis Reflection axis
 #' @param sigma Smoothing sigma
 #' @param verbose print diagnostic messages

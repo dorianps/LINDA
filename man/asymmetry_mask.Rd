@@ -8,9 +8,9 @@ asymmetry_mask(img, brain_mask, reflaxis = 0, sigma = 2,
   verbose = TRUE)
 }
 \arguments{
-\item{img}{an \code{\link{antsImage}} of T1 image}
+\item{img}{an \code{antsImage} of T1 image}
 
-\item{brain_mask}{an \code{\link{antsImage}} of brain mask}
+\item{brain_mask}{an \code{antsImage} of brain mask}
 
 \item{reflaxis}{Reflection axis}
 
