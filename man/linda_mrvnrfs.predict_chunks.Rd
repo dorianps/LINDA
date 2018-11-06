@@ -21,6 +21,10 @@ linda_mrvnrfs.predict_chunks(rflist, x, labelmask, rad = NA,
 
 \item{asFactors}{boolean - treat the y entries as factors}
 
+\item{voxchunk}{value of maximal voxels to predict at once.
+This value is used to split the prediction into smaller chunks
+such that memory requirements do not become too big}
+
 \item{verbose}{print diagnostic messages}
 }
 \value{
