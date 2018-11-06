@@ -11,6 +11,8 @@
 #'
 #' @return A list of output images, brain and corrected
 #' @export
+#' @importFrom methods formalArgs
+#' @importFrom stats median
 n4_skull_strip = function(
   file,
   template = system.file("extdata", "pennTemplate", "template.nii.gz",

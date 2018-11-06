@@ -12,12 +12,18 @@
 #' @return list a 4-list with the rf model, training vector, feature matrix
 #' and the random mask
 #' @param verbose print diagnostic messages
+#' @param voxchunk value of maximal voxels to predict at once.
+#' This value is used to split the prediction into smaller chunks
+#' such that memory requirements do not become too big
 #' @author Avants BB, Tustison NJ, Pustina D
 #'
 #' @export
 #' @importFrom ANTsRCore lappend makeImage matrixToImages
 #' @importFrom ANTsRCore getNeighborhoodInMask imageListToMatrix
 #' @importFrom ANTsR splitMask
+#' @importFrom stats predict
+#' @import randomForest
+#'
 linda_mrvnrfs.predict_chunks <- function(
   rflist, x, labelmask, rad=NA,
   multiResSchedule=c(4,2,1), asFactors=TRUE,

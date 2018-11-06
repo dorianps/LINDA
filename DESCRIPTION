@@ -1,7 +1,7 @@
 Type: Package
 Package: LINDA
 Title: Lesion Identification with Neighborhood Data Analysis
-Version: 0.3.2
+Version: 0.3.3
 Authors@R: 
     c(
     person(given = "Dorian",
@@ -21,7 +21,9 @@ Imports:
     ANTsR (>= 0.4.6),
     ANTsRCore (>= 0.6.0.1),
     randomForest,
-    magrittr
+    magrittr,
+    stats,
+    methods
 Suggests: 
     covr,
     knitr,
