@@ -374,12 +374,12 @@ linda_predict = function(
                        mustWork = FALSE)
 
   if (!all(file.exists(warpmni, affmni))) {
-    print_msg(paste0("Registering Template to MNI (ch2) space" ,
-                     " (not subject specific)..."),
+    print_msg(paste0("Registering LINDA template to MNI (ch2) - get full release to eleminate this step" ,
+                     "..."),
               verbose = verbose)
     temp_to_ch2 = antsRegistration(
       fixed = mni, moving = temp,
-      typeofTransform = "SyN",
+      typeofTransform = "SyNCC",
       verbose = verbose > 1)
     matrices = c(temp_to_ch2$fwdtransforms, affpenn, warppenn)
   } else {
