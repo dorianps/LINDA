@@ -114,7 +114,7 @@ run_prediction = function(
   )
   prediction = mmseg$seg[[1]]
   # backproject
-  print_msg("Backprojecting 1st prediction...", verbose = verbose)
+  print_msg("Backprojecting prediction...", verbose = verbose)
   seg = resampleImage(prediction,
                       dim(template_brain),
                       useVoxels = 1,
