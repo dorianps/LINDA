@@ -68,29 +68,29 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
   if ( typeof(y[[1]]) == "integer" | typeof(y[[1]]) == "double") yisimg<-FALSE
   rflist<-list()
   rfct<-1
-  
+
   mrcount=0
   for ( mr in multiResSchedule )
   {
     mrcount=mrcount+1
 
-    if (mr != 1) { 
+    if (mr != 1) {
       subdim<-round( dim( labelmask ) / mr )
       subdim[ subdim < 2*rad+1 ] <- ( 2*rad+1 )[  subdim < 2*rad+1 ]
       submask<-resampleImage( labelmask, subdim, useVoxels=1, interpType=1 )
     } else { submask = labelmask }
-      
+
     ysub<-y
     xsub<-x
     nfeats<-length(xsub[[1]])
-    
+
     # resample xsub and ysub
     if (mr != 1) {
       for ( i in 1:(length(xsub)) )
       {
-        if ( yisimg ) 
+        if ( yisimg )
           ysub[[i]]<-resampleImage( y[[i]], subdim, useVoxels=1, interpType=1 )
-        
+
         xsub[[i]][[1]]<-resampleImage( xsub[[i]][[1]], subdim, useVoxels=1, 0 )
         if ( nfeats > 1 )
           for ( k in 2:nfeats )
@@ -100,7 +100,7 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
           }
       }
     }
-    
+
     # add newprobs from previous run, already correct dimension
     if ( rfct > 1 )
     {
@@ -113,23 +113,23 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
       }
       rm(newprobs)
     }
-    
+
     nfeats<-length(xsub[[1]])  # update nfeats with newprobs
-    
+
     # build model for this mr
     sol<-vwnrfs( ysub, xsub, submask, rad, nsamples, ntrees, asFactors )
-    
-    
-    
+
+
+
     # apply model, get chunk of probs, put chunk in masterprobs
     if (mrcount < length(multiResSchedule)) {   # not last mr, calculate probs for next cycle
       chunk.seq = seq(1, sum(submask>0), by=voxchunk)
       predtype<-'response'
       if ( asFactors ) predtype<-'prob'
-      
+
       # set up probs to fill:
       masterprobs=list()
-      for (tt1 in 1:length(xsub)) { 
+      for (tt1 in 1:length(xsub)) {
         masterprobs[[tt1]] = list()
         if (asFactors)
           nprob = length( unique( c( as.numeric( submask ) ) ) )
@@ -138,20 +138,20 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
           masterprobs[[tt1]][[tt2]] = submask*0
         }
       } # end creating masterprobs
-        
-      
+
+
       for (ch in 1:length(chunk.seq)) {
-        
+
         # set end of this chunk
-        if (ch < length(chunk.seq)) { chnxt=chunk.seq[ch+1]-1 
+        if (ch < length(chunk.seq)) { chnxt=chunk.seq[ch+1]-1
         } else { chnxt=sum(submask>0) }
-        
+
         # create mask for this chunk
         temp=which(submask>0, arr.ind=T)[chunk.seq[ch]:chnxt]
         nnz = submask>0 ; nnz[-temp]=F
         cropmask = submask+0
         cropmask[nnz==F] = 0
-        
+
         # start filling fm
         testmat<-t(getNeighborhoodInMask( cropmask, cropmask,
                                           rad, spatial.info=F, boundary.condition='image' ))
@@ -160,7 +160,7 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
         fm<-matrix( nrow=(nrow(testmat)*length(xsub)) ,
                     ncol=ncol(testmat)*nfeats  )
         rm( testmat )
-        
+
         seqby<-seq.int( 1, hdsz*length(xsub)+1, by=hdsz )
         for ( i in 1:(length(xsub)) )
         {
@@ -176,27 +176,27 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
           nxt<-seqby[ i + 1 ]-1
           fm[ seqby[i]:nxt, ]<-m1
         } # end filling fm, ready for predict
-        
+
         probsrf<-t( predict( sol$rfm, newdata=fm, type=predtype ) )
-        
-        
+
+
         for ( i in 1:(length(xsub)) )
         {
           nxt<-seqby[ i + 1 ]-1
           probsx<-list(submask)
-          if ( asFactors ) 
+          if ( asFactors )
             probsx<-matrixToImages(probsrf[,seqby[i]:nxt],  cropmask )
           else probsx<-list( makeImage( cropmask, probsrf[,seqby[i]:nxt] ) )
-          
+
           for (tt1 in 1:length(probsx)) {
                masterprobs[[i]][[tt1]][cropmask>0] = probsx[[tt1]][cropmask>0]
           }  # end filling masterprobs
         }  # end putting probs to images
-        
+
         message(paste(ch,'of',length(chunk.seq)))
       } # end chunk loop, masterprobs is complete now
-  
-      
+
+
       # resample masterprobs back to original resolution
       newprobs=masterprobs
       if ( ! all( dim(masterprobs[[1]][[1]] ) == dim(labelmask) ) ) {
@@ -208,7 +208,7 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
             newprobs[[tt1]][[tt2]]<-resampleImage( masterprobs[[tt1]][[tt2]], nextdim,
                                                    useVoxels=1, 0 )
           }
-            
+
         } else {  # last mr, resample to labelmask
           for ( tt1 in 1:length(masterprobs) ) for (tt2 in 1:length(masterprobs[[tt1]]))
           {
@@ -219,8 +219,8 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
       }  # end if that resamples newprobs for next level
       rm(masterprobs) ; rm(probsrf) ; rm(fm)
     }  # end if not last mr that computes newprobs
-    
-    
+
+
     rm(xsub) ; rm(ysub)
     rflist[[rfct]]<-sol$rfm
     rfct<-rfct+1
@@ -230,166 +230,3 @@ mrvnrfs_chunks <- function( y, x, labelmask, rad=NA, nsamples=1,
 
 
 
-#' multi-res voxelwise neighborhood random forest segmentation
-#'
-#' Represents multiscale feature images as a neighborhood and uses the features
-#' to apply a random forest segmentation model to a new image
-#'
-#' @param rflist a list of random forest models from mrvnrfs
-#' @param x a list of lists where each list contains feature images
-#' @param labelmask a mask for the features (all in the same image space)
-#' @param rad vector of dimensionality d define nhood radius
-#' @param multiResSchedule an integer vector defining multi-res levels
-#' @param asFactors boolean - treat the y entries as factors
-#' @return list a 4-list with the rf model, training vector, feature matrix
-#' and the random mask
-#' @author Avants BB, Tustison NJ, Pustina D
-#'
-#' @export mrvnrfs.predict
-mrvnrfs.predict_chunks <- function( rflist, x, labelmask, rad=NA,
-                             multiResSchedule=c(4,2,1), asFactors=TRUE,
-                             voxchunk=1000) {
-  library(randomForest)
-  rfct<-1
-  for ( mr in multiResSchedule )
-  {
-    subdim<-round( dim( labelmask ) / mr )
-    subdim[ subdim < 2*rad+1 ] <- ( 2*rad+1 )[  subdim < 2*rad+1 ]
-    submask<-resampleImage( labelmask, subdim, useVoxels=1,
-                            interpType=1 )
-    xsub<-x
-    if ( rfct > 1 )
-    {
-      for ( kk in 1:length(xsub) )
-      {
-        temp<-lappend(  unlist( xsub[[kk]] ) ,  unlist(newprobs[[kk]])  )
-        xsub[[kk]]<-temp
-      }
-    }
-    nfeats<-length(xsub[[1]])
-    
-    
-    # just resample xsub
-    for ( i in 1:(length(xsub)) )
-    {
-      xsub[[i]][[1]]<-resampleImage( xsub[[i]][[1]], subdim, useVoxels=1, 0 )
-      if ( nfeats > 1 )
-        for ( k in 2:nfeats )
-        {
-          xsub[[i]][[k]]<-resampleImage( xsub[[i]][[k]], subdim,
-                                         useVoxels=1, 0 )
-        }
-    }
-    
-    
-    predtype<-'response'
-    if ( asFactors ) predtype<-'prob'
-    
-    # apply model, get probs, feed them to next level
-    chunk.seq = seq(1, sum(submask>0), by=voxchunk)
-    
-    # set up probs to fill, get number of labels from model
-    masterprobs=list()
-    for (tt1 in 1:length(xsub)) { 
-      masterprobs[[tt1]] = list()
-      if (asFactors) {
-        nprob = length(levels(rfm$rflist[[1]]$y)) + 1
-#         nprob = length( unique( c( as.numeric( submask ) ) ) )
-      } else { nprob=1 }
-      for (tt2 in 1:nprob) {
-        masterprobs[[tt1]][[tt2]] = submask*0
-      }
-    } # end creating masterprobs
-    
-    
-    chunkmask = splitMask(submask, voxchunk = voxchunk)
-    
-    
-    for (ch in 1:max(chunkmask)) {
-      
-      # # set end of this chunk # removed block after ANTsR reconfig in July 2017
-      # if (ch < length(chunk.seq)) { chnxt=chunk.seq[ch+1]-1 
-      # } else { chnxt=sum(submask>0) }
-      # 
-      # # create mask for this chunk
-      # temp=which(submask>0)[chunk.seq[ch]:chnxt]
-      # nnz = submask>0 ; nnz[-temp]=F
-      # cropmask = submask+0
-      # cropmask[nnz==F] = 0
-      
-      cropmask = thresholdImage(chunkmask, ch, ch)
-      
-      # start filling fm
-      testmat<-t(getNeighborhoodInMask( cropmask, cropmask,
-                                        rad, spatial.info=F, boundary.condition='image' ))
-      hdsz<-nrow(testmat) # neighborhood size
-      nent<-nfeats*ncol(testmat)*nrow(testmat)*length(xsub)*1.0
-      fm<-matrix( nrow=(nrow(testmat)*length(xsub)) ,
-                  ncol=ncol(testmat)*nfeats  )
-      rm( testmat )
-      
-      seqby<-seq.int( 1, hdsz*length(xsub)+1, by=hdsz )
-      for ( i in 1:(length(xsub)) )
-      {
-        m1<-t(getNeighborhoodInMask( xsub[[i]][[1]], cropmask,
-                                     rad, spatial.info=F, boundary.condition='image' ))
-        if ( nfeats > 1 )
-          for ( k in 2:nfeats )
-          {
-            m2<-t(getNeighborhoodInMask( xsub[[i]][[k]], cropmask,
-                                         rad, spatial.info=F, boundary.condition='image' ))
-            m1<-cbind( m1, m2 )
-          }
-        nxt<-seqby[ i + 1 ]-1
-        fm[ seqby[i]:nxt, ]<-m1
-      } # end filling fm, ready for predict
-      
-      
-      probs<-t( predict( rflist[[rfct]] ,newdata=fm, type=predtype) )
-      
-      for ( i in 1:(length(xsub)) )
-      {
-        nxt<-seqby[ i + 1 ]-1
-        probsx<-list(submask)
-        if ( asFactors ) {
-          probsx<-matrixToImages(probs[,seqby[i]:nxt],  cropmask )
-        } else { probsx<-list( makeImage( cropmask, probs[,seqby[i]:nxt] ) )  }
-        
-        
-        for (tt1 in 1:length(probsx)) {
-          masterprobs[[i]][[tt1]][cropmask>0] = probsx[[tt1]][cropmask>0]
-        }  # end filling masterprobs
-       }  # end putting probs to images
-      
-      
-      # resample masterprobs back to original resolution
-      newprobs=masterprobs
-      if ( ! all( dim(masterprobs[[1]][[1]] ) == dim(labelmask) ) )
-      {
-        for ( tt1 in 1:length(masterprobs) ) for (tt2 in 1:length(masterprobs[[tt1]]))
-        {
-          newprobs[[tt1]][[tt2]]<-resampleImage( masterprobs[[tt1]][[tt2]], dim(labelmask),
-                                                 useVoxels=1, 0 )
-        }
-      }
-      message(paste(ch,'of',length(chunk.seq)))
-    }  # end chunk loop
-    rm(masterprobs)
-    rfct<-rfct+1
-  } # mr loop
-  
-  # prediction is finished, create segmentation
-  if ( asFactors )
-  {
-    rfseg=list()
-    for (segno in 1:length(newprobs)) {
-      rfseg[[segno]]<-imageListToMatrix( unlist(newprobs[[segno]]) , labelmask )
-      rfseg[[segno]]<-apply( rfseg[[segno]], FUN=which.max, MARGIN=2)
-      rfseg[[segno]]<-makeImage( labelmask , rfseg[[segno]] )
-    }
-    return( list( seg=rfseg, probs=newprobs ) )
-  }
-  rfseg<-apply( imageListToMatrix( unlist(newprobs) ,
-                                   labelmask ), FUN=median, MARGIN=1 )
-  return( list( seg=rfseg, probs=newprobs ) )
-}

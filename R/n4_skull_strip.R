@@ -11,6 +11,8 @@
 #'
 #' @return A list of output images, brain and corrected
 #' @export
+#' @importFrom methods formalArgs
+#' @importFrom stats median
 n4_skull_strip = function(
   file,
   template = system.file("extdata", "pennTemplate", "template.nii.gz",
@@ -66,7 +68,6 @@ n4_skull_strip = function(
     if (!"verbose" %in% formalArgs(abpBrainExtraction)) {
       args$verbose = NULL
     }
-    n4 = do.call(abpN4, args = args)
     bextract = do.call(abpBrainExtraction, args = args)
     rm(submask)
     submask = bextract$bmask * 1

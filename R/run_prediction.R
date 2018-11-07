@@ -33,7 +33,11 @@ run_prediction = function(
   emptyimg = brainmask * 1
   emptyimg = as.array(emptyimg)
   emptyimg[1:91 , , ] = 0
-  template_half_mask = resampleImage(brainmask * emptyimg, voxel_resampling, 0, 1)
+  template_half_mask = resampleImage(
+    brainmask * emptyimg,
+    voxel_resampling,
+    0,
+    1)
   rm(emptyimg)
 
   # fix TruncateIntensity incompatibility with old ANTsR binaries
@@ -75,6 +79,10 @@ run_prediction = function(
       voxel_resampling,
       useVoxels = 0,
       interpType = 0) * template_half_mask
+    # features[[i]] = resampleImageToTarget(
+    #   image = features[[i]],
+    #   target = template_half_mask,
+    #   interpType = "nearestNeighbor") * template_half_mask
   }
 
   # 1st prediction
@@ -89,13 +97,15 @@ run_prediction = function(
   rflist = list(LINDA::rf_model1,
                 LINDA::rf_model2,
                 LINDA::rf_model3)
-  rfm = list(rflist = rflist) # need to keep this for some bad coding in mrvnrfs_chunks
+  # rfm = list(rflist = rflist) # need to keep this for some bad coding in mrvnrfs_chunks
 
 
   mmseg <- suppressMessages(
-    LINDA.mrvnrfs.predict_chunks(
-      rfm$rflist,
+    # ANTsR::mrvnrfs.predict(
+    linda_mrvnrfs.predict_chunks(
+      rflist,
       list(features),
+      # features,
       predlabel.sub,
       rad = rad,
       multiResSchedule = mr,
@@ -109,6 +119,11 @@ run_prediction = function(
                       dim(template_brain),
                       useVoxels = 1,
                       interpType = 1)
+  # seg = resampleImageToTarget(
+  #   image = prediction,
+  #   target = template_brain,
+  #   interpType = "nearestNeighbor")
+
   seg[seg != 4] = 0
   seg[seg == 4] = 1
   segnative = antsApplyTransforms(

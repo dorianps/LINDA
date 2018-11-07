@@ -1,8 +1,20 @@
-asymmetry_mask = function(img,
-                          brain_mask,
-                          reflaxis = 0,
-                          sigma = 2,
-                          verbose = TRUE) {
+#' Asymmetry Mask
+#'
+#' @param img an \code{antsImage} of T1 image
+#' @param brain_mask an \code{antsImage} of brain mask
+#' @param reflaxis Reflection axis
+#' @param sigma Smoothing sigma
+#' @param verbose print diagnostic messages
+#'
+#' @return A list of the reflection and the mask
+#' @export
+#'
+asymmetry_mask = function(
+  img,
+  brain_mask,
+  reflaxis = 0,
+  sigma = 2,
+  verbose = TRUE) {
   # compute asymmetry mask
   print_msg("Computing asymmetry mask...", verbose = verbose)
 

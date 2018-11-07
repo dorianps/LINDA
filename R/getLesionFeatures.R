@@ -42,7 +42,6 @@ getLesionFeatures = function(
   #   kmask = bmask,
   #   verbose = verbose)$segmentation
   feats[[1]] = (conavg - kmean) %>% iMath('Normalize')
-
   # FEAT 2: gradient magnitude
   feats[[2]] = img %>% iMath('Grad') %>% iMath('Normalize')
 
@@ -59,6 +58,7 @@ getLesionFeatures = function(
   feats[[3]] = (conavg - temp) %>%
     iMath(truncate, 0.01, 0.99) %>%
     iMath('Normalize')
+
 
   # FEAT 4: kmean
   feats[[4]] = antsImageClone(kmean)
@@ -77,5 +77,8 @@ getLesionFeatures = function(
   # FEAT 6: t1 itself
   feats[[6]] = antsImageClone(img)   # iMath(img,'Normalize')
 
+  names(feats) = c("d_controls", "d_controls_grad_mag",
+                  "n4_d_controls", "kmean", "ref_diff",
+                  "t1")
   return(feats)
 }

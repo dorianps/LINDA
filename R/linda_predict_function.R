@@ -18,7 +18,7 @@
 #'
 #' @importFrom ANTsRCore iMath antsImageRead antsImageWrite antsRegistration
 #' @importFrom ANTsRCore resampleImage smoothImage thresholdImage antsImageClone
-#' @importFrom ANTsRCore antsApplyTransforms is.antsImage
+#' @importFrom ANTsRCore antsApplyTransforms is.antsImage resampleImageToTarget
 #' @importFrom ANTsR abpN4 abpBrainExtraction reflectImage
 #' @importFrom ANTsR composeTransformsToField splitMask
 #' @importFrom magrittr %>%
@@ -290,24 +290,36 @@ linda_predict = function(
 
   seg = out3$segmentation
 
-  L$segmentation = seg
+  seg_file = file.path(outdir, 'Prediction3_template.nii.gz')
+  L$segmentation = seg_file
 
-  antsImageWrite(seg, file.path(outdir, 'Prediction3_template.nii.gz'))
+  antsImageWrite(seg, seg_file)
 
   print_msg("Saving 3rd final prediction in native space...",
             verbose = verbose)
+  segnative_file = file.path(outdir, 'Prediction3_native.nii.gz')
   segnative = out3$segmentation_native
 
-  antsImageWrite(segnative,
-                 file.path(outdir, 'Prediction3_native.nii.gz'))
+  L$segmentation_native = segnative_file
+  antsImageWrite(segnative, segnative_file)
 
   graded_map = out3$multi_res_seg$probs[[1]][[4]]
+
+  grad_file = file.path(outdir, 'Prediction3_graded_map.nii.gz')
+  antsImageWrite(graded_map, grad_file)
 
   # save graded map
   probles = resampleImage(graded_map,
                           dim(tempbrain),
                           useVoxels = 1,
                           interpType = 0)
+  # probles = resampleImageToTarget(
+  #   image = graded_map,
+  #   target = tempbrain,
+  #   interpType = "nearestNeighbor")
+
+
+
   problesnative = antsApplyTransforms(
     fixed = simg,
     moving = probles,
@@ -315,27 +327,29 @@ linda_predict = function(
     interpolator = 'Linear',
     verbose = verbose > 1
   )
+  probles_file = file.path(outdir,
+                            'Prediction3_probability_template.nii.gz')
+  L$lesion_probability_template = probles_file
   print_msg("Saving probabilistic prediction in template space...",
             verbose = verbose)
-  antsImageWrite(probles,
-                 file.path(outdir,
-                           'Prediction3_probability_template.nii.gz'))
+  antsImageWrite(probles, probles_file)
 
+  problesnative_file = file.path(
+    outdir, 'Prediction3_probability_native.nii.gz')
+  L$lesion_probability_native = problesnative_file
   print_msg("Saving probabilistic prediction in native space...",
             verbose = verbose)
-  antsImageWrite(problesnative,
-                 file.path(outdir,
-                           'Prediction3_probability_native.nii.gz'))
-
+  antsImageWrite(problesnative, problesnative_file)
 
 
   # save in MNI coordinates
   print_msg("Transferring data in MNI (ch2) space...",
             verbose = verbose)
 
-  warppenn = file.path(outdir, 'Reg3_sub_to_template_warp.nii.gz')
-  affpenn = file.path(outdir, 'Reg3_sub_to_template_affine.mat')
-
+  # warppenn = file.path(outdir, 'Reg3_sub_to_template_warp.nii.gz')
+  warppenn = reg_to_temp_warp
+  # affpenn = file.path(outdir, 'Reg3_sub_to_template_affine.mat')
+  affpenn = reg_to_temp_aff
 
   mni = system.file("extdata", "pennTemplate", "ch2.nii.gz",
                     package = "LINDA",
@@ -391,11 +405,15 @@ linda_predict = function(
 
   print_msg("Saving subject in MNI (ch2) space...",
             verbose = verbose)
-  antsImageWrite(submni, file.path(outdir, 'Subject_in_MNI.nii.gz'))
+  t1_template = file.path(outdir, 'Subject_in_MNI.nii.gz')
+  antsImageWrite(submni, t1_template)
+
+  L$t1_template = t1_template
 
   print_msg("Saving lesion in MNI (ch2) space...",
             verbose = verbose)
-  antsImageWrite(lesmni, file.path(outdir, 'Lesion_in_MNI.nii.gz'))
-  return(lesmni)
-
+  lesion_template = file.path(outdir, 'Lesion_in_MNI.nii.gz')
+  L$lesion_template = lesion_template
+  antsImageWrite(lesmni, lesion_template)
+  return(L)
 }
