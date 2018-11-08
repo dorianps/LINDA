@@ -46,7 +46,7 @@ run_prediction = function(
   truncate =  ifelse(any(ops), 'TruncateIntensity', 'TruncateImageIntensity')
 
 
-  print_msg("Running registration...", verbose = verbose)
+  print_msg(paste("    Running registration:", typeofTransform), verbose = verbose)
   reg = antsRegistration(
     fixed = img,
     moving = template_brain,
@@ -66,7 +66,7 @@ run_prediction = function(
   )
 
   # prepare features
-  print_msg("Feature calculation... ", verbose = verbose)
+  print_msg("    Feature calculation ", verbose = verbose)
   features = getLesionFeatures(
     reg$warpedfixout,
     template_brain,
@@ -86,7 +86,7 @@ run_prediction = function(
   }
 
   # 1st prediction
-  print_msg("Running prediction...", verbose = verbose)
+  print_msg("    Lesion segmentation", verbose = verbose)
 
   predlabel.sub = template_half_mask * 1
   predlabel.sub[features[[4]] == 0] = 0
@@ -97,7 +97,6 @@ run_prediction = function(
   rflist = list(LINDA::rf_model1,
                 LINDA::rf_model2,
                 LINDA::rf_model3)
-  # rfm = list(rflist = rflist) # need to keep this for some bad coding in mrvnrfs_chunks
 
 
   mmseg <- suppressMessages(

@@ -108,7 +108,7 @@ linda_mrvnrfs.predict_chunks <- function(
 
       cropmask = thresholdImage(chunkmask, ch, ch)
 
-      print_msg("Neighborhood for mask", verbose = verbose)
+      # print_msg("Neighborhood for mask", verbose = verbose)
 
       # start filling fm
       testmat<-t(getNeighborhoodInMask( cropmask, cropmask,
@@ -120,7 +120,7 @@ linda_mrvnrfs.predict_chunks <- function(
                   ncol=ncol(testmat)*nfeats  )
       rm( testmat )
 
-      print_msg("Neighborhood info from features", verbose = verbose)
+      # print_msg("Neighborhood info from features", verbose = verbose)
 
       seqby<-seq.int( 1, hdsz*length(xsub)+1, by=hdsz )
       for ( i in 1:(length(xsub)) )
@@ -142,7 +142,7 @@ linda_mrvnrfs.predict_chunks <- function(
         fm[ seqby[i]:nxt, ]<-m1
       } # end filling fm, ready for predict
 
-      print_msg("Predicting from RF", verbose = verbose)
+      # print_msg("Predicting from RF", verbose = verbose)
 
       probs<-t( predict( rflist[[rfct]] ,newdata=fm, type=predtype) )
 
@@ -182,7 +182,7 @@ linda_mrvnrfs.predict_chunks <- function(
     }  # end chunk loop
     rm(masterprobs)
     rfct<-rfct+1
-    print(rfct)
+    # print(rfct)
   } # mr loop
 
   # prediction is finished, create segmentation

@@ -4,9 +4,9 @@
 \alias{linda_predict}
 \title{Run Lesion Prediction from LINDA}
 \usage{
-linda_predict(file, brain_mask = NULL, n_skull_iter = 2,
+linda_predict(file = NA, brain_mask = NULL, n_skull_iter = 2,
   verbose = TRUE, outdir = NULL, voxel_resampling = c(2, 2, 2),
-  sigma = 2, reflaxis = 0, cache = TRUE)
+  sigma = 2, reflaxis = 0, noMNI = FALSE, cache = TRUE)
 }
 \arguments{
 \item{file}{Filename of T1 image}
@@ -28,7 +28,12 @@ If this is passed in, then skull stripping is not done}
 
 \item{reflaxis}{Reflection axis}
 
-\item{cache}{Should files be just read in if they already exist?}
+\item{noMNI}{(default=FALSE) whether to avoid bringing data
+into MNI space}
+
+\item{cache}{(default=TRUE) use existing processed files to
+speed up processing. Useful for interrupted processes. Will
+re-process and overwrite if set to FALSE}
 }
 \value{
 A list of things

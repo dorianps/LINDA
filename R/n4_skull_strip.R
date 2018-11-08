@@ -25,7 +25,9 @@ n4_skull_strip = function(
   n_iter = 2) {
 
   # load the file
-  print_msg('Loading file:', verbose = verbose)
+  print_msg(paste('Loading file:',
+                  ifelse(!is.antsImage(file), basename(file), 'from memory'),
+                  '...') , verbose = verbose)
   reader = function(x) {
     if (!is.antsImage(x)) {
       y = antsImageRead(x)
@@ -48,9 +50,9 @@ n4_skull_strip = function(
   # two rounds of N4-BrainExtract to skull strip
   print_msg("Skull stripping... (long process)", verbose = verbose)
   for (i in 1:n_iter) {
-    print_msg(
-      paste0("Running iteration ", i),
-      verbose = verbose)
+    # print_msg(
+    #   paste0("Running iteration ", i),
+    #   verbose = verbose)
     args = list(
       img = subimg,
       mask = submask,
@@ -71,14 +73,16 @@ n4_skull_strip = function(
     bextract = do.call(abpBrainExtraction, args = args)
     rm(submask)
     submask = bextract$bmask * 1
-    print_msg(
-      paste0("SubMask number of voxels ", sum(submask)),
-      verbose = verbose)
+    # print_msg(
+    #   paste0("SubMask number of voxels ", sum(submask)),
+    #   verbose = verbose)
   }
   simg = n4 * submask
 
   L = list(n4 = n4,
            brain_mask = submask,
            n4_brain = simg)
+
+
   return(L)
 }

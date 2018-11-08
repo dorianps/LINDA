@@ -1,7 +1,7 @@
 print_msg = function(msg, verbose = TRUE) {
   if (verbose) {
-    msg = paste(format(Sys.time(), "%H:%M") , msg)
-    message(msg)
+    msg = paste(format(Sys.time(), "\n%H:%M") , msg)
+    cat(msg)
   }
 }
 
