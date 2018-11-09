@@ -11,8 +11,11 @@
 #' @param sigma Smoothing factor, passed to
 #' \code{\link{asymmetry_mask}} and
 #' \code{\link{smoothImage}}
-#' @param noMNI (default=FALSE) whether to avoid bringing data
-#' into MNI space
+#' @param saveMNI (logical) whether to save outputs in MNI space
+#' If transformation files are available, \code{saveMNI=TRUE}.
+#' Otherwise \code{saveMNI=FALSE}. Manually setting to TRUE
+#' without transformation files will force a de novo registration
+#' between internal templates.
 #' @param cache (default=TRUE) use existing processed files to
 #' speed up processing. Useful for interrupted processes. Will
 #' re-process and overwrite if set to FALSE
@@ -26,6 +29,7 @@
 #' @importFrom ANTsR abpN4 abpBrainExtraction reflectImage
 #' @importFrom ANTsR composeTransformsToField splitMask
 #' @importFrom magrittr %>%
+#' @importFrom utils capture.output installed.packages sessionInfo packageVersion
 linda_predict = function(
   file=NA,
   brain_mask = NULL,
@@ -35,7 +39,7 @@ linda_predict = function(
   voxel_resampling = c(2, 2, 2),
   sigma = 2,
   reflaxis = 0,
-  noMNI = FALSE,
+  saveMNI = file.exists(system.file("extdata", "pennTemplate", "templateToCh2_0GenericAffine.mat", package = "LINDA", mustWork = FALSE)),
   cache = TRUE) {
 
   toc=Sys.time()
@@ -389,8 +393,6 @@ linda_predict = function(
 
 
   # save in MNI coordinates
-  print_msg("Transferring data in MNI (ch2) space...",
-            verbose = verbose)
 
   # warppenn = file.path(outdir, 'Reg3_sub_to_template_warp.nii.gz')
   warppenn = reg_to_temp_warp
@@ -413,8 +415,8 @@ linda_predict = function(
                        "templateToCh2_0GenericAffine.mat",
                        package = "LINDA",
                        mustWork = FALSE)
-  if (!noMNI) {
-    if (!all(file.exists(warpmni, affmni)) & !noMNI) {
+  if (saveMNI) {
+    if (!all(file.exists(warpmni, affmni))) {
       print_msg("No MNI transformations available, registering de novo\n     get full release to eleminate this step",
                 verbose = verbose)
       temp_to_ch2 = antsRegistration(
@@ -425,6 +427,9 @@ linda_predict = function(
     } else {
       matrices = c(warpmni, affmni, affpenn, warppenn)
     }
+
+    print_msg("Transferring data in MNI (ch2) space...",
+              verbose = verbose)
 
     submni = antsApplyTransforms(
       moving = simg,

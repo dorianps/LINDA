@@ -6,7 +6,10 @@
 \usage{
 linda_predict(file = NA, brain_mask = NULL, n_skull_iter = 2,
   verbose = TRUE, outdir = NULL, voxel_resampling = c(2, 2, 2),
-  sigma = 2, reflaxis = 0, noMNI = FALSE, cache = TRUE)
+  sigma = 2, reflaxis = 0,
+  saveMNI = file.exists(system.file("extdata", "pennTemplate",
+  "templateToCh2_0GenericAffine.mat", package = "LINDA", mustWork =
+  FALSE)), cache = TRUE)
 }
 \arguments{
 \item{file}{Filename of T1 image}
@@ -28,8 +31,11 @@ If this is passed in, then skull stripping is not done}
 
 \item{reflaxis}{Reflection axis}
 
-\item{noMNI}{(default=FALSE) whether to avoid bringing data
-into MNI space}
+\item{saveMNI}{(logical) whether to save outputs in MNI space
+If transformation files are available, \code{saveMNI=TRUE}.
+Otherwise \code{saveMNI=FALSE}. Manually setting to TRUE
+without transformation files will force a de novo registration
+between internal templates.}
 
 \item{cache}{(default=TRUE) use existing processed files to
 speed up processing. Useful for interrupted processes. Will
