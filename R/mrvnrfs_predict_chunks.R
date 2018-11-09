@@ -188,7 +188,7 @@ linda_mrvnrfs.predict_chunks <- function(
   # prediction is finished, create segmentation
   if ( asFactors )
   {
-    print_msg("Making Segmentations", verbose = verbose)
+    # print_msg("Making Segmentations", verbose = verbose)
 
     rfseg=list()
     for (segno in 1:length(newprobs)) {

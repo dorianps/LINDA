@@ -465,7 +465,7 @@ linda_predict = function(
 
   }, split=TRUE, type='output') # end window capture
 
-  logFile = file.path(outdir, 'Output.txt')
+  logFile = file.path(outdir, 'Console_Output.txt')
   writeLines(outputLog, logFile)
 
 
@@ -476,7 +476,7 @@ linda_predict = function(
     thisenvironment = sessionInfo()
   }
   writeLines(suppressMessages(capture.output(thisenvironment)),
-             file.path(outdir, 'Session_info.txt'))
+             file.path(outdir, 'Session_Info.txt'))
 
 
   return(L)
