@@ -1,6 +1,6 @@
 
 [![Travis build
-status](https://travis-ci.com/dorianps/LINDA.svg?branch=master)](https://travis-ci.com/dorianps/LINDA)
+status](https://travis-ci.org/dorianps/LINDA.svg?branch=master)](https://travis-ci.org/dorianps/LINDA)
 <!--
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/LINDA?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/LINDA)
 [![Coverage status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/LINDA)
@@ -27,38 +27,45 @@ Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract
 
 -----
 
-## Install:
+### Installation:
 
-Download the [latest
-release](https://github.com/dorianps/LINDA/releases/download/0.2.7/LINDA_v0.2.7.zip)
-(v0.2.7, 580Mb) and unzip in a local folder.
+##### Method 1 (easy, incomplete)
 
-*IMPORTANT: Only the above link contains the full release with trained
-models, templates, etc. Do not use the “Download” button on Github. It
-contains only smaller scripts because Github does not accept files above
-100mb in main
-repositories.*
+This method does not require any prep on your side, just paste the lines
+below and all required packages will (hopefully) be installed (including
+ANTsR). However, MNI transformations are not included because Github
+does not accept big files. You can still force on the fly registrations
+to MNI (ch2) space by setting `saveMNI=TRUE`. If you frequently need
+outputs in MNI space, use Method 2 below.
 
-###### Please send an email tp <LINDA-tools+subscribe@googlegroups.com> to register to the mailing list and receive notifications of new releases.
+``` r
+install.packages('devtools')
+devtools::install_github('dorianps/LINDA', upgrade_dependencies=FALSE)
+```
 
-## What is LINDA?
+##### Method 2 (complex, complete)
 
-Is a neuroimaging toolkit for automatic segmentation of **chronic**
-stroke lesions. The method is described in [Hum Brain Mapp. 2016
-Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract).  
-\*\*\*\*\*  
-\#\# Requirements:  
-\* Linux or Mac (since Oct 2016 ANTsR [can run in Windows
-10](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-\(along-with-FSL,-Rstudio,-Freesurfer,-etc\).))  
-\* [R v3.0 or above](http://www.r-project.org/) \* The
-[ANTsR](http://stnava.github.io/ANTsR/) package installed in R \* A
-T1-weighted MRI of a patient with (left hemispheric) stroke
+This method includes the MNI transformations, but works only if you have
+previously installed ANTsR. To do that, try
+`devtools::install_github('ANTsX/ANTsR')`  
+Then download the [latest LINDA release
+v0.5.0](https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip)
+and install with `install.packages('/path/to/LINDA_v0.5.0.zip',
+repos=NULL)`.
 
------
+#### Support
 
------
+Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support
+requests and get notified of new versions. You can also open a [Github
+issue](https://github.com/dorianps/LINDA/issues).
 
 ## Run:
+
+``` r
+library(LINDA)
+filename = '/path/to/MPRAGE.nii.gz'
+linda_predict(filename)
+```
 
 Open R and source the file linda\_predict.R
 `source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
