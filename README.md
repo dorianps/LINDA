@@ -1,16 +1,31 @@
 
 [![Travis build
-status](https://travis-ci.com/muschellij2/LINDA.svg?branch=master)](https://travis-ci.com/muschellij2/LINDA)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/LINDA?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/LINDA)
-[![Coverage
-status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/LINDA)
+status](https://travis-ci.com/dorianps/LINDA.svg?branch=master)](https://travis-ci.com/dorianps/LINDA)
+<!--
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/LINDA?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/LINDA)
+[![Coverage status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/LINDA)
+
+-->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # LINDA Package:
 
-The goal of `LINDA` is to provide a neuroimaging toolkit for automatic
-segmentation of chronic stroke lesions.
+`LINDA` is an R package for automatic segmentation of **chronic** stroke
+lesions.  
+The method is described in [Hum Brain Mapp. 2016
+Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract).
+
+-----
+
+## Requirements:
+
+  - Linux or Mac (since Oct 2016 ANTsR [can run in Windows
+    10](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-\(along-with-FSL,-Rstudio,-Freesurfer,-etc\).))  
+  - [R v3.0 or above](http://www.r-project.org/)  
+  - The [ANTsR](http://stnava.github.io/ANTsR/) package installed in R
+  - A T1-weighted MRI of a patient with (left hemispheric) stroke
+
+-----
 
 ## Install:
 
