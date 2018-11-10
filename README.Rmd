@@ -56,9 +56,18 @@ devtools::install_github('dorianps/LINDA', upgrade_dependencies=FALSE)
 
 
 ##### Method 2 (complex, complete)
-This method includes the MNI transformations, but works only if you have previously installed ANTsR. To do that, try `devtools::install_github('ANTsX/ANTsR')`  
+This method includes the MNI transformations, but works only if you have previously installed ANTsR. To do that, try:
+``` r
+devtools::install_github('ANTsX/ANTsR')
+```  
 Then download the [latest
-LINDA release v0.5.0](https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip) and install with `install.packages('/path/to/LINDA_v0.5.0.zip', repos=NULL)`.
+LINDA release v0.5.0](https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip) and install from command line:
+``` bash
+
+wget https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip
+unzip LINDA_v0.5.0.zip # this will unzip to LINDA folder
+R CMD INSTALL LINDA # install the LINDA folder in R
+```
 
 
 
@@ -219,6 +228,11 @@ The best way to keep track of bugs or failures is to open a [New
 Issue](https://github.com/dorianps/LINDA/issues) on the Github system. If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
   
 Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support requests and get notified of new versions.
+  
+  
+### Authors
+Dorian Pustina  
+John Muscelli  
   
 ## Other software for lesion studies
 

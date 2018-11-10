@@ -46,12 +46,22 @@ devtools::install_github('dorianps/LINDA', upgrade_dependencies=FALSE)
 ##### Method 2 (complex, complete)
 
 This method includes the MNI transformations, but works only if you have
-previously installed ANTsR. To do that, try
-`devtools::install_github('ANTsX/ANTsR')`  
+previously installed ANTsR. To do that, try:
+
+``` r
+devtools::install_github('ANTsX/ANTsR')
+```
+
 Then download the [latest LINDA release
 v0.5.0](https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip)
-and install with `install.packages('/path/to/LINDA_v0.5.0.zip',
-repos=NULL)`.
+and install from command line:
+
+``` bash
+
+wget https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip
+unzip LINDA_v0.5.0.zip # this will unzip to LINDA folder
+R CMD INSTALL LINDA # install the LINDA folder in R
+```
 
 ## Run:
 
@@ -227,6 +237,11 @@ wrong somewhere.
 
 Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support
 requests and get notified of new versions.
+
+### Authors
+
+Dorian Pustina  
+John Muscelli
 
 ## Other software for lesion studies
 
