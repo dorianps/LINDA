@@ -133,7 +133,7 @@ large stroke lesions, but less accurate segmentations with tiny lesions.
 
 -----
 
-## OUTPUT files:
+##### OUTPUT files:
 
 **BrainMask.nii.gz** - Brain mask used to skull strip (native space)  
 **N4corrected.nii.gz** - Bias corrected, full image (native space)  

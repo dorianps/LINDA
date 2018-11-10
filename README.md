@@ -53,30 +53,31 @@ v0.5.0](https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.z
 and install with `install.packages('/path/to/LINDA_v0.5.0.zip',
 repos=NULL)`.
 
-#### Support
-
-Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support
-requests and get notified of new versions. You can also open a [Github
-issue](https://github.com/dorianps/LINDA/issues).
-
 ## Run:
 
 ``` r
 library(LINDA)
-filename = '/path/to/MPRAGE.nii.gz'
-linda_predict(filename)
+filename = '/path/to/patient/T1.nii.gz'
+outputs = linda_predict(filename)
 ```
 
-Open R and source the file linda\_predict.R
-`source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
-A file dialog will allow you to select the T1 nifti file of the patient
-with left hemispheric brain damage.  
-LINDA will run and you will see the timestamp of the various steps.  
-Results will be saved in a folder named “linda” in the same path where
-the T1 is located.
+If you don’t specify a filename, a file dialog will allow you to choose
+the T1 nifti file of the patient.
 
-*Note, LINDA will stop if you don’t have `ANTsR` installed, and will
-automatically install the `randomForest` package.*
+``` r
+outputs = linda_predict()
+```
+
+LINDA will run and you will see the timestamp of the various steps.
+Results will be saved in a folder named “linda” in the same path where
+the T1 is located. The location of these files will be returned in R
+(i.e., in the `outputs` variable).
+
+If the “linda” folder contains segmentations from an earlier run,
+processing will stop immediately. Use `cache=FALSE` to force overwriting
+the old files. If processing is interrupted and restarted, LINDA will
+use the existing files in the “linda” folder to start where it was
+interrupted.
 
 **Available prediction models:**  
 *Currently a model trained on 60 patients from Penn is used. The
@@ -85,43 +86,41 @@ not mean your images need to be 2mm, any resolution should work.*
 
 -----
 
-## Example:
+### Example:
 
-`source('/data/myfolder/stroke/LINDA/linda_predict.R')`  
-\> 14:47 Starting LINDA v0.2.6 …  
-randomForest 4.6-12  
-Type rfNews() to see new features/changes/bug fixes.  
-14:47 Loading file: subjA\_T1.nii  
-14:47 Creating folder: /mnt/c/Users/TESTsubject/linda  
-14:47 Loading template…  
-14:47 Skull stripping… (long process)  
-14:54 Saving skull stripped files  
-14:54 Loading LINDA model  
-14:54 Computing asymmetry mask…  
-14:55 Saving asymmetry mask…  
-14:55 Running 1st registration…  
-14:56 Feature calculation…  
-14:58 Running 1st prediction…  
-14:58 Saving 1st prediction…  
-14:58 Backprojecting 1st prediction…  
-14:58 Running 2nd registration…  
-15:00 Feature calculation…  
-15:01 Running 2nd prediction…  
-15:02 Saving 2nd prediction…  
-15:02 Backprojecting 2nd prediction…  
-15:02 Running 3rd registration… (long process)  
-15:35 Saving 3rd registration results…  
-15:36 Feature calculation…  
-15:37 Running 3rd prediction…  
-15:38 Saving 3rd final prediction…  
-15:38 Saving 3rd final prediction in template space…  
-15:38 Saving 3rd final prediction in native space…  
-15:38 Saving probabilistic prediction in template space…  
-15:38 Saving probabilistic prediction in native space…  
-15:38 Transferring data in MNI (ch2) space…  
-15:38 Saving subject in MNI (ch2) space…  
-15:38 Saving lesion in MNI (ch2) space…  
-DONE
+\*(a somewhat slow example run on a single CPU core)
+
+``` r
+21:18 Starting LINDA v0.5.0
+21:18 Creating folder: /data/jux/dpustina/LINDA_package/Sample_ABC/linda
+21:18 Loading file: ABC_MPRAGE.nii ...
+21:18 Loading template...
+21:18 Skull stripping... (long process)
+21:46 Saving skull stripped files...
+21:46 Computing asymmetry mask...
+21:50 Saving asymmetry mask...
+21:50 1st round of prediction...
+21:50     Running registration: SyN
+21:57     Feature calculation 
+22:02     Lesion segmentation
+22:04 Backprojecting prediction...
+22:04 Saving prediction...
+22:04 2nd round of prediction...
+22:04     Running registration: SyN
+22:11     Feature calculation 
+22:16     Lesion segmentation
+22:17 Backprojecting prediction...
+22:17 3rd round of prediction...
+22:17     Running registration: SyNCC
+00:44     Feature calculation 
+00:49     Lesion segmentation
+00:50 Backprojecting prediction...
+00:50 Saving 3rd final prediction in native space...
+00:51 Saving probabilistic prediction in template space...
+00:51 Saving probabilistic prediction in native space...
+00:51 Skipping data transformation in MNI (ch2) ...
+00:51 Done! 3.5 hours 
+```
 
 Wonder what to expect? Check individual results from our [60 patients
 Penn
@@ -133,7 +132,7 @@ large stroke lesions, but less accurate segmentations with tiny lesions.
 
 -----
 
-## OUTPUT files:
+##### OUTPUT files:
 
 **BrainMask.nii.gz** - Brain mask used to skull strip (native space)  
 **N4corrected.nii.gz** - Bias corrected, full image (native space)  
@@ -159,7 +158,10 @@ register subject to template
 backproject template to subject  
 **Subject\_in\_MNI.nii.gz** - Subject’s MRI, skull stripped, bias
 corrected, transformed in MNI space  
-**Lesion\_in\_MNI.nii.gz** - Lesion mask in MNI space
+**Lesion\_in\_MNI.nii.gz** - Lesion mask in MNI spacethe
+**Console\_Output.txt** - log file replicating the console output
+**Session\_Info.txt** - R environment and package versions, useful if
+you want to reproduce the results in the future.
 
 -----
 
@@ -178,10 +180,9 @@ results as necessary.
 ## Frequently Asked Questions
 
 **- What file formats are accepted**?  
-Nifti images (.nii and .nii.gz) are accepted. The platform can read many
-other formats, but the is limtied script to Nifti in order to avoid
-confusion with some formats (i.e., Analyze) that have unclear left-right
-orientation.  
+Nifti images (.nii and .nii.gz) are accepted. Earlier LINDA versions did
+not accept other formats, but now any format can be read. Note that the
+Analyze format has unclear left-right orientation.  
 **- Can I use it with right hemispheric lesions?**  
 Yes, but you need to flip the L-R orientation before. After that, the
 prediction will work just as well.  
@@ -225,16 +226,10 @@ without errors but the automatic segmentation is erroneous, please send
 space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to
 check whether the brain mask is wrong somewhere.
 
+Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support
+requests and get notified of new versions.
+
 ## Other software for lesion studies
 
 Check out the LESYMAP package for lesion to symptom mapping:
 <https://github.com/dorianps/LESYMAP>.
-
-## Installation of Development Branchgh
-
-You can install `LINDA` from GitHub with:
-
-``` r
-# install.packages("remotes")
-remotes::install_github("muschellij2/LINDA")
-```
