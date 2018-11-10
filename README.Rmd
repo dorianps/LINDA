@@ -44,7 +44,7 @@ if (requireNamespace("git2r")) {
 ```
 
 
-### Installation:
+## Installation:
 
 ##### Method 1 (easy, incomplete)
 This method does not require any prep on your side, just paste the lines below and all required packages will (hopefully) be installed (including ANTsR). However, MNI transformations are not included because Github does not accept big files. You can still force on the fly registrations to MNI (ch2) space by  setting `saveMNI=TRUE`. If you frequently need outputs in MNI space, use Method 2 below.  
@@ -216,13 +216,7 @@ open source.
 ## Support:
 
 The best way to keep track of bugs or failures is to open a [New
-Issue](https://github.com/dorianps/LINDA/issues) on the Github system.
-You can also contact the author via email: dorian dot pustina at uphs
-dot upenn dot edu (translate from english). If the algorithm proceeds
-without errors but the automatic segmentation is erroneous, please send
-(i) your T1 image and (ii) the segmentation produced by LINDA in native
-space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to
-check whether the brain mask is wrong somewhere.  
+Issue](https://github.com/dorianps/LINDA/issues) on the Github system. If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
   
 Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support requests and get notified of new versions.
   

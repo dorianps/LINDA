@@ -27,7 +27,7 @@ Apr;37(4):1405-21](http://onlinelibrary.wiley.com/doi/10.1002/hbm.23110/abstract
 
 -----
 
-### Installation:
+## Installation:
 
 ##### Method 1 (easy, incomplete)
 
@@ -219,12 +219,11 @@ open source.
 
 The best way to keep track of bugs or failures is to open a [New
 Issue](https://github.com/dorianps/LINDA/issues) on the Github system.
-You can also contact the author via email: dorian dot pustina at uphs
-dot upenn dot edu (translate from english). If the algorithm proceeds
-without errors but the automatic segmentation is erroneous, please send
-(i) your T1 image and (ii) the segmentation produced by LINDA in native
-space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to
-check whether the brain mask is wrong somewhere.
+If the algorithm proceeds without errors but the automatic segmentation
+is erroneous, please send (i) your T1 image and (ii) the segmentation
+produced by LINDA in native space. Try also overlaying
+`Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is
+wrong somewhere.
 
 Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support
 requests and get notified of new versions.
