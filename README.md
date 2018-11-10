@@ -241,7 +241,7 @@ requests and get notified of new versions.
 ### Authors
 
 Dorian Pustina  
-John Muscelli
+John Muschelli
 
 ## Other software for lesion studies
 

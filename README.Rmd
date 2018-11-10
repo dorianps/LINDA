@@ -232,7 +232,7 @@ Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support requests a
   
 ### Authors
 Dorian Pustina  
-John Muscelli  
+John Muschelli  
   
 ## Other software for lesion studies
 
