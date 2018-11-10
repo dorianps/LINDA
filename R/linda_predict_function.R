@@ -23,13 +23,11 @@
 #' @return A list of things
 #' @export
 #'
-#' @importFrom ANTsRCore iMath antsImageRead antsImageWrite antsRegistration
-#' @importFrom ANTsRCore resampleImage smoothImage thresholdImage antsImageClone
-#' @importFrom ANTsRCore antsApplyTransforms is.antsImage resampleImageToTarget
-#' @importFrom ANTsR abpN4 abpBrainExtraction reflectImage
-#' @importFrom ANTsR composeTransformsToField splitMask
+#' @import ANTsRCore
+#' @import ANTsR
 #' @importFrom magrittr %>%
-#' @importFrom utils capture.output installed.packages sessionInfo packageVersion
+#' @importFrom utils capture.output installed.packages
+#' @importFrom utils sessionInfo packageVersion
 linda_predict = function(
   file=NA,
   brain_mask = NULL,

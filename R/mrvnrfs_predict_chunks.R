@@ -18,9 +18,7 @@
 #' @author Avants BB, Tustison NJ, Pustina D
 #'
 #' @export
-#' @importFrom ANTsRCore lappend makeImage matrixToImages
-#' @importFrom ANTsRCore getNeighborhoodInMask imageListToMatrix
-#' @importFrom ANTsR splitMask
+#'
 #' @importFrom stats predict
 #' @import randomForest
 #'

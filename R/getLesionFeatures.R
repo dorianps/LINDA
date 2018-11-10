@@ -1,4 +1,15 @@
-#' @importFrom ANTsRCore kmeansSegmentation
+#' Feature computation to use in LINDA
+#'
+#' @param img subject scan (antsImage)
+#' @param template template (antsImage)
+#' @param bmask subject brain mask (antsImage)
+#' @param sigma (default=2) smoothing parameter
+#' @param verbose (default=TRUE) whether to display
+#' console messages
+#'
+#' @return list of six features (antsImages)
+#'
+#' @export
 getLesionFeatures = function(
   img, template, bmask,
   sigma = 2,
