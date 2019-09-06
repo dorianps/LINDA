@@ -1,7 +1,7 @@
 Type: Package
 Package: LINDA
 Title: Lesion Identification with Neighborhood Data Analysis
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: 
     c(
     person(given = "Dorian",
@@ -37,4 +37,4 @@ Remotes:
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 6.1.1.9000

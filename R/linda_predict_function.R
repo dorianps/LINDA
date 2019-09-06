@@ -72,7 +72,7 @@ linda_predict = function(
   if (file.exists(segnative_file) & cache) {
     print_msg('\nLINDA segmentation already present in folder.\n   Use "cache=FALSE" to reprocess and overwrite.',
               verbose=verbose)
-    return(NULL)
+    # stop('test')
   }
 
 
@@ -267,200 +267,242 @@ linda_predict = function(
   print_msg('3rd round of prediction...', verbose=verbose)
   outfiles = c(
     prediction = file.path(outdir,
-                           'Prediction3.nii.gz'),
+                           'Prediction3_native.nii.gz'),
     lesion_mask = file.path(outdir, 'Mask.lesion4.nii.gz')
   )
+
+
   o = as.list(outfiles)
   names(o) = paste0(names(o), "_3")
   L = c(L, as.list(o))
 
-  # if (all(file.exists(outfiles)) & cache) {
-  #   out3 = lapply(outfiles, antsImageRead)
-  #   mask.lesion4 = out3$lesion_mask
-  #   prediction3 = out3$prediction
-  # } else {
+  if (all(file.exists(outfiles)) & cache) {
+    print_msg('Found existing 3rd prediction, loading filenames...', verbose = verbose)
 
-  out3 = run_prediction(
-    img = simg,
-    brain_mask = submask,
-    template_mask = tempmask,
-    voxel_resampling = voxel_resampling,
-    template_brain = tempbrain,
-    typeofTransform = "SyNCC",
-    lesion_mask = mask.lesion3,
-    reflaxis = reflaxis,
-    sigma = sigma,
-    verbose = verbose)
+    out3 = lapply(outfiles, antsImageRead)
+    mask.lesion4 = out3$lesion_mask
+    prediction3 = out3$prediction
 
-  prediction3 = out3$prediction
-  antsImageWrite(prediction3, outfiles["prediction"])
+    reg_to_template = file.path(outdir, 'Reg3_registered_to_template.nii.gz')
+    if (file.exists(reg_to_template)) L$reg_to_template = reg_to_template
 
-  mask.lesion4 = out3$lesion_mask
+    reg_to_sub_warp = file.path(outdir, 'Reg3_template_to_sub_warp.nii.gz')
+    if (file.exists(reg_to_sub_warp)) L$reg_to_sub_warp = reg_to_sub_warp
 
-  antsImageWrite(mask.lesion4, outfiles["lesion_mask"])
+    reg_to_sub_aff = file.path(outdir , 'Reg3_template_to_sub_affine.mat')
+    if (file.exists(reg_to_sub_aff)) L$reg_to_sub_aff = reg_to_sub_aff
 
-  reg3 = out3$registration
-  reg_to_template = file.path(outdir, 'Reg3_registered_to_template.nii.gz')
-  antsImageWrite(
-    reg3$warpedfixout,
-    reg_to_template
-  )
+    reg_to_temp_aff = file.path(outdir , 'Reg3_sub_to_template_affine.mat')
+    if (file.exists(reg_to_temp_aff)) L$reg_to_temp_aff = reg_to_temp_aff
 
-  L$reg_to_template = reg_to_template
+    reg_to_temp_warp = file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
+    if (file.exists(reg_to_temp_warp)) L$reg_to_temp_warp = reg_to_temp_warp
 
-  reg_to_sub_warp = file.path(outdir, 'Reg3_template_to_sub_warp.nii.gz')
-  file.copy(
-    reg3$fwdtransforms[1],
-    reg_to_sub_warp
-  )
-  L$reg_to_sub_warp = reg_to_sub_warp
+    seg_file = file.path(outdir, 'Prediction3_template.nii.gz')
+    if (file.exists(seg_file)) L$segmentation = seg_file
 
-  reg_to_sub_aff = file.path(outdir , 'Reg3_template_to_sub_affine.mat')
-  file.copy(reg3$fwdtransforms[2],
-            reg_to_sub_aff
-  )
+    segnative_file = file.path(outdir, 'Prediction3_native.nii.gz')
+    if (file.exists(segnative_file)) L$segmentation_native = segnative_file
 
-  L$reg_to_sub_aff = reg_to_sub_aff
+    probles_file = file.path(outdir,
+                             'Prediction3_probability_template.nii.gz')
+    if (file.exists(probles_file)) L$lesion_probability_template = probles_file
 
-  reg_to_temp_aff = file.path(outdir , 'Reg3_sub_to_template_affine.mat')
-  L$reg_to_temp_aff = reg_to_temp_aff
+    problesnative_file = file.path(
+      outdir, 'Prediction3_probability_native.nii.gz')
+    if (file.exists(problesnative_file)) L$lesion_probability_native = problesnative_file
 
-  file.copy(reg3$invtransforms[1],
-            reg_to_temp_aff
-  )
-
-  reg_to_temp_warp = file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
-  L$reg_to_temp_warp = reg_to_temp_warp
-  file.copy(
-    reg3$invtransforms[2],
-    reg_to_temp_warp
-  )
-
-  seg = out3$segmentation
-
-  seg_file = file.path(outdir, 'Prediction3_template.nii.gz')
-  L$segmentation = seg_file
-
-  antsImageWrite(seg, seg_file)
-
-  print_msg("Saving 3rd final prediction in native space...",
-            verbose = verbose)
-  segnative_file = file.path(outdir, 'Prediction3_native.nii.gz')
-  segnative = out3$segmentation_native
-
-  L$segmentation_native = segnative_file
-  antsImageWrite(segnative, segnative_file)
-
-  graded_map = out3$multi_res_seg$probs[[1]][[4]]
-
-  grad_file = file.path(outdir, 'Prediction3_graded_map.nii.gz')
-  antsImageWrite(graded_map, grad_file)
-
-  # save graded map
-  probles = resampleImage(graded_map,
-                          dim(tempbrain),
-                          useVoxels = 1,
-                          interpType = 0)
-  # probles = resampleImageToTarget(
-  #   image = graded_map,
-  #   target = tempbrain,
-  #   interpType = "nearestNeighbor")
-
-
-
-  problesnative = antsApplyTransforms(
-    fixed = simg,
-    moving = probles,
-    transformlist = reg3$fwdtransforms,
-    interpolator = 'Linear',
-    verbose = verbose > 1
-  )
-  probles_file = file.path(outdir,
-                            'Prediction3_probability_template.nii.gz')
-  L$lesion_probability_template = probles_file
-  print_msg("Saving probabilistic prediction in template space...",
-            verbose = verbose)
-  antsImageWrite(probles, probles_file)
-
-  problesnative_file = file.path(
-    outdir, 'Prediction3_probability_native.nii.gz')
-  L$lesion_probability_native = problesnative_file
-  print_msg("Saving probabilistic prediction in native space...",
-            verbose = verbose)
-  antsImageWrite(problesnative, problesnative_file)
-
-
-  # save in MNI coordinates
-
-  # warppenn = file.path(outdir, 'Reg3_sub_to_template_warp.nii.gz')
-  warppenn = reg_to_temp_warp
-  # affpenn = file.path(outdir, 'Reg3_sub_to_template_affine.mat')
-  affpenn = reg_to_temp_aff
-
-  mni = system.file("extdata", "pennTemplate", "ch2.nii.gz",
-                    package = "LINDA",
-                    mustWork = TRUE)
-
-  mni = antsImageRead(mni)
-
-  warpmni = system.file("extdata", "pennTemplate",
-                        "templateToCh2_1Warp.nii.gz",
-                        package = "LINDA",
-                        mustWork = FALSE)
-
-  affmni = system.file("extdata",
-                       "pennTemplate",
-                       "templateToCh2_0GenericAffine.mat",
-                       package = "LINDA",
-                       mustWork = FALSE)
-  if (saveMNI) {
-    if (!all(file.exists(warpmni, affmni))) {
-      print_msg("No MNI transformations available, registering de novo\n     get full release to eleminate this step",
-                verbose = verbose)
-      temp_to_ch2 = antsRegistration(
-        fixed = mni, moving = temp,
-        typeofTransform = "SyNCC",
-        verbose = verbose > 1)
-      matrices = c(temp_to_ch2$fwdtransforms, affpenn, warppenn)
-    } else {
-      matrices = c(warpmni, affmni, affpenn, warppenn)
-    }
-
-    print_msg("Transferring data in MNI (ch2) space...",
-              verbose = verbose)
-
-    submni = antsApplyTransforms(
-      moving = simg,
-      fixed = mni,
-      transformlist = matrices,
-      interpolator = 'Linear',
-      whichtoinvert = c(0, 0, 1, 0),
-      verbose = verbose > 1
-    )
-    lesmni = antsApplyTransforms(
-      moving = segnative,
-      fixed = mni,
-      transformlist = matrices,
-      interpolator = 'NearestNeighbor',
-      whichtoinvert = c(0, 0, 1, 0),
-      verbose = verbose > 1
-    )
-
-    print_msg("Saving subject in MNI (ch2) space...",
-              verbose = verbose)
     t1_template = file.path(outdir, 'Subject_in_MNI.nii.gz')
-    antsImageWrite(submni, t1_template)
+    if (file.exists(t1_template)) L$t1_template = t1_template
 
-    L$t1_template = t1_template
-
-    print_msg("Saving lesion in MNI (ch2) space...",
-              verbose = verbose)
     lesion_template = file.path(outdir, 'Lesion_in_MNI.nii.gz')
-    L$lesion_template = lesion_template
-    antsImageWrite(lesmni, lesion_template)
+    if (file.exists(lesion_template)) L$lesion_template = lesion_template
+
   } else {
-    print_msg("Skipping data transformation in MNI (ch2) ...", verbose = verbose)
-  }
+
+    out3 = run_prediction(
+      img = simg,
+      brain_mask = submask,
+      template_mask = tempmask,
+      voxel_resampling = voxel_resampling,
+      template_brain = tempbrain,
+      typeofTransform = "SyNCC",
+      lesion_mask = mask.lesion3,
+      reflaxis = reflaxis,
+      sigma = sigma,
+      verbose = verbose)
+
+    prediction3 = out3$prediction
+    antsImageWrite(prediction3, outfiles["prediction"])
+
+    mask.lesion4 = out3$lesion_mask
+
+    antsImageWrite(mask.lesion4, outfiles["lesion_mask"])
+
+    reg3 = out3$registration
+    reg_to_template = file.path(outdir, 'Reg3_registered_to_template.nii.gz')
+    antsImageWrite(
+      reg3$warpedfixout,
+      reg_to_template
+    )
+
+    L$reg_to_template = reg_to_template
+
+    reg_to_sub_warp = file.path(outdir, 'Reg3_template_to_sub_warp.nii.gz')
+    file.copy(
+      reg3$fwdtransforms[1],
+      reg_to_sub_warp
+    )
+    L$reg_to_sub_warp = reg_to_sub_warp
+
+    reg_to_sub_aff = file.path(outdir , 'Reg3_template_to_sub_affine.mat')
+    file.copy(reg3$fwdtransforms[2],
+              reg_to_sub_aff
+    )
+
+    L$reg_to_sub_aff = reg_to_sub_aff
+
+    reg_to_temp_aff = file.path(outdir , 'Reg3_sub_to_template_affine.mat')
+    L$reg_to_temp_aff = reg_to_temp_aff
+
+    file.copy(reg3$invtransforms[1],
+              reg_to_temp_aff
+    )
+
+    reg_to_temp_warp = file.path(outdir , 'Reg3_sub_to_template_warp.nii.gz')
+    L$reg_to_temp_warp = reg_to_temp_warp
+    file.copy(
+      reg3$invtransforms[2],
+      reg_to_temp_warp
+    )
+
+    seg = out3$segmentation
+
+    seg_file = file.path(outdir, 'Prediction3_template.nii.gz')
+    L$segmentation = seg_file
+
+    antsImageWrite(seg, seg_file)
+
+    print_msg("Saving 3rd final prediction in native space...",
+              verbose = verbose)
+    segnative_file = file.path(outdir, 'Prediction3_native.nii.gz')
+    segnative = out3$segmentation_native
+
+    L$segmentation_native = segnative_file
+    antsImageWrite(segnative, segnative_file)
+
+    graded_map = out3$multi_res_seg$probs[[1]][[4]]
+
+    grad_file = file.path(outdir, 'Prediction3_graded_map.nii.gz')
+    antsImageWrite(graded_map, grad_file)
+
+    # save graded map
+    probles = resampleImage(graded_map,
+                            dim(tempbrain),
+                            useVoxels = 1,
+                            interpType = 0)
+    # probles = resampleImageToTarget(
+    #   image = graded_map,
+    #   target = tempbrain,
+    #   interpType = "nearestNeighbor")
+
+
+
+    problesnative = antsApplyTransforms(
+      fixed = simg,
+      moving = probles,
+      transformlist = reg3$fwdtransforms,
+      interpolator = 'Linear',
+      verbose = verbose > 1
+    )
+    probles_file = file.path(outdir,
+                             'Prediction3_probability_template.nii.gz')
+    L$lesion_probability_template = probles_file
+    print_msg("Saving probabilistic prediction in template space...",
+              verbose = verbose)
+    antsImageWrite(probles, probles_file)
+
+    problesnative_file = file.path(
+      outdir, 'Prediction3_probability_native.nii.gz')
+    L$lesion_probability_native = problesnative_file
+    print_msg("Saving probabilistic prediction in native space...",
+              verbose = verbose)
+    antsImageWrite(problesnative, problesnative_file)
+
+
+    # save in MNI coordinates
+
+    # warppenn = file.path(outdir, 'Reg3_sub_to_template_warp.nii.gz')
+    warppenn = reg_to_temp_warp
+    # affpenn = file.path(outdir, 'Reg3_sub_to_template_affine.mat')
+    affpenn = reg_to_temp_aff
+
+    mni = system.file("extdata", "pennTemplate", "ch2.nii.gz",
+                      package = "LINDA",
+                      mustWork = TRUE)
+
+    mni = antsImageRead(mni)
+
+    warpmni = system.file("extdata", "pennTemplate",
+                          "templateToCh2_1Warp.nii.gz",
+                          package = "LINDA",
+                          mustWork = FALSE)
+
+    affmni = system.file("extdata",
+                         "pennTemplate",
+                         "templateToCh2_0GenericAffine.mat",
+                         package = "LINDA",
+                         mustWork = FALSE)
+    if (saveMNI) {
+      if (!all(file.exists(warpmni, affmni))) {
+        print_msg("No MNI transformations available, registering de novo\n     get full release to eleminate this step",
+                  verbose = verbose)
+        temp_to_ch2 = antsRegistration(
+          fixed = mni, moving = temp,
+          typeofTransform = "SyNCC",
+          verbose = verbose > 1)
+        matrices = c(temp_to_ch2$fwdtransforms, affpenn, warppenn)
+      } else {
+        matrices = c(warpmni, affmni, affpenn, warppenn)
+      }
+
+      print_msg("Transferring data in MNI (ch2) space...",
+                verbose = verbose)
+
+      submni = antsApplyTransforms(
+        moving = simg,
+        fixed = mni,
+        transformlist = matrices,
+        interpolator = 'Linear',
+        whichtoinvert = c(0, 0, 1, 0),
+        verbose = verbose > 1
+      )
+      lesmni = antsApplyTransforms(
+        moving = segnative,
+        fixed = mni,
+        transformlist = matrices,
+        interpolator = 'NearestNeighbor',
+        whichtoinvert = c(0, 0, 1, 0),
+        verbose = verbose > 1
+      )
+
+      print_msg("Saving subject in MNI (ch2) space...",
+                verbose = verbose)
+      t1_template = file.path(outdir, 'Subject_in_MNI.nii.gz')
+      antsImageWrite(submni, t1_template)
+
+      L$t1_template = t1_template
+
+      print_msg("Saving lesion in MNI (ch2) space...",
+                verbose = verbose)
+      lesion_template = file.path(outdir, 'Lesion_in_MNI.nii.gz')
+      L$lesion_template = lesion_template
+      antsImageWrite(lesmni, lesion_template)
+    } else {
+      print_msg("Skipping data transformation in MNI (ch2) ...", verbose = verbose)
+    }
+  } # here ends the 3rd round
+
 
   tic = Sys.time()
   runtime = paste(round(as.double(difftime(tic,toc)),1), units(difftime(tic,toc)))

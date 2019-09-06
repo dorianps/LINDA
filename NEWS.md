@@ -1,3 +1,7 @@
+# LINDA 0.5.1 (2019-09-06)
+* Fixed bug that produced error for existing linda runs
+
+
 # LINDA 0.5.0
 * Full rewrite to make an R package
 * Use existing outputs as cache to continue interrupted runs
