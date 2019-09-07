@@ -235,8 +235,6 @@ produced by LINDA in native space. Try also overlaying
 `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is
 wrong somewhere.
 
-Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support
-requests and get notified of new versions.
 
 ### Authors
 
