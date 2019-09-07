@@ -225,10 +225,8 @@ open source.
 ## Support:
 
 The best way to keep track of bugs or failures is to open a [New
-Issue](https://github.com/dorianps/LINDA/issues) on the Github system. If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
-  
-Subscribe to <LINDA-tools+subscribe@googlegroups.com> to send support requests and get notified of new versions.
-  
+Issue](https://github.com/dorianps/LINDA/issues) on Github. If the algorithm proceeds without errors but the automatic segmentation is erroneous, please send (i) your T1 image and (ii) the segmentation produced by LINDA in native space. Try also overlaying `Mask.lesion*.nii.gz` files on the T1 to check whether the brain mask is wrong somewhere.  
+    
   
 ### Authors
 Dorian Pustina  
