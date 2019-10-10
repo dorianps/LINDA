@@ -63,7 +63,7 @@ unzip LINDA_v0.5.0.zip # this will unzip to LINDA folder
 R CMD INSTALL LINDA # install the LINDA folder in R
 ```
 
-## Run:
+## Run: 
 
 ``` r
 library(LINDA)
