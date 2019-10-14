@@ -58,8 +58,8 @@ and install from command line:
 
 ``` bash
 
-wget https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip
-unzip LINDA_v0.5.0.zip # this will unzip to LINDA folder
+wget https://github.com/dorianps/LINDA/releases/download/0.5.1/LINDA_v0.5.1.zip
+unzip LINDA_v0.5.1.zip # this will unzip to LINDA folder
 R CMD INSTALL LINDA # install the LINDA folder in R
 ```
 
