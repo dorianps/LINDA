@@ -53,7 +53,7 @@ devtools::install_github('ANTsX/ANTsR')
 ```
 
 Then download the [latest LINDA release
-v0.5.0](https://github.com/dorianps/LINDA/releases/download/0.5.0/LINDA_v0.5.0.zip)
+v0.5.1](https://github.com/dorianps/LINDA/releases/download/0.5.1/LINDA_v0.5.1.zip)
 and install from command line:
 
 ``` bash
