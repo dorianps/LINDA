@@ -1,7 +1,6 @@
 # LINDA 0.5.1 (2019-09-06)
 * Fixed bug that produced error for existing linda runs
 
-
 # LINDA 0.5.0
 * Full rewrite to make an R package
 * Use existing outputs as cache to continue interrupted runs
@@ -12,9 +11,7 @@
 * Enabled automatic check of new versions onAttach
 * Tested on ANTsR versions of late 2017 and late 2018
 
-
 # LINDA 0.2.7 
-
 * using splitMask for compatibility with new ANTsR
     reconfiguration of June 2017.
 * Added a `NEWS.md` file to track changes to the package.
