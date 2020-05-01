@@ -64,6 +64,14 @@ unzip LINDA_v0.5.1.zip # this will unzip to LINDA folder
 R CMD INSTALL LINDA # install the LINDA folder in R
 ```
 
+## Docker container
+You can get LINDA pre-installed in a docker container (along with RStudio), no need to install anything else.  
+We have built scripts for one-click start and stop of containers (Windows/Linux/Mac):  
+https://github.com/dorianps/docker   
+The list of current and past LINDA containers are here:  
+https://hub.docker.com/r/dorianps/linda/tags  
+
+
 ## Run: 
 
 ``` r
