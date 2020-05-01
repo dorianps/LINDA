@@ -65,7 +65,7 @@ R CMD INSTALL LINDA # install the LINDA folder in R
 ```
 
 ## Docker container
-You can get LINDA pre-installed in a docker container (along with RStudio), no need to install anything else.  
+You can get LINDA pre-installed in a docker container (along with RStudio), no need to install anything if you have Docker.  
 We have built scripts for one-click start and stop of containers (Windows/Linux/Mac):  
 https://github.com/dorianps/docker   
 The list of current and past LINDA containers are here:  
