@@ -2,11 +2,12 @@
 [![Travis build
 status](https://travis-ci.org/dorianps/LINDA.svg?branch=master)](https://travis-ci.org/dorianps/LINDA)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed7c8fb5034e40bfbb12ddbf827078ed)](https://www.codacy.com/manual/dorianps/LINDA?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dorianps/LINDA&amp;utm_campaign=Badge_Grade)
+[![RRID badge](https://img.shields.io/badge/RRID-SCR__017971-blue.svg)](#)
 <!--
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/LINDA?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/LINDA)
 [![Coverage status](https://codecov.io/gh/muschellij2/LINDA/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/LINDA)
-
 -->
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # LINDA Package:
